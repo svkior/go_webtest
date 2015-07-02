@@ -1,0 +1,41 @@
+{{define "setup/editartnetout"}}
+
+<div class="row">
+    <div class="col-md-6 col-md-offset-3">
+        <h1>Изменение параметров ArtNet Входов</h1>
+        {{with .Error}}
+        <div class="alert error">
+            {{.}}
+        </div>
+        {{end}}
+
+        <form action="/setup-artnet-out" method="POST" class="form-horizontal">
+            <div class="form-group">
+                <label class="col-sm-4 control-label">Число ArtNet выходов</label>
+                <div class="col-sm-8">
+                    <select class="form-control" name="artinputs">
+                        <option {{if eq .Setup.ArtnetOutputs 0}} selected="selected" {{end}}>0</option>
+                        <option {{if eq .Setup.ArtnetOutputs 1}} selected="selected" {{end}}>1</option>
+                        <option {{if eq .Setup.ArtnetOutputs 2}} selected="selected" {{end}}>2</option>
+                        <option {{if eq .Setup.ArtnetOutputs 3}} selected="selected" {{end}}>3</option>
+                        <option {{if eq .Setup.ArtnetOutputs 4}} selected="selected" {{end}}>4</option>
+                    </select>
+                </div>
+            </div>
+            {{ range $idx, $elem := .Setup.ArtOuts }}
+            <div class="form-group">
+                <label class="checkbox-inline">
+                    <input type="checkbox" id="{{$elem.Name}}Enable"  name="{{$elem.Name}}Option" value="1" {{if $elem.Enabled}}checked{{end}}> <strong>ВКЛ</strong>
+                </label>
+            </div>
+            <div class="form-group">
+                <label for="{{$elem.Name}}">Вселенная</label>
+                <input type="text" name="{{$elem.Name}}" value="{{$elem.Universe}}" id="{{$elem.Name}}" class="form-control">
+            </div>
+            {{end}}
+            <input type="submit" value="Сохранить" class="btn btn-primary">
+        </form>
+    </div>
+</div>
+
+{{end}}
