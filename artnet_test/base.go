@@ -1,34 +1,32 @@
-package main
+package artnet_test
 
 import (
 	"github.com/julienschmidt/httprouter"
-	"log"
 	"net/http"
-	"bitbucket.org/tts/webserver"
+	"bitbucket.org/tts/go-webserver"
 )
+
 
 func StubForNotFound(w http.ResponseWriter, r *http.Request) {
 
 }
 
-func main() {
-log.Fatal(http.ListenAndServe(":3000", NewApp()))
-}
+
 
 func NewApp() webserver.Middleware {
 
 	router := httprouter.New()
 	router.Handle("GET", "/", HandleHome)
 	router.ServeFiles("/assets/*filepath", http.Dir("assets/"))
-	router.Handle("GET", "/login", HandleSessionNew)
-	router.Handle("POST", "/login", HandleSessionCreate)
-	router.Handle("GET", "/user/:userID", HandleUserShow)
+	router.Handle("GET", "/login", webserver.HandleSessionNew)
+	router.Handle("POST", "/login", webserver.HandleSessionCreate)
+	router.Handle("GET", "/user/:userID", webserver.HandleUserShow)
 	router.NotFound = http.HandlerFunc(StubForNotFound)
 
 	secureRouter := httprouter.New()
-	secureRouter.Handle("GET",  "/sign-out", HandleSessionDestroy)
-	secureRouter.Handle("GET",  "/account",  HandleUserEdit)
-	secureRouter.Handle("POST", "/account",  HandleUserUpdate)
+	secureRouter.Handle("GET",  "/sign-out", webserver.HandleSessionDestroy)
+	secureRouter.Handle("GET",  "/account",  webserver.HandleUserEdit)
+	secureRouter.Handle("POST", "/account",  webserver.HandleUserUpdate)
 
 	secureRouter.Handle("GET",  "/setup-ip", HandleSetupEthEdit)
 	secureRouter.Handle("POST", "/setup-ip", HandleSetupEthUpdate)

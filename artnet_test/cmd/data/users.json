@@ -1,5 +1,11 @@
 {
   "Users": {
+    "": {
+      "ID": "",
+      "Username": "admin",
+      "Email": "admin@example.com",
+      "HashedPassword": ""
+    },
     "usr_v7XQVlryGdbpWJ3jwvqm": {
       "ID": "usr_v7XQVlryGdbpWJ3jwvqm",
       "Username": "admin",

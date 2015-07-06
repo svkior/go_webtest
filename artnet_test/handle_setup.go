@@ -1,15 +1,16 @@
-package main
+package artnet_test
 import (
 	"net/http"
 	"github.com/julienschmidt/httprouter"
 	"log"
 	"fmt"
 	"strconv"
+	"bitbucket.org/tts/go-webserver"
 )
 
 
 func HandleSetupEthEdit(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-	RenderTemplate(w, r, "setup/editip", map[string]interface{}{
+	webserver.RenderTemplate(w, r, "setup/editip", map[string]interface{}{
 		"Setup": globalSetup,
 	})
 }
@@ -26,8 +27,8 @@ func HandleSetupEthUpdate(w http.ResponseWriter, r *http.Request, _ httprouter.P
 
 	err := globalSetup.UpdateIpAddr(ipAddr)
 	if err != nil {
-		if IsValidationError(err) {
-			RenderTemplate(w, r, "setup/editip", map[string]interface{}{
+		if webserver.IsValidationError(err) {
+			webserver.RenderTemplate(w, r, "setup/editip", map[string]interface{}{
 				"Error": err.Error(),
 				"Setup":  globalSetup,
 			})
@@ -38,8 +39,8 @@ func HandleSetupEthUpdate(w http.ResponseWriter, r *http.Request, _ httprouter.P
 
 	err = globalSetup.UpdateIpMask(ipMask)
 	if err != nil {
-		if IsValidationError(err) {
-			RenderTemplate(w, r, "setup/editip", map[string]interface{}{
+		if webserver.IsValidationError(err) {
+			webserver.RenderTemplate(w, r, "setup/editip", map[string]interface{}{
 				"Error": err.Error(),
 				"Setup":  globalSetup,
 			})
@@ -50,8 +51,8 @@ func HandleSetupEthUpdate(w http.ResponseWriter, r *http.Request, _ httprouter.P
 
 	err = globalSetup.UpdateIpGateway(ipGw)
 	if err != nil {
-		if IsValidationError(err){
-			RenderTemplate(w, r, "setup/editip", map[string]interface{}{
+		if webserver.IsValidationError(err){
+			webserver.RenderTemplate(w, r, "setup/editip", map[string]interface{}{
 				"Error": err.Error(),
 				"Setup": globalSetup,
 			})
@@ -62,8 +63,8 @@ func HandleSetupEthUpdate(w http.ResponseWriter, r *http.Request, _ httprouter.P
 
 	err = globalSetup.UpdateMac(ethMac)
 	if err != nil {
-		if IsValidationError(err){
-			RenderTemplate(w, r, "setup/editip", map[string]interface{}{
+		if webserver.IsValidationError(err){
+			webserver.RenderTemplate(w, r, "setup/editip", map[string]interface{}{
 				"Error": err.Error(),
 				"Setup": globalSetup,
 			})
@@ -76,7 +77,7 @@ func HandleSetupEthUpdate(w http.ResponseWriter, r *http.Request, _ httprouter.P
 }
 
 func HandleSetupArtnetEdit(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-	RenderTemplate(w, r, "setup/editartnet", map[string]interface{}{
+	webserver.RenderTemplate(w, r, "setup/editartnet", map[string]interface{}{
 		"Setup": globalSetup,
 	})
 }
@@ -88,8 +89,8 @@ func HandleSetupArtnetUpdate(w http.ResponseWriter, r *http.Request, _ httproute
 
 	err := globalSetup.UpdateArtNetInputs(numInputs)
 	if err != nil {
-		if IsValidationError(err){
-			RenderTemplate(w, r, "setup/editartnet", map[string]interface{}{
+		if webserver.IsValidationError(err){
+			webserver.RenderTemplate(w, r, "setup/editartnet", map[string]interface{}{
 				"Error": err.Error(),
 				"Setup": globalSetup,
 			})
@@ -108,8 +109,8 @@ func HandleSetupArtnetUpdate(w http.ResponseWriter, r *http.Request, _ httproute
 			globalSetup.EnableArtnetIn(idx)
 			err = globalSetup.UpdateArtNetInUniverse(idx, r.FormValue(fmt.Sprintf("tag%d",idx)))
 			if err != nil {
-				if IsValidationError(err){
-					RenderTemplate(w, r, "setup/editartnet", map[string]interface{}{
+				if webserver.IsValidationError(err){
+					webserver.RenderTemplate(w, r, "setup/editartnet", map[string]interface{}{
 						"Error": err.Error(),
 						"Setup": globalSetup,
 					})
@@ -124,7 +125,7 @@ func HandleSetupArtnetUpdate(w http.ResponseWriter, r *http.Request, _ httproute
 }
 
 func HandleSetupArtnetOutEdit(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-	RenderTemplate(w, r, "setup/editartnetout", map[string]interface{}{
+	webserver.RenderTemplate(w, r, "setup/editartnetout", map[string]interface{}{
 		"Setup": globalSetup,
 	})
 }
@@ -135,8 +136,8 @@ func HandleSetupArtnetOutUpdate(w http.ResponseWriter, r *http.Request, _ httpro
 	//log.Println(numOutputs)
 	err := globalSetup.UpdateArtNetOutputs(numOutputs)
 	if err != nil {
-		if IsValidationError(err){
-			RenderTemplate(w, r, "setup/editartnetout", map[string]interface{}{
+		if webserver.IsValidationError(err){
+			webserver.RenderTemplate(w, r, "setup/editartnetout", map[string]interface{}{
 				"Error": err.Error(),
 				"Setup": globalSetup,
 			})
@@ -154,8 +155,8 @@ func HandleSetupArtnetOutUpdate(w http.ResponseWriter, r *http.Request, _ httpro
 			globalSetup.EnableArtnetOut(idx)
 			err = globalSetup.UpdateArtNetOutUniverse(idx, r.FormValue(fmt.Sprintf("tag%d",idx)))
 			if err != nil {
-				if IsValidationError(err){
-					RenderTemplate(w, r, "setup/editartnetout", map[string]interface{}{
+				if webserver.IsValidationError(err){
+					webserver.RenderTemplate(w, r, "setup/editartnetout", map[string]interface{}{
 						"Error": err.Error(),
 						"Setup": globalSetup,
 					})
