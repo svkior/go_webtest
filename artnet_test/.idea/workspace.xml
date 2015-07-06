@@ -2,16 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d208b60a-19e2-4780-859f-efd6e21fd3d7" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/GOPATH__artnet_test_.xml" afterPath="$PROJECT_DIR$/.idea/libraries/GOPATH__artnet_test_.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/compiler.xml" afterPath="$PROJECT_DIR$/.idea/compiler.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cmd/templates/setup/edit_ipaddrs.html" afterPath="$PROJECT_DIR$/cmd/templates/setup/edit_ipaddrs.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/handle_setup.go" afterPath="$PROJECT_DIR$/handle_setup.go" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cmd/main.go" afterPath="$PROJECT_DIR$/cmd/main.go" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cmd/data/sessions.json" afterPath="$PROJECT_DIR$/cmd/data/sessions.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/setup.go" afterPath="$PROJECT_DIR$/setup.go" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cmd/templates/setup/status.html" afterPath="$PROJECT_DIR$/cmd/templates/setup/status.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="artnet_test.iws" />
@@ -49,7 +39,7 @@
           <file leaf-file-name="main.go" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/cmd/main.go">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.71304345">
+                <state vertical-scroll-proportion="0.7161572">
                   <caret line="19" column="55" selection-start-line="19" selection-start-column="55" selection-end-line="19" selection-end-column="55" />
                   <folding />
                 </state>
@@ -83,7 +73,7 @@
           <file leaf-file-name="setup.go" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/setup.go">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="15.779221">
+                <state vertical-scroll-proportion="15.847826">
                   <caret line="289" column="32" selection-start-line="289" selection-start-column="32" selection-end-line="289" selection-end-column="32" />
                   <folding />
                 </state>
@@ -354,6 +344,7 @@
     <property name="FullScreen" value="false" />
     <property name="settings.editor.selected.configurable" value="editor.preferences.appearance" />
     <property name="settings.editor.splitter.proportion" value="0.2" />
+    <property name="GO_FMT" value="false" />
   </component>
   <component name="RunManager">
     <configuration default="true" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType" factoryName="Plugin">
@@ -539,6 +530,13 @@
       <option name="number" value="Default" />
       <updated>1436209958784</updated>
     </task>
+    <task id="LOCAL-00001" summary="Протащил все настройки в main">
+      <created>1436217612959</created>
+      <option name="number" value="00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1436217612959</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TodoView">
@@ -563,7 +561,8 @@
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Version Control" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32950193" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.33034572" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Gantt" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32950193" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32950193" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -589,6 +588,10 @@
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Протащил все настройки в main" />
+    <option name="LAST_COMMIT_MESSAGE" value="Протащил все настройки в main" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -669,7 +672,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/cmd/main.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.71304345">
+        <state vertical-scroll-proportion="0.7161572">
           <caret line="19" column="55" selection-start-line="19" selection-start-column="55" selection-end-line="19" selection-end-column="55" />
           <folding />
         </state>
