@@ -73,6 +73,8 @@ func HandleSetupEthUpdate(w http.ResponseWriter, r *http.Request, _ httprouter.P
 		panic(err)
 	}
 
+	globalSetup.UpdateEthernet()
+
 	http.Redirect(w, r, "/?flash=Ip+Addr+updated", http.StatusFound)
 }
 
@@ -85,7 +87,8 @@ func HandleSetupArtnetEdit(w http.ResponseWriter, r *http.Request, _ httprouter.
 func HandleSetupArtnetUpdate(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	numInputs := r.FormValue("artinputs")
 
-	log.Println(numInputs)
+//	log.Println(numInputs)
+	// FIXME: Не работает установка числа каналов в 0
 
 	err := globalSetup.UpdateArtNetInputs(numInputs)
 	if err != nil {
@@ -121,6 +124,8 @@ func HandleSetupArtnetUpdate(w http.ResponseWriter, r *http.Request, _ httproute
 		}
 	}
 
+	globalSetup.UpdateArtIn()
+
 	http.Redirect(w, r, "/?flash=Artnet+updated", http.StatusFound)
 }
 
@@ -133,6 +138,7 @@ func HandleSetupArtnetOutEdit(w http.ResponseWriter, r *http.Request, _ httprout
 func HandleSetupArtnetOutUpdate(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	numOutputs := r.FormValue("artinputs")
 
+	// FIXME: Не работает установка числа каналов в 0
 	//log.Println(numOutputs)
 	err := globalSetup.UpdateArtNetOutputs(numOutputs)
 	if err != nil {
@@ -166,6 +172,8 @@ func HandleSetupArtnetOutUpdate(w http.ResponseWriter, r *http.Request, _ httpro
 			}
 		}
 	}
+
+	globalSetup.UpdateArtOut()
 
 	http.Redirect(w, r, "/?flash=Artnet+updated", http.StatusFound)
 }

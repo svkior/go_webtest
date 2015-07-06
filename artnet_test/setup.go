@@ -7,6 +7,11 @@ import (
 	"log"
 )
 
+/*
+   Идея с конфигурационными сообщениями следующая
+    Создается локальный роутин, который может отправлять сообщения
+ */
+
 // Тип
 type MsgType struct {
 	Name string
@@ -15,6 +20,85 @@ type MsgType struct {
 
 type SetupChan chan MsgType
 
+var globalChan chan string
+
+var setupChan SetupChan
+
+
+// Тип Изменения IP
+type EthSetup struct {
+	IpAddress string
+	IpMask    string
+	IpGw      string
+	Mac       string
+}
+
+func GetSetupChan() SetupChan {
+	return setupChan
+}
+
+func init(){
+	globalChan = make(chan string)
+	setupChan = make(SetupChan)
+	go func(){
+		for{
+			select {
+			case msg := <- globalChan:
+				log.Printf("Привет из setup.go: %s", msg)
+				switch msg {
+				// Нужно обновить информацию о Ethernet Адресе
+				case "Update Ethernet":
+					//log.Println("GLOCH Здесь апдейтим Ethernet")
+					ethMsg := MsgType{
+						Name: "eth",
+						Value: globalSetup.Eth,
+					}
+					setupChan <- ethMsg
+				case "Update ArtIn":
+					//log.Println("Здесь апдейтим Artnet Inputs")
+					ethMsg := MsgType{
+						Name: "artin",
+						Value: globalSetup.ArtIns,
+					}
+					setupChan <- ethMsg
+				case "Update ArtOut":
+					//log.Println("Здесь апдейтим Artnet Outputs")
+					ethMsg := MsgType{
+						Name: "artout",
+						Value: globalSetup.ArtOuts,
+					}
+					setupChan <- ethMsg
+				case "Start Setup":
+					// TODO: Загрузка конфига из файла
+					// TODO: Обновление конфигурации
+					testMsg := MsgType{
+						Name: "Имя",
+						Value: "Значение",
+					}
+
+					setupChan <- testMsg
+				}
+			}
+		}
+	}()
+}
+
+// Функцию нужно вызывать при начале работы
+func StartSetup(){
+	globalChan <- "Start Setup"
+}
+
+func (s *Setup) UpdateEthernet(){
+	globalChan <- "Update Ethernet"
+}
+
+func (s *Setup) UpdateArtIn(){
+	globalChan <- "Update ArtIn"
+}
+
+func (s *Setup) UpdateArtOut(){
+	globalChan <- "Update ArtOut"
+}
 
 
 type ArtIn struct {
@@ -31,10 +115,11 @@ type ArtOut struct {
 
 
 type Setup struct {
-	IpAddress string	// Адрес IP
+	/*IpAddress string	// Адрес IP
 	IpMask 	  string	// Маска IP
 	IpGw 	  string    // Шлюз IP
-	Mac		  string    // MAC Адрес
+	Mac		  string    // MAC Адрес*/
+	Eth          EthSetup // Установки Eth
 	ArtnetInputs int    // Число входов ArtNet
 	ArtIns	map[int]ArtIn		// Входы ArtNet
 	ArtnetOutputs int // Число выходов ArtNet
@@ -46,7 +131,7 @@ func (s *Setup) UpdateIpAddr(ipAddr string) error {
 	if ipA == nil {
 		return errInvalidIP
 	}
-	s.IpAddress = ipAddr
+	s.Eth.IpAddress = ipAddr
 	return nil
 }
 
@@ -55,7 +140,7 @@ func (s *Setup) UpdateIpMask(ipMask string) error {
 	if ipM == nil {
 		return errInvalidMask
 	}
-	s.IpMask = ipMask
+	s.Eth.IpMask = ipMask
 	return nil
 }
 
@@ -64,7 +149,7 @@ func (s *Setup) UpdateIpGateway(ipGw string) error {
 	if ipG == nil {
 		return errInvalidGw
 	}
-	s.IpGw = ipGw
+	s.Eth.IpGw = ipGw
 	return nil
 }
 
@@ -73,7 +158,7 @@ func (s *Setup) UpdateMac(macs string) error {
 	if err != nil {
 		return errInvalidMAC
 	}
-	s.Mac = macs
+	s.Eth.Mac = macs
 	return nil
 }
 
@@ -193,13 +278,17 @@ func (s *Setup) UpdateArtNetOutUniverse(idx int, v string) error {
 
 
 func NewSetup() *Setup {
+
 	return &Setup{
-		IpAddress: "10.101.0.245",
-		IpMask: "255.0.0.0",
-		IpGw: "10.0.0.1",
-		Mac: "00:01:02:03:04:05",
+		Eth: EthSetup{
+			IpAddress: "10.101.0.245",
+			IpMask: "255.0.0.0",
+			IpGw: "10.0.0.1",
+			Mac: "00:01:02:03:04:05",
+		},
 		ArtnetInputs: 0,
 		ArtIns: map[int]ArtIn{},
+		ArtnetOutputs:0,
 		ArtOuts: map[int]ArtOut{},
 	}
 }
