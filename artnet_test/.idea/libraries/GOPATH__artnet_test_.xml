@@ -1,0 +1,30 @@
+<component name="libraryTable">
+  <library name="GOPATH &lt;artnet_test&gt;">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/../../.." />
+      <root url="file://$PROJECT_DIR$/../../../../gopkg.in" />
+      <root url="file://$PROJECT_DIR$/../../../../github.com" />
+      <root url="file://$PROJECT_DIR$/../../../../golang.org" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+    <excluded>
+      <root url="file://$PROJECT_DIR$/.idea" />
+      <root url="file://$PROJECT_DIR$/../../../../github.com/disintegration/imaging/.git" />
+      <root url="file://$PROJECT_DIR$/../../../svkior/newbook/chapler/.idea" />
+      <root url="file://$PROJECT_DIR$/../.git" />
+      <root url="file://$PROJECT_DIR$" />
+      <root url="file://$PROJECT_DIR$/../../artnetdmx_gate/.git" />
+      <root url="file://$PROJECT_DIR$/../../../svkior/newbook/ttsy/.idea" />
+      <root url="file://$PROJECT_DIR$/../../../../gopkg.in/qml.v1/.git" />
+      <root url="file://$PROJECT_DIR$/../../../svkior/ttsy-site/.git" />
+      <root url="file://$PROJECT_DIR$/../../../svkior/imgconverts/.git" />
+      <root url="file://$PROJECT_DIR$/../../../svkior/newbook/artgate_iface/.idea" />
+      <root url="file://$PROJECT_DIR$/../../../../golang.org/x/image/testdata" />
+      <root url="file://$PROJECT_DIR$/../../../svkior/newbook/.git" />
+      <root url="file://$PROJECT_DIR$/../../../svkior/newbook/gophler/.idea" />
+      <root url="file://$PROJECT_DIR$/../../../../golang.org/x/image/.git" />
+      <root url="file://$PROJECT_DIR$/../../../svkior/imgconverts/.idea" />
+    </excluded>
+  </library>
+</component>
