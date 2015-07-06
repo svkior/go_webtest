@@ -7,6 +7,16 @@ import (
 	"log"
 )
 
+// Тип
+type MsgType struct {
+	Name string
+	Value interface{}
+}
+
+type SetupChan chan MsgType
+
+
+
 type ArtIn struct {
 	Universe uint16 // Вселенная
 	Enabled bool
