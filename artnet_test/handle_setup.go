@@ -84,11 +84,13 @@ func HandleSetupArtnetEdit(w http.ResponseWriter, r *http.Request, _ httprouter.
 	})
 }
 
+// Обработка входного числа портов
 func HandleSetupArtnetUpdate(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	numInputs := r.FormValue("artinputs")
 
 //	log.Println(numInputs)
 	// FIXME: Не работает установка числа каналов в 0
+	// FIXME: Не работает установка числа каналов в 1
 
 	err := globalSetup.UpdateArtNetInputs(numInputs)
 	if err != nil {
@@ -101,7 +103,7 @@ func HandleSetupArtnetUpdate(w http.ResponseWriter, r *http.Request, _ httproute
 		}
 		panic(err)
 	}
-
+	log.Printf("Обходим порты")
 	for idx:=0; idx < globalSetup.ArtnetInputs;idx++{
 
 		_, err := strconv.Atoi(r.FormValue(fmt.Sprintf("tag%dOption",idx)))

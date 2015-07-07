@@ -5,6 +5,7 @@ import (
 	"strconv"
 	"fmt"
 	"log"
+	"bitbucket.org/tts/light_dmx_go/ethconfig"
 )
 
 /*
@@ -25,14 +26,6 @@ var globalChan chan string
 var setupChan SetupChan
 
 
-// Тип Изменения IP
-type EthSetup struct {
-	IpAddress string
-	IpMask    string
-	IpGw      string
-	Mac       string
-}
-
 func GetSetupChan() SetupChan {
 	return setupChan
 }
@@ -44,7 +37,6 @@ func init(){
 		for{
 			select {
 			case msg := <- globalChan:
-				log.Printf("Привет из setup.go: %s", msg)
 				switch msg {
 				// Нужно обновить информацию о Ethernet Адресе
 				case "Update Ethernet":
@@ -119,11 +111,11 @@ type Setup struct {
 	IpMask 	  string	// Маска IP
 	IpGw 	  string    // Шлюз IP
 	Mac		  string    // MAC Адрес*/
-	Eth          EthSetup // Установки Eth
+	Eth          ethconfig.EthSetup // Установки Eth
 	ArtnetInputs int    // Число входов ArtNet
-	ArtIns	map[int]ArtIn		// Входы ArtNet
+	ArtIns	[]*ArtIn		// Входы ArtNet
 	ArtnetOutputs int // Число выходов ArtNet
-	ArtOuts map[int]ArtOut
+	ArtOuts []*ArtOut
 }
 
 func (s *Setup) UpdateIpAddr(ipAddr string) error {
@@ -162,32 +154,48 @@ func (s *Setup) UpdateMac(macs string) error {
 	return nil
 }
 
+// Изменение числа входов
 func (s *Setup) UpdateArtNetInputs(numArtnet string) error {
 	i, err := strconv.Atoi(numArtnet)
 	if err != nil{
 		return errInvalidArtnetInputs
 	}
 
+	if i == s.ArtnetInputs {
+		log.Println("Число портов не изменилось")
+		return nil
+	}
+	log.Println("Число портов изменилось")
 	// Нужно сделать следующее
 	// 1 Взять из старого конфига все порты
 	// 2 Переписать их в новый конфиг
 	// 3 Дописать чистые конфиги по входам
-	numOldActualIns := s.ArtnetInputs - i
-	if numOldActualIns < 0 { numOldActualIns = 0}
+
+	// Число входов, для которых нужно сохранить конфигурацию
+	// Это число новых входов - число старых входов
+	// Пример. Новых входов 4, Старых входов 0
+	// 0 - 4 = -4 нам вообще не нужны старые входы
+	// Новых входов 4, Старых входов 3
+	// 4-3 =
+	tmpArtIns := s.ArtIns
+	s.ArtIns = []*ArtIn{}
 	idx := 0
-	for idx= 0; idx < numOldActualIns; idx++{
-	}
-	for ;idx < i; idx++ {
-		s.ArtIns[idx] = ArtIn{
-			Enabled: false,
-			Universe: 0,
-			Name: fmt.Sprintf("tag%d",idx),
+	for ; idx < i; idx++{
+		if idx < s.ArtnetInputs {
+			s.ArtIns = append(s.ArtIns, tmpArtIns[idx])
+		} else {
+			s.ArtIns = append(s.ArtIns,&ArtIn{
+				Enabled: false,
+				Universe: 0,
+				Name: fmt.Sprintf("tag%d",idx),
+			})
 		}
 	}
-	for ;idx < s.ArtnetInputs; idx++ {
-		delete(s.ArtIns, idx)
+	for ; idx < s.ArtnetInputs; idx++{
+		tmpArtIns[idx] = nil
 	}
 	s.ArtnetInputs = i
+
 	return nil
 }
 
@@ -197,55 +205,48 @@ func (s *Setup) UpdateArtNetOutputs(numArtnet string) error {
 		return errInvalidArtnetOutputs
 	}
 
-	// Нужно сделать следующее
-	// 1 Взять из старого конфига все порты
-	// 2 Переписать их в новый конфиг
-	// 3 Дописать чистые конфиги по входам
-	numOldActualOuts := s.ArtnetOutputs - i
-	if numOldActualOuts < 0 { numOldActualOuts = 0}
+	tmpArtOuts := s.ArtOuts
+	s.ArtOuts = []*ArtOut{}
 	idx := 0
-	for idx= 0; idx < numOldActualOuts; idx++{
-	}
-	for ;idx < i; idx++ {
-		s.ArtOuts[idx] = ArtOut{
-			Enabled: false,
-			Universe: 0,
-			Name: fmt.Sprintf("tag%d",idx),
+	for ; idx < i; idx++{
+		if idx < s.ArtnetOutputs {
+			s.ArtOuts = append(s.ArtOuts, tmpArtOuts[idx])
+		} else {
+			s.ArtOuts = append(s.ArtOuts,&ArtOut{
+				Enabled: false,
+				Universe: 0,
+				Name: fmt.Sprintf("tag%d",idx),
+			})
 		}
 	}
-	for ;idx < s.ArtnetOutputs; idx++ {
-		delete(s.ArtOuts, idx)
+	for ; idx < s.ArtnetOutputs; idx++{
+		tmpArtOuts[idx] = nil
 	}
 	s.ArtnetOutputs = i
+
 	return nil
 }
 
 
 func (s *Setup) EnableArtnetIn(idx int){
-	vals := s.ArtIns[idx]
-	vals.Enabled = true
-	s.ArtIns[idx] = vals
+	//log.Printf("Value before: %v", s.ArtIns[idx].Enabled)
+	s.ArtIns[idx].Enabled = true
+	//log.Printf("Value after: %v", s.ArtIns[idx].Enabled)
 }
 
 func (s *Setup) DisableArtnetIn(idx int){
-	vals := s.ArtIns[idx]
-	vals.Enabled = false
-	s.ArtIns[idx] = vals
+	//log.Printf("Value before: %v", s.ArtIns[idx].Enabled)
+	s.ArtIns[idx].Enabled = false
+	//log.Printf("Value after: %v", s.ArtIns[idx].Enabled)
 }
 
 func (s *Setup) EnableArtnetOut(idx int){
-	vals := s.ArtOuts[idx]
-	vals.Enabled = true
-	s.ArtOuts[idx] = vals
+	s.ArtOuts[idx].Enabled = true
 }
 
 func (s *Setup) DisableArtnetOut(idx int){
-	vals := s.ArtOuts[idx]
-	vals.Enabled = false
-	s.ArtOuts[idx] = vals
+	s.ArtOuts[idx].Enabled = false
 }
-
-
 
 func (s *Setup) UpdateArtNetInUniverse(idx int, v string) error {
 
@@ -253,13 +254,7 @@ func (s *Setup) UpdateArtNetInUniverse(idx int, v string) error {
 	if err != nil{
 		return errInvalidUniverse
 	}
-
-	vals := s.ArtIns[idx]
-
-	vals.Universe = uint16(i)
-	log.Printf("Vals: %v", vals)
-	s.ArtIns[idx] = vals
-	log.Printf("Vals: %v", s.ArtIns[idx])
+	s.ArtIns[idx].Universe = uint16(i)
 	return nil
 }
 
@@ -269,10 +264,7 @@ func (s *Setup) UpdateArtNetOutUniverse(idx int, v string) error {
 	if err != nil{
 		return errInvalidUniverse
 	}
-
-	vals := s.ArtOuts[idx]
-	vals.Universe = uint16(i)
-	s.ArtOuts[idx] = vals
+	s.ArtOuts[idx].Universe = uint16(i)
 	return nil
 }
 
@@ -280,16 +272,16 @@ func (s *Setup) UpdateArtNetOutUniverse(idx int, v string) error {
 func NewSetup() *Setup {
 
 	return &Setup{
-		Eth: EthSetup{
+		Eth: ethconfig.EthSetup{
 			IpAddress: "10.101.0.245",
 			IpMask: "255.0.0.0",
 			IpGw: "10.0.0.1",
 			Mac: "00:01:02:03:04:05",
 		},
 		ArtnetInputs: 0,
-		ArtIns: map[int]ArtIn{},
+		ArtIns: []*ArtIn{},
 		ArtnetOutputs:0,
-		ArtOuts: map[int]ArtOut{},
+		ArtOuts: []*ArtOut{},
 	}
 }
 
