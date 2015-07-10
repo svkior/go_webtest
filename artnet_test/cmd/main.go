@@ -7,6 +7,7 @@ import (
 	"bitbucket.org/tts/goartnet"
 	"runtime"
 	"net"
+	"time"
 )
 
 //FIXME: Число выходных каналов не меняется
@@ -15,6 +16,26 @@ import (
 
 
 var artNet goartnet.Artnet
+
+
+
+func roller(quitChan chan bool, o chan [512]byte) {
+	var data [512]byte
+	ticker := time.NewTicker(time.Millisecond * 100)
+	for {
+		select {
+		case <-ticker.C:
+			//log.Println("Send DMX!!!!!")
+			for idx:=0; idx < 512; idx++{
+				data[idx]++
+			}
+			o <- data
+			//log.Println("DMX Sended")
+		case <-quitChan:
+			return
+		}
+	}
+}
 
 
 // Заглушка для windows, чтобы определить первый открытый интерфейс
@@ -62,6 +83,9 @@ func setupListener(ch artnet_test.SetupChan){
 
 	// FIXME: Нужен более нормальный способ запуска artNet
 	go artNet.Connect()
+
+	var quitChans []chan bool
+
 	for {
 		select {
 		case msg := <- ch:
@@ -89,6 +113,10 @@ func setupListener(ch artnet_test.SetupChan){
 				log.Println("Хотим поменять параметры ArtnetOut")
 				//TODO: Сохранить выходную коммутацию
 				//TODO: Разлинковать выходную коммутацию
+				for ii:=0; ii < len(quitChans);ii++ {
+					quitChans[ii] <- true
+				}
+				quitChans = []chan bool{}
 				//TODO: Очистить выходные порты
 				artNet.ClearOutputPorts()
 				//TODO: Добавить выходные порты
@@ -97,10 +125,13 @@ func setupListener(ch artnet_test.SetupChan){
 					port := ports[idx]
 					if port.Enabled {
 						portT := goartnet.NewOutputPort(port.Universe)
+						quitChans = append(quitChans, make(chan bool))
+						go roller(quitChans[len(quitChans)-1], portT.Input)
 						artNet.AddOutputPort(portT)
 					}
 				}
 				//TODO: Добавить выходную коммутацию
+				artNet.EnableTxers()
 			}
 		}
 	}
