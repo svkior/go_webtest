@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="d208b60a-19e2-4780-859f-efd6e21fd3d7" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cmd/main.go" afterPath="$PROJECT_DIR$/cmd/main.go" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cmd/data/sessions.json" afterPath="$PROJECT_DIR$/cmd/data/sessions.json" />
-    </list>
+    <list default="true" id="d208b60a-19e2-4780-859f-efd6e21fd3d7" name="Default" comment="" />
     <ignored path="artnet_test.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path="$PROJECT_DIR$/out/" />
@@ -26,7 +23,7 @@
   <component name="FileEditorManager">
     <splitter split-orientation="vertical" split-proportion="0.5529179">
       <split-first>
-        <splitter split-orientation="horizontal" split-proportion="0.5">
+        <splitter split-orientation="horizontal" split-proportion="0.4488273">
           <split-first>
             <leaf>
               <file leaf-file-name="base.go" pinned="false" current-in-tab="false">
@@ -42,8 +39,8 @@
               <file leaf-file-name="main.go" pinned="false" current-in-tab="true">
                 <entry file="file://$PROJECT_DIR$/cmd/main.go">
                   <provider selected="true" editor-type-id="text-editor">
-                    <state vertical-scroll-proportion="0.8535565">
-                      <caret line="33" column="24" selection-start-line="33" selection-start-column="24" selection-end-line="33" selection-end-column="24" />
+                    <state vertical-scroll-proportion="0.74686193">
+                      <caret line="63" column="18" selection-start-line="63" selection-start-column="18" selection-end-line="63" selection-end-column="18" />
                       <folding />
                     </state>
                   </provider>
@@ -76,7 +73,7 @@
               <file leaf-file-name="ports.go" pinned="false" current-in-tab="true">
                 <entry file="file://$PROJECT_DIR$/../../goartnet/ports.go">
                   <provider selected="true" editor-type-id="text-editor">
-                    <state vertical-scroll-proportion="0.106694564">
+                    <state vertical-scroll-proportion="0.0">
                       <caret line="3" column="0" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
                       <folding />
                     </state>
@@ -98,7 +95,7 @@
         </splitter>
       </split-first>
       <split-second>
-        <splitter split-orientation="horizontal" split-proportion="0.5">
+        <splitter split-orientation="horizontal" split-proportion="0.4488273">
           <split-first>
             <leaf>
               <file leaf-file-name="setup.go" pinned="false" current-in-tab="false">
@@ -114,7 +111,7 @@
               <file leaf-file-name="goartnet.go" pinned="false" current-in-tab="true">
                 <entry file="file://$PROJECT_DIR$/../../goartnet/goartnet.go">
                   <provider selected="true" editor-type-id="text-editor">
-                    <state vertical-scroll-proportion="0.579096">
+                    <state vertical-scroll-proportion="-0.26631853">
                       <caret line="437" column="10" selection-start-line="437" selection-start-column="10" selection-end-line="437" selection-end-column="10" />
                       <folding />
                     </state>
@@ -138,11 +135,9 @@
               <file leaf-file-name="outputport.go" pinned="false" current-in-tab="true">
                 <entry file="file://$PROJECT_DIR$/../../goartnet/outputport.go">
                   <provider selected="true" editor-type-id="text-editor">
-                    <state vertical-scroll-proportion="-3.472585">
+                    <state vertical-scroll-proportion="-0.13315926">
                       <caret line="9" column="41" selection-start-line="9" selection-start-column="41" selection-end-line="9" selection-end-column="41" />
-                      <folding>
-                        <element signature="e#18#45#0" expanded="true" />
-                      </folding>
+                      <folding />
                     </state>
                   </provider>
                 </entry>
@@ -764,7 +759,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32950193" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -856,9 +851,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#18#45#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -922,9 +915,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#18#45#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1134,7 +1125,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.48456058">
           <caret line="12" column="20" selection-start-line="12" selection-start-column="20" selection-end-line="12" selection-end-column="20" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1142,7 +1132,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.28266034">
           <caret line="7" column="13" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1157,7 +1146,7 @@
     <entry file="file://$PROJECT_DIR$/setup.go">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="84" column="1" selection-start-line="84" selection-start-column="1" selection-end-line="84" selection-end-column="1" />
+          <caret line="180" column="4" selection-start-line="180" selection-start-column="4" selection-end-line="180" selection-end-column="25" />
           <folding />
         </state>
       </provider>
@@ -1172,7 +1161,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/../../goartnet/ports.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.106694564">
+        <state vertical-scroll-proportion="0.0">
           <caret line="3" column="0" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
           <folding />
         </state>
@@ -1188,26 +1177,24 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/../../goartnet/outputport.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-3.472585">
+        <state vertical-scroll-proportion="-0.13315926">
           <caret line="9" column="41" selection-start-line="9" selection-start-column="41" selection-end-line="9" selection-end-column="41" />
-          <folding>
-            <element signature="e#18#45#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/cmd/main.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.8535565">
-          <caret line="33" column="24" selection-start-line="33" selection-start-column="24" selection-end-line="33" selection-end-column="24" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../../goartnet/goartnet.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.579096">
+        <state vertical-scroll-proportion="-0.26631853">
           <caret line="437" column="10" selection-start-line="437" selection-start-column="10" selection-end-line="437" selection-end-column="10" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cmd/main.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.74686193">
+          <caret line="63" column="18" selection-start-line="63" selection-start-column="18" selection-end-line="63" selection-end-column="18" />
           <folding />
         </state>
       </provider>
