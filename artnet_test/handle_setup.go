@@ -73,6 +73,8 @@ func HandleSetupEthUpdate(w http.ResponseWriter, r *http.Request, _ httprouter.P
 		panic(err)
 	}
 
+	globalSetup.UpdateEthernet()
+
 	http.Redirect(w, r, "/?flash=Ip+Addr+updated", http.StatusFound)
 }
 
@@ -82,10 +84,13 @@ func HandleSetupArtnetEdit(w http.ResponseWriter, r *http.Request, _ httprouter.
 	})
 }
 
+// Обработка входного числа портов
 func HandleSetupArtnetUpdate(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	numInputs := r.FormValue("artinputs")
 
-	log.Println(numInputs)
+//	log.Println(numInputs)
+	// FIXME: Не работает установка числа каналов в 0
+	// FIXME: Не работает установка числа каналов в 1
 
 	err := globalSetup.UpdateArtNetInputs(numInputs)
 	if err != nil {
@@ -98,7 +103,7 @@ func HandleSetupArtnetUpdate(w http.ResponseWriter, r *http.Request, _ httproute
 		}
 		panic(err)
 	}
-
+	log.Printf("Обходим порты")
 	for idx:=0; idx < globalSetup.ArtnetInputs;idx++{
 
 		_, err := strconv.Atoi(r.FormValue(fmt.Sprintf("tag%dOption",idx)))
@@ -121,6 +126,8 @@ func HandleSetupArtnetUpdate(w http.ResponseWriter, r *http.Request, _ httproute
 		}
 	}
 
+	globalSetup.UpdateArtIn()
+
 	http.Redirect(w, r, "/?flash=Artnet+updated", http.StatusFound)
 }
 
@@ -133,6 +140,7 @@ func HandleSetupArtnetOutEdit(w http.ResponseWriter, r *http.Request, _ httprout
 func HandleSetupArtnetOutUpdate(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	numOutputs := r.FormValue("artinputs")
 
+	// FIXME: Не работает установка числа каналов в 0
 	//log.Println(numOutputs)
 	err := globalSetup.UpdateArtNetOutputs(numOutputs)
 	if err != nil {
@@ -166,6 +174,8 @@ func HandleSetupArtnetOutUpdate(w http.ResponseWriter, r *http.Request, _ httpro
 			}
 		}
 	}
+
+	globalSetup.UpdateArtOut()
 
 	http.Redirect(w, r, "/?flash=Artnet+updated", http.StatusFound)
 }
