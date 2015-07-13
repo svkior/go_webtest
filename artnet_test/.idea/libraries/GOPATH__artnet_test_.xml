@@ -3,44 +3,62 @@
     <CLASSES>
       <root url="file://$PROJECT_DIR$/../../.." />
       <root url="file://$PROJECT_DIR$/../../../../gopkg.in" />
+      <root url="file://$PROJECT_DIR$/../../../../code.google.com" />
       <root url="file://$PROJECT_DIR$/../../../../github.com" />
       <root url="file://$PROJECT_DIR$/../../../../golang.org" />
-      <root url="file://$PROJECT_DIR$/../../../../code.google.com" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
     <excluded>
-      <root url="file://$PROJECT_DIR$/../../../svkior/newbook/chapler/.idea" />
+      <root url="file://$PROJECT_DIR$/cmd/assets/node_modules/less/node_modules/request/node_modules/.bin" />
+      <root url="file://$PROJECT_DIR$/../../../../github.com/goxjs/glfw/.git" />
+      <root url="file://$PROJECT_DIR$/../../../../golang.org/x/net/html/testdata" />
+      <root url="file://$PROJECT_DIR$/../../../../github.com/gin-gonic/gin/.git" />
       <root url="file://$PROJECT_DIR$/../.git" />
       <root url="file://$PROJECT_DIR$" />
-      <root url="file://$PROJECT_DIR$/../../../../github.com/julienschmidt/httprouter/.git" />
-      <root url="file://$PROJECT_DIR$/../../light_dmx_go/.git" />
-      <root url="file://$PROJECT_DIR$/../../../../gopkg.in/qml.v1/.git" />
-      <root url="file://$PROJECT_DIR$/../../../../golang.org/x/crypto/ssh/testdata" />
-      <root url="file://$PROJECT_DIR$/../../../../github.com/goxjs/gl/testdata" />
-      <root url="file://$PROJECT_DIR$/../../../../github.com/goxjs/gl/.git" />
-      <root url="file://$PROJECT_DIR$/../../../../golang.org/x/crypto/sha3/testdata" />
-      <root url="file://$PROJECT_DIR$/../../../svkior/newbook/artgate_iface/.idea" />
-      <root url="file://$PROJECT_DIR$/../../dcs_server_py/.git" />
-      <root url="file://$PROJECT_DIR$/../../../svkior/newbook/.git" />
-      <root url="file://$PROJECT_DIR$/../../../svkior/newbook/gophler/.idea" />
-      <root url="file://$PROJECT_DIR$/../../../../github.com/go-gl/gl/.git" />
-      <root url="file://$PROJECT_DIR$/../../../../github.com/go-gl/glfw/.git" />
-      <root url="file://$PROJECT_DIR$/../../go-webserver/.git" />
+      <root url="file://$PROJECT_DIR$/../../../../github.com/ant0ine/go-json-rest/.git" />
+      <root url="file://$PROJECT_DIR$/../../../../gopkg.in/bluesuncorp/validator.v5/.git" />
+      <root url="file://$PROJECT_DIR$/cmd/assets/node_modules/.bin" />
+      <root url="file://$PROJECT_DIR$/../../../../github.com/mattn/go-isatty/.git" />
+      <root url="file://$PROJECT_DIR$/../../../../golang.org/x/net/html/charset/testdata" />
+      <root url="file://$PROJECT_DIR$/../../../svkior/newbook/chapler/.idea" />
       <root url="file://$PROJECT_DIR$/.idea" />
-      <root url="file://$PROJECT_DIR$/../../../../github.com/disintegration/imaging/.git" />
-      <root url="file://$PROJECT_DIR$/../../../../github.com/google/gxui/.git" />
-      <root url="file://$PROJECT_DIR$/../../../../github.com/goxjs/glfw/.git" />
-      <root url="file://$PROJECT_DIR$/../../../svkior/newbook/ttsy/.idea" />
-      <root url="file://$PROJECT_DIR$/../../../svkior/ttsy-site/.git" />
-      <root url="file://$PROJECT_DIR$/../../../svkior/imgconverts/.git" />
-      <root url="file://$PROJECT_DIR$/../../../../golang.org/x/crypto/.git" />
-      <root url="file://$PROJECT_DIR$/../../goimech/.git" />
       <root url="file://$PROJECT_DIR$/../../../../golang.org/x/image/testdata" />
       <root url="file://$PROJECT_DIR$/../../../../golang.org/x/image/.git" />
-      <root url="file://$PROJECT_DIR$/../../goartnet/.git" />
+      <root url="file://$PROJECT_DIR$/../../../../github.com/mattn/go-colorable/.git" />
+      <root url="file://$PROJECT_DIR$/../../../../github.com/mattn/go-colorable/_example" />
+      <root url="file://$PROJECT_DIR$/../../go-webserver/.git" />
+      <root url="file://$PROJECT_DIR$/../../../svkior/iswextgui/web/tutor2/.sass-cache" />
+      <root url="file://$PROJECT_DIR$/../../../svkior/newbook/gophler/.idea" />
+      <root url="file://$PROJECT_DIR$/cmd/assets/node_modules/less/.idea" />
+      <root url="file://$PROJECT_DIR$/../../../../github.com/go-gl/gl/.git" />
+      <root url="file://$PROJECT_DIR$/../../light_dmx_go/.git" />
+      <root url="file://$PROJECT_DIR$/../../../svkior/ttsy-site/.git" />
+      <root url="file://$PROJECT_DIR$/../../../../github.com/manucorporat/sse/.git" />
+      <root url="file://$PROJECT_DIR$/../../../../golang.org/x/crypto/sha3/testdata" />
+      <root url="file://$PROJECT_DIR$/../../../../github.com/julienschmidt/httprouter/.git" />
+      <root url="file://$PROJECT_DIR$/../../dcs_server_py/.git" />
+      <root url="file://$PROJECT_DIR$/../../../svkior/imgconverts/.git" />
+      <root url="file://$PROJECT_DIR$/../../../../github.com/gorilla/websocket/.git" />
+      <root url="file://$PROJECT_DIR$/../../../../github.com/disintegration/imaging/.git" />
       <root url="file://$PROJECT_DIR$/../../../svkior/imgconverts/.idea" />
+      <root url="file://$PROJECT_DIR$/../../../svkior/newbook/artgate_iface/.idea" />
+      <root url="file://$PROJECT_DIR$/../../../../golang.org/x/crypto/.git" />
+      <root url="file://$PROJECT_DIR$/../../../../github.com/google/gxui/.git" />
+      <root url="file://$PROJECT_DIR$/../../tts/.git" />
+      <root url="file://$PROJECT_DIR$/../../goimech/.git" />
+      <root url="file://$PROJECT_DIR$/../../../../github.com/go-gl/glfw/.git" />
       <root url="file://$PROJECT_DIR$/../../goimech/.idea" />
+      <root url="file://$PROJECT_DIR$/../../../svkior/newbook/.git" />
+      <root url="file://$PROJECT_DIR$/../../../svkior/iswextgui/.git" />
+      <root url="file://$PROJECT_DIR$/../../../../github.com/goxjs/gl/testdata" />
+      <root url="file://$PROJECT_DIR$/../../../../github.com/goxjs/gl/.git" />
+      <root url="file://$PROJECT_DIR$/../../../../golang.org/x/net/.git" />
+      <root url="file://$PROJECT_DIR$/../../goartnet/.git" />
+      <root url="file://$PROJECT_DIR$/../../../../gopkg.in/qml.v1/.git" />
+      <root url="file://$PROJECT_DIR$/cmd/assets/node_modules/less/node_modules/.bin" />
+      <root url="file://$PROJECT_DIR$/../../../svkior/newbook/ttsy/.idea" />
+      <root url="file://$PROJECT_DIR$/../../../../golang.org/x/crypto/ssh/testdata" />
     </excluded>
   </library>
 </component>

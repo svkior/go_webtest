@@ -1,13 +1,13 @@
 package main
 import (
 	"log"
-	"net/http"
 	"bitbucket.org/tts/go_webtest/artnet_test"
 	"bitbucket.org/tts/light_dmx_go/ethconfig"
 	"bitbucket.org/tts/goartnet"
 	"runtime"
 	"net"
 	"time"
+	"net/http"
 )
 
 //FIXME: Число выходных каналов не меняется
@@ -139,12 +139,16 @@ func setupListener(ch artnet_test.SetupChan){
 
 
 func main() {
+
 	var setupChan artnet_test.SetupChan
 	// TODO: 1.Нужно сделать сигналы от сетапа сюда
 	setupChan = artnet_test.GetSetupChan()
 
 	// TODO: 2.Нужно сделать goroutine для запуска конфигурения
 	go setupListener(setupChan)
+
+	//artnet_test.GinApp()
+	go artnet_test.NewRestInterface()
 
 	log.Println("Serving on port 3000")
 	log.Fatal(http.ListenAndServe(":3000", artnet_test.NewApp()))
