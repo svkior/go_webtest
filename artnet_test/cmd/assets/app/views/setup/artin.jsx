@@ -31,10 +31,20 @@ var ArtGateSetupArtIn = React.createClass({
         console.log(e);
     },
     render(){
-        
+        var edits = this.state.artIns.map(function(artin){
+            console.log(artin);
+            return (
+                <ArtGateSetupEditor name={artin.Name} value={artin.Universe} />
+            );
+        });
         return (
             <div className="content">
                 <h2> Изменение параметров ArtNet Входов</h2>
+                <p> Число входов {this.state.artIns.length}</p>
+                <form className="setupForm" onSubmit={this.handleSubmit}>
+                    {edits}
+                    <ButtonInput type="submit" value="Обновить"/>
+                </form>
             </div>
         );
     }
