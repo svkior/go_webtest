@@ -53,7 +53,22 @@ var ArtGateStatus = React.createClass({
             if(this.isMounted()){
                 console.log(result);
                 var lSt = [];
-                lSt.push({name:"Ethernet0", status:"РАБОТА", desc: result.Eth.IpAddress, bsStyle: "success"})
+                // Статус ETH
+                ethString = "IP:"+ result.Eth.IpAddress
+                    +" Msk:" + result.Eth.IpMask + " Gw:" + result.Eth.IpGw + " Mac:" + result.Eth.Mac;
+                lSt.push({name:"Ethernet0", status:"ВКЛЮЧЕН", desc: ethString, bsStyle: "success"});
+                // Входы ArtNet
+                var numArtInputs = result.ArtnetInputs;
+                for(var i=0; i<numArtInputs; i++){
+                    var artIn = result.ArtIns[i];
+                    lSt.push({
+                        name:"ArtNet In" + i,
+                        status: artIn.Enabled ? "ВКЛЮЧЕН": "ОТКЛЮЧЕН",
+                        desc: "Universe: " + artIn.Universe,
+                        bsStyle: artIn.Enabled ? "success" :"warning"
+                    })
+                }
+
                 this.setState({interfaces: lSt});
             }
         }.bind(this));
