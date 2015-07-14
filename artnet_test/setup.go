@@ -107,10 +107,6 @@ type ArtOut struct {
 
 
 type Setup struct {
-	/*IpAddress string	// Адрес IP
-	IpMask 	  string	// Маска IP
-	IpGw 	  string    // Шлюз IP
-	Mac		  string    // MAC Адрес*/
 	Eth          ethconfig.EthSetup // Установки Eth
 	ArtnetInputs int    // Число входов ArtNet
 	ArtIns	[]*ArtIn		// Входы ArtNet

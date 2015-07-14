@@ -7,23 +7,23 @@ var PageHeader = ReactBootstrap.PageHeader,
 
 
 var interfaces = [
-    {name: "Ethernet ïîğò", status: "ĞÀÁÎÒÀ", desc: "192.168.7.103", bsStyle: "success"},
-    {name: "ArtNet Âûõîä ¹1", status: "ĞÀÁÎÒÀ", desc: "Âñåëåííàÿ 0 â  ArtGate(10.2.3.4)", bsStyle: "success"},
-    {name: "ArtNet Âûõîä ¹2", status: "ĞÀÁÎÒÀ", desc: "Íåò ïîäïèñ÷èêîâ", bsStyle: "warning"},
-    {name: "ArtNet Âûõîä ¹3", status: "ÎÒÊËŞ×ÅÍ", desc: "", bsStyle: "danger"},
-    {name: "ArtNet Âûõîä ¹4", status: "ÎÒÊËŞ×ÅÍ",desc: "", bsStyle: "danger"},
-    {name: "ArtNet Âõîä ¹1", status: "ĞÀÁÎÒÀ",desc: "Âñåëåííàÿ 3 èç Unknown(10.1.1.1)", bsStyle: "success"},
-    {name: "ArtNet Âõîä ¹2", status: "ĞÀÁÎÒÀ",desc: "ÍÅÒ Âõîäíûõ Ïàêåòîâ", bsStyle: "warning"},
-    {name: "ArtNet Âõîä ¹3", status: "ÎÒÊËŞ×ÅÍ",desc: "", bsStyle: "danger"},
-    {name: "ArtNet Âõîä ¹4", status: "ÎÒÊËŞ×ÅÍ",desc: "", bsStyle: "danger"},
-    {name: "DMX Âûõîä 1", status: "ĞÀÁÎÒÀ",desc: "", bsStyle: "success"},
-    {name: "DMX Âûõîä 2", status: "ĞÀÁÎÒÀ",desc: "", bsStyle: "success"},
-    {name: "DMX Âûõîä 3", status: "ĞÀÁÎÒÀ",desc: "", bsStyle: "success"},
-    {name: "DMX Âûõîä 4", status: "ÎÒÊËŞ×ÅÍ",desc: "", bsStyle: "danger"},
-    {name: "DMX Âõîä 1", status: "ÎÒÊËŞ×ÅÍ",desc: "", bsStyle: "danger"},
-    {name: "DMX Âõîä 2", status: "ÎÒÊËŞ×ÅÍ",desc: "", bsStyle: "danger"},
-    {name: "DMX Âõîä 3", status: "ÎÒÊËŞ×ÅÍ",desc: "", bsStyle: "danger"},
-    {name: "DMX Âõîä 4", status: "ÎÒÊËŞ×ÅÍ",desc: "", bsStyle: "danger"}
+    {name: "Ethernet Ğ¿Ğ¾Ñ€Ñ‚", status: "Ğ ĞĞ‘ĞĞ¢Ğ", desc: "192.168.7.103", bsStyle: "success"},
+    {name: "ArtNet Ğ’Ñ‹Ñ…Ğ¾Ğ´ â„–1", status: "Ğ ĞĞ‘ĞĞ¢Ğ", desc: "Ğ’ÑĞµĞ»ĞµĞ½Ğ½Ğ°Ñ 0 Ğ²  ArtGate(10.2.3.4)", bsStyle: "success"},
+    {name: "ArtNet Ğ’Ñ‹Ñ…Ğ¾Ğ´ â„–2", status: "Ğ ĞĞ‘ĞĞ¢Ğ", desc: "ĞĞµÑ‚ Ğ¿Ğ¾Ğ´Ğ¿Ğ¸ÑÑ‡Ğ¸ĞºĞ¾Ğ²", bsStyle: "warning"},
+    {name: "ArtNet Ğ’Ñ‹Ñ…Ğ¾Ğ´ â„–3", status: "ĞĞ¢ĞšĞ›Ğ®Ğ§Ğ•Ğ", desc: "", bsStyle: "danger"},
+    {name: "ArtNet Ğ’Ñ‹Ñ…Ğ¾Ğ´ â„–4", status: "ĞĞ¢ĞšĞ›Ğ®Ğ§Ğ•Ğ",desc: "", bsStyle: "danger"},
+    {name: "ArtNet Ğ’Ñ…Ğ¾Ğ´ â„–1", status: "Ğ ĞĞ‘ĞĞ¢Ğ",desc: "Ğ’ÑĞµĞ»ĞµĞ½Ğ½Ğ°Ñ 3 Ğ¸Ğ· Unknown(10.1.1.1)", bsStyle: "success"},
+    {name: "ArtNet Ğ’Ñ…Ğ¾Ğ´ â„–2", status: "Ğ ĞĞ‘ĞĞ¢Ğ",desc: "ĞĞ•Ğ¢ Ğ’Ñ…Ğ¾Ğ´Ğ½Ñ‹Ñ… ĞŸĞ°ĞºĞµÑ‚Ğ¾Ğ²", bsStyle: "warning"},
+    {name: "ArtNet Ğ’Ñ…Ğ¾Ğ´ â„–3", status: "ĞĞ¢ĞšĞ›Ğ®Ğ§Ğ•Ğ",desc: "", bsStyle: "danger"},
+    {name: "ArtNet Ğ’Ñ…Ğ¾Ğ´ â„–4", status: "ĞĞ¢ĞšĞ›Ğ®Ğ§Ğ•Ğ",desc: "", bsStyle: "danger"},
+    {name: "DMX Ğ’Ñ‹Ñ…Ğ¾Ğ´ 1", status: "Ğ ĞĞ‘ĞĞ¢Ğ",desc: "", bsStyle: "success"},
+    {name: "DMX Ğ’Ñ‹Ñ…Ğ¾Ğ´ 2", status: "Ğ ĞĞ‘ĞĞ¢Ğ",desc: "", bsStyle: "success"},
+    {name: "DMX Ğ’Ñ‹Ñ…Ğ¾Ğ´ 3", status: "Ğ ĞĞ‘ĞĞ¢Ğ",desc: "", bsStyle: "success"},
+    {name: "DMX Ğ’Ñ‹Ñ…Ğ¾Ğ´ 4", status: "ĞĞ¢ĞšĞ›Ğ®Ğ§Ğ•Ğ",desc: "", bsStyle: "danger"},
+    {name: "DMX Ğ’Ñ…Ğ¾Ğ´ 1", status: "ĞĞ¢ĞšĞ›Ğ®Ğ§Ğ•Ğ",desc: "", bsStyle: "danger"},
+    {name: "DMX Ğ’Ñ…Ğ¾Ğ´ 2", status: "ĞĞ¢ĞšĞ›Ğ®Ğ§Ğ•Ğ",desc: "", bsStyle: "danger"},
+    {name: "DMX Ğ’Ñ…Ğ¾Ğ´ 3", status: "ĞĞ¢ĞšĞ›Ğ®Ğ§Ğ•Ğ",desc: "", bsStyle: "danger"},
+    {name: "DMX Ğ’Ñ…Ğ¾Ğ´ 4", status: "ĞĞ¢ĞšĞ›Ğ®Ğ§Ğ•Ğ",desc: "", bsStyle: "danger"}
 ];
 
 var InterfaceStatus = React.createClass({
@@ -46,7 +46,32 @@ var InterfaceStatus = React.createClass({
 
 var ArtGateStatus = React.createClass({
     getInitialState: function(){
-        return {interfaces: interfaces};
+        return {interfaces: []};
+    },
+    componentDidMount: function(){
+        $.get("http://localhost:8080/api/status", function(result){
+            if(this.isMounted()){
+                console.log(result);
+                var lSt = [];
+                // Ğ¡Ñ‚Ğ°Ñ‚ÑƒÑ ETH
+                ethString = "IP:"+ result.Eth.IpAddress
+                    +" Msk:" + result.Eth.IpMask + " Gw:" + result.Eth.IpGw + " Mac:" + result.Eth.Mac;
+                lSt.push({name:"Ethernet0", status:"Ğ’ĞšĞ›Ğ®Ğ§Ğ•Ğ", desc: ethString, bsStyle: "success"});
+                // Ğ’Ñ…Ğ¾Ğ´Ñ‹ ArtNet
+                var numArtInputs = result.ArtnetInputs;
+                for(var i=0; i<numArtInputs; i++){
+                    var artIn = result.ArtIns[i];
+                    lSt.push({
+                        name:"ArtNet In" + i,
+                        status: artIn.Enabled ? "Ğ’ĞšĞ›Ğ®Ğ§Ğ•Ğ": "ĞĞ¢ĞšĞ›Ğ®Ğ§Ğ•Ğ",
+                        desc: "Universe: " + artIn.Universe,
+                        bsStyle: artIn.Enabled ? "success" :"warning"
+                    })
+                }
+
+                this.setState({interfaces: lSt});
+            }
+        }.bind(this));
     },
     render(){
         var IfaceNodes = this.state.interfaces.map(function(iface){
@@ -61,14 +86,14 @@ var ArtGateStatus = React.createClass({
             <div className="content">
                 <article role="main">
                     <PageHeader>
-                        Ñòàòóñ Óñòğîéñòâà
+                        Ğ¡Ñ‚Ğ°Ñ‚ÑƒÑ Ğ£ÑÑ‚Ñ€Ğ¾Ğ¹ÑÑ‚Ğ²Ğ°
                     </PageHeader>
                     <Table striped bordered condensed hover>
                         <thead>
                         <tr>
-                            <th> Èíòåğôåéñ </th>
-                            <th className="text-center"> Ñòàòóñ </th>
-                            <th className="text-center"> Ïğèìå÷àíèå</th>
+                            <th> Ğ˜Ğ½Ñ‚ĞµÑ€Ñ„ĞµĞ¹Ñ </th>
+                            <th className="text-center"> Ğ¡Ñ‚Ğ°Ñ‚ÑƒÑ </th>
+                            <th className="text-center"> ĞŸÑ€Ğ¸Ğ¼ĞµÑ‡Ğ°Ğ½Ğ¸Ğµ</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -76,10 +101,9 @@ var ArtGateStatus = React.createClass({
                         </tbody>
                     </Table>
                     <footer>
-                        <p> Óñòğîéñòâî ğàáîòàåò íîğìàëüíî </p>
+                        <p> Ğ£ÑÑ‚Ñ€Ğ¾Ğ¹ÑÑ‚Ğ²Ğ¾ Ñ€Ğ°Ğ±Ğ¾Ñ‚Ğ°ĞµÑ‚ Ğ½Ğ¾Ñ€Ğ¼Ğ°Ğ»ÑŒĞ½Ğ¾ </p>
                     </footer>
                 </article>
-                /*<ArtGateStatusMenu/>*/
             </div>
 
         );

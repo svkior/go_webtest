@@ -20,9 +20,11 @@ var ArtGateMain = React.createClass({
 
 var routes = (
     <Route name="app" path="/" handler={ArtGateMain}>
+        <Route name="status" path="status" handler={ArtGateStatus}/>
         <DefaultRoute handler={ArtGateStatus}/>
     </Route>
 );
+
 
 
 ReactRouter.run(routes, function(Handler){

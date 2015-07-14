@@ -8,6 +8,7 @@ import (
 	"log"
 	"golang.org/x/net/websocket"
 	"io"
+	"sync"
 )
 
 
@@ -21,6 +22,14 @@ func wsFunc(ws *websocket.Conn){
 	io.Copy(ws, ws)
 }
 
+var lock = sync.RWMutex{}
+
+func getAllStatus(w rest.ResponseWriter, r *rest.Request){
+	lock.RLock()
+	w.WriteJson(globalSetup)
+	lock.RUnlock()
+}
+
 
 func NewRestInterface(){
 	api := rest.NewApi()
@@ -29,6 +38,7 @@ func NewRestInterface(){
 	wsHandler := websocket.Handler(wsFunc)
 
 	router, err := rest.MakeRouter(
+		rest.Get("/status", getAllStatus),
 		rest.Get("/message", func(w rest.ResponseWriter, req *rest.Request){
 			w.WriteJson(map[string]string{"body":"Hello, World!"})
 		}),

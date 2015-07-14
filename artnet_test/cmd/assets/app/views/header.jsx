@@ -16,18 +16,18 @@ var ArtGateHeader = React.createClass({
         return (
             <Navbar brand="TTS ArtGate 4DR v1.0.4" inverse toggleNavKey={0}>
                 <Nav eventKey={0}> {}
-                    <NavItemLink /*to="about"*/>О Продукте</NavItemLink>
-                    <NavItemLink /*to="status"*/>Статус</NavItemLink>
-                    <DropdownButton title='Настройка'>
-                        <MenuItemLink /*to="confselect"*/ eventKey='1'>Выбор конфигурации</MenuItemLink>
-                        <MenuItem >Редактирование конфигурации</MenuItem>
-                        <MenuItem >Что то еще</MenuItem>
+                    <NavItem>Рћ РџСЂРѕРґСѓРєС‚Рµ</NavItem>
+                    <NavItemLink to="status">РЎС‚Р°С‚СѓСЃ</NavItemLink>
+                    <DropdownButton title='РќР°СЃС‚СЂРѕР№РєР°'>
+                        <MenuItem eventKey='1'>Р’С‹Р±РѕСЂ РєРѕРЅС„РёРіСѓСЂР°С†РёРё</MenuItem>
+                        <MenuItem >Р РµРґР°РєС‚РёСЂРѕРІР°РЅРёРµ РєРѕРЅС„РёРіСѓСЂР°С†РёРё</MenuItem>
+                        <MenuItem >Р§С‚Рѕ С‚Рѕ РµС‰Рµ</MenuItem>
                         <MenuItem divider />
-                        <MenuItem >Обновление ПО</MenuItem>
+                        <MenuItem >РћР±РЅРѕРІР»РµРЅРёРµ РџРћ</MenuItem>
                     </DropdownButton>
-                    <DropdownButton title="Система">
-                        <MenuItemLink to="reboot">Перезагрузка</MenuItemLink>
-                        <MenuItemLink to="shutdown">Отключение</MenuItemLink>
+                    <DropdownButton title="РЎРёСЃС‚РµРјР°">
+                        <MenuItem>РџРµСЂРµР·Р°РіСЂСѓР·РєР°</MenuItem>
+                        <MenuItem>РћС‚РєР»СЋС‡РµРЅРёРµ</MenuItem>
                     </DropdownButton>
                 </Nav>
             </Navbar>
