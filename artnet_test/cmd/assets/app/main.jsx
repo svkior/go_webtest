@@ -21,6 +21,8 @@ var ArtGateMain = React.createClass({
 var routes = (
     <Route name="app" path="/" handler={ArtGateMain}>
         <Route name="status" path="status" handler={ArtGateStatus}/>
+        <Route name="setup:ethernet" path="setup/ethernet" handler={ArtGateSetupEthernet}/>
+        <Route name="setup:artin" path="setup/artin" handler={ArtGateSetupArtIn}/>
         <DefaultRoute handler={ArtGateStatus}/>
     </Route>
 );

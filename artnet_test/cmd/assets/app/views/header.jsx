@@ -19,6 +19,8 @@ var ArtGateHeader = React.createClass({
                     <NavItem>О Продукте</NavItem>
                     <NavItemLink to="status">Статус</NavItemLink>
                     <DropdownButton title='Настройка'>
+                        <MenuItemLink to="setup:ethernet">Ethernet</MenuItemLink>
+                        <MenuItemLink to="setup:artin">ArtNet Вход</MenuItemLink>
                         <MenuItem eventKey='1'>Выбор конфигурации</MenuItem>
                         <MenuItem >Редактирование конфигурации</MenuItem>
                         <MenuItem >Что то еще</MenuItem>

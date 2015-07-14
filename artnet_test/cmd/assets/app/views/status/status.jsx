@@ -5,26 +5,13 @@ var PageHeader = ReactBootstrap.PageHeader,
     Label = ReactBootstrap.Label,
     Table = ReactBootstrap.Table;
 
-
+/*
 var interfaces = [
-    {name: "Ethernet порт", status: "РАБОТА", desc: "192.168.7.103", bsStyle: "success"},
-    {name: "ArtNet Выход №1", status: "РАБОТА", desc: "Вселенная 0 в  ArtGate(10.2.3.4)", bsStyle: "success"},
-    {name: "ArtNet Выход №2", status: "РАБОТА", desc: "Нет подписчиков", bsStyle: "warning"},
-    {name: "ArtNet Выход №3", status: "ОТКЛЮЧЕН", desc: "", bsStyle: "danger"},
-    {name: "ArtNet Выход №4", status: "ОТКЛЮЧЕН",desc: "", bsStyle: "danger"},
-    {name: "ArtNet Вход №1", status: "РАБОТА",desc: "Вселенная 3 из Unknown(10.1.1.1)", bsStyle: "success"},
-    {name: "ArtNet Вход №2", status: "РАБОТА",desc: "НЕТ Входных Пакетов", bsStyle: "warning"},
-    {name: "ArtNet Вход №3", status: "ОТКЛЮЧЕН",desc: "", bsStyle: "danger"},
     {name: "ArtNet Вход №4", status: "ОТКЛЮЧЕН",desc: "", bsStyle: "danger"},
-    {name: "DMX Выход 1", status: "РАБОТА",desc: "", bsStyle: "success"},
-    {name: "DMX Выход 2", status: "РАБОТА",desc: "", bsStyle: "success"},
     {name: "DMX Выход 3", status: "РАБОТА",desc: "", bsStyle: "success"},
-    {name: "DMX Выход 4", status: "ОТКЛЮЧЕН",desc: "", bsStyle: "danger"},
-    {name: "DMX Вход 1", status: "ОТКЛЮЧЕН",desc: "", bsStyle: "danger"},
-    {name: "DMX Вход 2", status: "ОТКЛЮЧЕН",desc: "", bsStyle: "danger"},
-    {name: "DMX Вход 3", status: "ОТКЛЮЧЕН",desc: "", bsStyle: "danger"},
-    {name: "DMX Вход 4", status: "ОТКЛЮЧЕН",desc: "", bsStyle: "danger"}
+    {name: "DMX Выход 4", status: "ОТКЛЮЧЕН",desc: "", bsStyle: "danger"}
 ];
+*/
 
 var InterfaceStatus = React.createClass({
     render(){
@@ -51,7 +38,7 @@ var ArtGateStatus = React.createClass({
     componentDidMount: function(){
         $.get("http://localhost:8080/api/status", function(result){
             if(this.isMounted()){
-                console.log(result);
+                //console.log(result);
                 var lSt = [];
                 // Статус ETH
                 ethString = "IP:"+ result.Eth.IpAddress
@@ -67,6 +54,18 @@ var ArtGateStatus = React.createClass({
                         desc: "Universe: " + artIn.Universe,
                         bsStyle: artIn.Enabled ? "success" :"warning"
                     })
+                }
+                // Выходы ArtNet
+                var numArtOutputs = result.ArtnetOutputs;
+                for(i=0; i<numArtOutputs; i++){
+                    var artOut = result.ArtOuts[i];
+                    lSt.push({
+                        name:"ArtNet Out" + i,
+                        status: artOut.Enabled ? "ВКЛЮЧЕН": "ОТКЛЮЧЕН",
+                        desc: "Universe: " + artOut.Universe,
+                        bsStyle: artOut.Enabled ? "success" :"warning"
+                    })
+
                 }
 
                 this.setState({interfaces: lSt});
