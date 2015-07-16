@@ -1,6 +1,4 @@
-
 /** @jsx React.DOM **/
-
 
 var Navbar =  ReactBootstrap.Navbar;
 var Nav = ReactBootstrap.Nav;
@@ -21,6 +19,7 @@ var ArtGateHeader = React.createClass({
                     <DropdownButton title='Настройка'>
                         <MenuItemLink to="setup:ethernet">Ethernet</MenuItemLink>
                         <MenuItemLink to="setup:artin">ArtNet Вход</MenuItemLink>
+                        <MenuItemLink to="setup:artout">ArtNet Выход</MenuItemLink>
                         <MenuItem eventKey='1'>Выбор конфигурации</MenuItem>
                         <MenuItem >Редактирование конфигурации</MenuItem>
                         <MenuItem >Что то еще</MenuItem>

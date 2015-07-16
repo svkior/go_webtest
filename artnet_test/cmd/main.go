@@ -14,10 +14,7 @@ import (
 //FIXME: Пересортируются каналы выходные
 //FIXME: Только один выходной ArtNet присутствует
 
-
 var artNet goartnet.Artnet
-
-
 
 func roller(quitChan chan bool, o chan [512]byte) {
 	var data [512]byte
@@ -36,7 +33,6 @@ func roller(quitChan chan bool, o chan [512]byte) {
 		}
 	}
 }
-
 
 // Заглушка для windows, чтобы определить первый открытый интерфейс
 func testingForInterfaces() string{
@@ -104,7 +100,7 @@ func setupListener(ch artnet_test.SetupChan){
 				for idx:=0; idx < len(ports); idx++ {
 					port := ports[idx]
 					if port.Enabled {
-						portT := goartnet.NewInputPort(port.Universe)
+						portT := goartnet.NewInputPort(uint16(port.Universe))
 						artNet.AddInputPort(portT)
 					}
 				}
@@ -124,7 +120,7 @@ func setupListener(ch artnet_test.SetupChan){
 				for idx:=0; idx < len(ports); idx++ {
 					port := ports[idx]
 					if port.Enabled {
-						portT := goartnet.NewOutputPort(port.Universe)
+						portT := goartnet.NewOutputPort(uint16(port.Universe))
 						quitChans = append(quitChans, make(chan bool))
 						go roller(quitChans[len(quitChans)-1], portT.Input)
 						artNet.AddOutputPort(portT)

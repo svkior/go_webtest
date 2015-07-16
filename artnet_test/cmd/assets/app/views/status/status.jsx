@@ -32,55 +32,51 @@ var InterfaceStatus = React.createClass({
 });
 
 var ArtGateStatus = React.createClass({
-    getInitialState: function(){
-        return {interfaces: []};
-    },
-    componentDidMount: function(){
-        $.get("http://localhost:8080/api/status", function(result){
-            if(this.isMounted()){
-                //console.log(result);
-                var lSt = [];
-                // Статус ETH
-                ethString = "IP:"+ result.Eth.IpAddress
-                    +" Msk:" + result.Eth.IpMask + " Gw:" + result.Eth.IpGw + " Mac:" + result.Eth.Mac;
-                lSt.push({name:"Ethernet0", status:"ВКЛЮЧЕН", desc: ethString, bsStyle: "success"});
-                // Входы ArtNet
-                var numArtInputs = result.ArtnetInputs;
-                for(var i=0; i<numArtInputs; i++){
-                    var artIn = result.ArtIns[i];
-                    lSt.push({
-                        name:"ArtNet In" + i,
-                        status: artIn.Enabled ? "ВКЛЮЧЕН": "ОТКЛЮЧЕН",
-                        desc: "Universe: " + artIn.Universe,
-                        bsStyle: artIn.Enabled ? "success" :"warning"
-                    })
-                }
-                // Выходы ArtNet
-                var numArtOutputs = result.ArtnetOutputs;
-                for(i=0; i<numArtOutputs; i++){
-                    var artOut = result.ArtOuts[i];
-                    lSt.push({
-                        name:"ArtNet Out" + i,
-                        status: artOut.Enabled ? "ВКЛЮЧЕН": "ОТКЛЮЧЕН",
-                        desc: "Universe: " + artOut.Universe,
-                        bsStyle: artOut.Enabled ? "success" :"warning"
-                    })
-
-                }
-
-                this.setState({interfaces: lSt});
-            }
-        }.bind(this));
-    },
+    mixins: [Reflux.connect(SetupStore, "setup")],
     render(){
-        var IfaceNodes = this.state.interfaces.map(function(iface){
-            return <InterfaceStatus
-                name={iface.name}
-                status={iface.status}
-                bsStyle={iface.bsStyle}
-                desc={iface.desc}
-                />
-        });
+
+        var IfaceNodes = [];
+        if(this.state.setup){
+            // Статус ETH
+            ethString = "IP:" + this.state.setup.Eth.IpAddress
+                + " Msk:" + this.state.setup.Eth.IpMask
+                + " Gw:" + this.state.setup.Eth.IpGw
+                + " Mac:" + this.state.setup.Eth.Mac;
+            IfaceNodes.push(
+                <InterfaceStatus
+                    name="Ethernet0"
+                    status="ВКЛЮЧЕН"
+                    bsStyle="success"
+                    desc={ethString}
+                    />
+            );
+            // Входы ArtNet
+            for (var i = 0; i < this.state.setup.ArtIns.length; i++) {
+                var artIn = this.state.setup.ArtIns[i];
+                IfaceNodes.push(
+                    <InterfaceStatus
+                        name={"ArtNet In" + i}
+                        status={artIn.Enabled ? "ВКЛЮЧЕН" : "ОТКЛЮЧЕН"}
+                        bsStyle={artIn.Enabled ? "success" : "warning"}
+                        desc={"Universe: " + artIn.Universe}
+                        />
+                );
+            }
+            // Выходы ArtNet
+            for (i = 0; i < this.state.setup.ArtOuts.length; i++) {
+                var artOut = this.state.setup.ArtOuts[i];
+                IfaceNodes.push(
+                    <InterfaceStatus
+                        name={"ArtNet Out" + i}
+                        status={artOut.Enabled ? "ВКЛЮЧЕН" : "ОТКЛЮЧЕН"}
+                        bsStyle={artOut.Enabled ? "success" : "warning"}
+                        desc={"Universe: " + artOut.Universe}
+                        />
+                );
+            }
+
+        }
+
         return (
             <div className="content">
                 <article role="main">
@@ -104,8 +100,6 @@ var ArtGateStatus = React.createClass({
                     </footer>
                 </article>
             </div>
-
         );
-
     }
 });

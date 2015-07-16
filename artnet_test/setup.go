@@ -94,13 +94,13 @@ func (s *Setup) UpdateArtOut(){
 
 
 type ArtIn struct {
-	Universe uint16 // Вселенная
+	Universe int // Вселенная
 	Enabled bool
 	Name    string // Имя Вселенной
 }
 
 type ArtOut struct {
-	Universe uint16 // Вселенная
+	Universe int // Вселенная
 	Enabled bool
 	Name string
 }
@@ -250,7 +250,7 @@ func (s *Setup) UpdateArtNetInUniverse(idx int, v string) error {
 	if err != nil{
 		return errInvalidUniverse
 	}
-	s.ArtIns[idx].Universe = uint16(i)
+	s.ArtIns[idx].Universe = i
 	return nil
 }
 
@@ -260,7 +260,7 @@ func (s *Setup) UpdateArtNetOutUniverse(idx int, v string) error {
 	if err != nil{
 		return errInvalidUniverse
 	}
-	s.ArtOuts[idx].Universe = uint16(i)
+	s.ArtOuts[idx].Universe = i
 	return nil
 }
 

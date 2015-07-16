@@ -12,6 +12,7 @@
     <script src="/assets/bower_components/react-bootstrap/react-bootstrap.min.js"></script>
     <script src="/assets/bower_components/react-router/build/umd/ReactRouter.min.js"></script>
     <script src="/assets/bower_components/react-router-bootstrap/lib/ReactRouterBootstrap.min.js"></script>
+    <script src="/assets/bower_components/reflux/dist/reflux.min.js"></script>
 
 </head>
 <body>
@@ -19,8 +20,20 @@
 
 <script type="text/jsx" src="/assets/app/helpers/forms/editors.jsx"></script>
 
+<!-- ACTIONS -->
+<script type="text/jsx" src="/assets/app/actions/setup_actions.jsx"></script>
+<script type="text/jsx" src="/assets/app/actions/auth_actions.jsx"></script>
+
+<!-- STORES -->
+<script type="text/jsx" src="/assets/app/store/setup_store.jsx"></script>
+<script type="text/jsx" src="/assets/app/store/auth_store.jsx"></script>
+
+<!-- VIEWS -->
+
+<script type="text/jsx" src="/assets/app/views/auth/login.jsx"></script>
 <script type="text/jsx" src="/assets/app/views/setup/ethernet.jsx"></script>
 <script type="text/jsx" src="/assets/app/views/setup/artin.jsx"></script>
+<script type="text/jsx" src="/assets/app/views/setup/artout.jsx"></script>
 <script type="text/jsx" src="/assets/app/views/status/status.jsx"></script>
 <script type="text/jsx" src="/assets/app/views/header.jsx"></script>
 <script type="text/jsx" src="/assets/app/views/footer.jsx"></script>

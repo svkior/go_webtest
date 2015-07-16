@@ -8,6 +8,8 @@ import (
 	"io"
 	"sync"
 	"bitbucket.org/tts/light_dmx_go/ethconfig"
+	"github.com/StephanDollberg/go-json-rest-middleware-jwt"
+	"time"
 )
 
 func wsFunc(ws *websocket.Conn){
@@ -44,16 +46,73 @@ func setupEthernet(w rest.ResponseWriter, r *rest.Request){
 	getAllStatus(w, r)
 }
 
+func setupArtIn(w rest.ResponseWriter, r *rest.Request){
+	artIns := []*ArtIn{}
+	err := r.DecodeJsonPayload(&artIns)
+	if err != nil {
+		rest.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	lock.Lock()
+	globalSetup.ArtIns = nil
+	globalSetup.ArtIns = artIns
+	globalSetup.ArtnetInputs = len(artIns)
+	lock.Unlock()
+	getAllStatus(w, r)
+}
+
+
+func setupArtOut(w rest.ResponseWriter, r *rest.Request){
+	artOuts := []*ArtOut{}
+	err := r.DecodeJsonPayload(&artOuts)
+	if err != nil {
+		rest.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	lock.Lock()
+	globalSetup.ArtOuts = nil
+	globalSetup.ArtOuts = artOuts
+	globalSetup.ArtnetOutputs = len(artOuts)
+	lock.Unlock()
+	getAllStatus(w, r)
+}
+
+func handle_auth(w rest.ResponseWriter, r *rest.Request) {
+	w.WriteJson(map[string]string{"authed": r.Env["REMOTE_USER"].(string)})
+}
 
 func NewRestInterface(){
+	jwt_middleware := &jwt.JWTMiddleware{
+		Key:        []byte("secret key"),
+		Realm:      "jwt auth",
+		Timeout:    time.Hour,
+		MaxRefresh: time.Hour * 24,
+		Authenticator: func(userId string, password string) bool {
+			return userId == "admin" && password == "admin"
+		}}
 	api := rest.NewApi()
 	api.Use(rest.DefaultDevStack...)
+
+	api.Use(&rest.IfMiddleware{
+		Condition: func(request *rest.Request) bool {
+//			return request.URL.Path != "/login"
+//			return request.URL.Path != "/status"
+			return false; // FIXME: Пропускаем вообще все без авторизации
+		},
+		IfTrue: jwt_middleware,
+	})
 
 	wsHandler := websocket.Handler(wsFunc)
 
 	router, err := rest.MakeRouter(
+		rest.Post("/login", jwt_middleware.LoginHandler),
+		rest.Get("/refresh_token", jwt_middleware.RefreshHandler),
 		rest.Get("/status", getAllStatus),
 		rest.Post("/setup/ethernet", setupEthernet),
+		rest.Post("/setup/artin", setupArtIn),
+		rest.Post("/setup/artout", setupArtOut),
 		rest.Get("/message", func(w rest.ResponseWriter, req *rest.Request){
 			w.WriteJson(map[string]string{"body":"Hello, World!"})
 		}),

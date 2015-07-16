@@ -5,43 +5,39 @@ var ButtonInput = ReactBootstrap.ButtonInput;
 
 
 var ArtGateSetupArtIn = React.createClass({
-    loadArtInFromServer: function(){
-        $.ajax({
-            url: "http://localhost:8080/api/status",
-            dataType: 'json',
-            cache: false,
-            success: function(data){
-                this.setState({artIns: data.ArtIns});
-            }.bind(this),
-            error: function(xhr, status, err){
-                console.error("/api/status", status, err.toString());
-            }.bind(this)
-        });
-    },
-    getInitialState: function(){
-        return {
-            artIns: []
-        };
-    },
-    componentDidMount: function(){
-        this.loadArtInFromServer();
-        //setInterval(this.loadEthFromServer, 2000);
-    },
-    handleSubmit: function(e){
-        console.log(e);
-    },
+    mixins: [
+        Reflux.connect(SetupStore, 'setup')
+    ],
     render(){
-        var edits = this.state.artIns.map(function(artin){
-            console.log(artin);
-            return (
-                <ArtGateSetupEditor name={artin.Name} value={artin.Universe} />
-            );
-        });
+        var edits = [];
+        var addButton = "";
+        if(this.state.setup){
+            edits = this.state.setup.ArtIns.map(function(artin, i){
+                return (
+                    <ArtGateSetupEditDeleteEnable
+                        name={artin.Name}
+                        value={artin.Universe}
+                        onChange={SetupActions.editArtIn}
+                        onEnableDisable={SetupActions.toggleArtIn}
+                        onDelete={SetupActions.removeArtIn}
+                        number={i}
+                        Enabled={artin.Enabled}
+                        />
+                );
+            }.bind(this));
+
+        }
+        if(edits.length < 4){
+            addButton = <ButtonInput onClick={SetupActions.addArtIn} value="Добавить"/>
+        } else {
+            addButton = <ButtonInput disabled value="Добавить"/>
+        }
+
         return (
             <div className="content">
-                <h2> Изменение параметров ArtNet Входов</h2>
-                <p> Число входов {this.state.artIns.length}</p>
-                <form className="setupForm" onSubmit={this.handleSubmit}>
+                <h2>Изменение параметров ArtNet Входов</h2>
+                <p> Число входов {edits.length} {addButton}</p>
+                <form className="setupForm" onSubmit={SetupActions.uploadArtIns}>
                     {edits}
                     <ButtonInput type="submit" value="Обновить"/>
                 </form>

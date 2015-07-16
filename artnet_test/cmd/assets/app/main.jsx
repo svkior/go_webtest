@@ -18,12 +18,21 @@ var ArtGateMain = React.createClass({
     }
 });
 
+
+function requireAuth(nextState, transition) {
+    console.log("Require");
+    if (!AuthActions.loggedIn())
+        transition.to('/login', null, { nextPathname: nextState.location.pathname });
+}
+
 var routes = (
     <Route name="app" path="/" handler={ArtGateMain}>
-        <Route name="status" path="status" handler={ArtGateStatus}/>
-        <Route name="setup:ethernet" path="setup/ethernet" handler={ArtGateSetupEthernet}/>
-        <Route name="setup:artin" path="setup/artin" handler={ArtGateSetupArtIn}/>
-        <DefaultRoute handler={ArtGateStatus}/>
+        <Route name="status" path="status" handler={ArtGateStatus} onEnter={requireAuth}/>
+        <Route name="setup:ethernet" path="setup/ethernet" handler={ArtGateSetupEthernet} onEnter={requireAuth}/>
+        <Route name="setup:artin" path="setup/artin" handler={ArtGateSetupArtIn} onEnter={requireAuth}/>
+        <Route name="setup:artout" path="setup/artout" handler={ArtGateSetupArtOut} onEnter={requireAuth}/>
+        <Route name="auth:login" path="login" handler={ArtGateLogin}/>
+        <DefaultRoute handler={ArtGateLogin}/>
     </Route>
 );
 
