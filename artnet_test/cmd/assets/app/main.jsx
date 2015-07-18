@@ -6,10 +6,12 @@ var Link = ReactRouter.Link;
 var Route = ReactRouter.Route;
 var RouteHandler= ReactRouter.RouteHandler;
 
+
+
 var ArtGateMain = React.createClass({
     render: function(){
         return (
-            <div className="page">
+            <div className="container-fluid">
                 <ArtGateHeader/>
                 <RouteHandler/>
                 <ArtGateFooter/>
@@ -32,10 +34,9 @@ var routes = (
         <Route name="setup:artin" path="setup/artin" handler={ArtGateSetupArtIn} onEnter={requireAuth}/>
         <Route name="setup:artout" path="setup/artout" handler={ArtGateSetupArtOut} onEnter={requireAuth}/>
         <Route name="auth:login" path="login" handler={ArtGateLogin}/>
-        <DefaultRoute handler={ArtGateLogin}/>
+        <DefaultRoute handler={ArtGateTestView}/>
     </Route>
 );
-
 
 
 ReactRouter.run(routes, function(Handler){

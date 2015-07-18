@@ -28,18 +28,27 @@ var ArtGateSetupArtIn = React.createClass({
 
         }
         if(edits.length < 4){
-            addButton = <ButtonInput onClick={SetupActions.addArtIn} value="Добавить"/>
+            addButton =
+                <div className="ag-setup-buttons panel panel-default">
+                    <div className="panel-body">
+                        <ButtonInput onClick={SetupActions.addArtIn} value="Добавить"/>
+                    </div>
+                </div>
         } else {
-            addButton = <ButtonInput disabled value="Добавить"/>
+            addButton = null;
         }
 
         return (
-            <div className="content">
-                <h2>Изменение параметров ArtNet Входов</h2>
-                <p> Число входов {edits.length} {addButton}</p>
+            <div className="row">
                 <form className="setupForm" onSubmit={SetupActions.uploadArtIns}>
-                    {edits}
-                    <ButtonInput type="submit" value="Обновить"/>
+                    <div className="panel-body ag-setup-container">
+                       <div className="ag-setup panel panel-default">
+                            <h3>Параметры ArtNet Входов</h3>
+                       </div>
+                        {edits}
+                        {addButton}
+
+                    </div>
                 </form>
             </div>
         );

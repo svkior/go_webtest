@@ -2,6 +2,16 @@
 /** @jsx React.DOM **/
 
 
+var ArtGateJumbo = React.createClass({
+    render(){
+        return(
+                <div className="jumbotron">
+                    <h1>{this.props.nam}</h1>
+                </div>
+        )
+    }
+});
+
 
 var Input = ReactBootstrap.Input;
 var ButtonInput = ReactBootstrap.ButtonInput;
@@ -16,7 +26,11 @@ var ArtGateSetupEditor = React.createClass({
     render: function(){
         //console.log(this.props.value);
         return(
-            <Input type="text" label={this.props.name} onChange={this.handleChange} value={this.props.value} ref="ip" />
+            <div className="ag-setup panel panel-default">
+                <div className="panel-body">
+                    <Input type="text" label={this.props.name} onChange={this.handleChange} value={this.props.value} ref="ip" />
+                </div>
+            </div>
         );
     }
 });
@@ -43,15 +57,19 @@ var ArtGateSetupEditDeleteEnable = React.createClass({
         var btnDel = <ButtonInput onClick={this.delWork} bsStyle='danger' value="Удалить"/>
 
         return (
-                <Input
-                    type="text"
-                    label={this.props.name}
-                    onChange={this.handleChange}
-                    value={this.props.value}
-                    ref="ip"
-                    buttonBefore={edBtn}
-                    buttonAfter={btnDel}
-                />
+            <div className="ag-setup panel panel-default">
+                <div className="panel-body">
+                    <Input
+                        type="text"
+                        label={this.props.name}
+                        onChange={this.handleChange}
+                        value={this.props.value}
+                        ref="ip"
+                        buttonBefore={edBtn}
+                        buttonAfter={btnDel}
+                    />
+                </div>
+            </div>
         );
     }
 });

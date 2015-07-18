@@ -84,10 +84,10 @@ var SetupStore = Reflux.createStore({
         this.setup = setup;
         this.trigger(setup);
     },
-    setupUrl: 'http://localhost:8080/api/status',
+    setupUrl: '/api/status',
     fetchSetup: function(){
         $.ajax({
-            url: this.setupUrl,
+            url: window.location.protocol + "//" + window.location.host + this.setupUrl,
             dataType: 'json',
             cache: false,
             success: function (result) {
@@ -100,9 +100,10 @@ var SetupStore = Reflux.createStore({
         });
     },
     uploadContent: function(url, data){
+        var fullUrl = window.location.protocol + "//" + window.location.host + url;
         $.ajax({
             type: "POST",
-            url: url,
+            url: fullUrl,
             contentType: "application/json; charset=utf-8",
             dataType: 'json',
             async: true,
@@ -119,13 +120,13 @@ var SetupStore = Reflux.createStore({
 
     },
     onUploadEthernet: function(){
-        this.uploadContent("http://localhost:8080/api/setup/ethernet", this.setup.Eth);
+        this.uploadContent("/api/setup/ethernet", this.setup.Eth);
     },
     onUploadArtIns: function(){
-        this.uploadContent("http://localhost:8080/api/setup/artin", this.setup.ArtIns);
+        this.uploadContent("/api/setup/artin", this.setup.ArtIns);
     },
     onUploadArtOuts: function(){
-        this.uploadContent("http://localhost:8080/api/setup/artout", this.setup.ArtOuts);
+        this.uploadContent("/api/setup/artout", this.setup.ArtOuts);
     },
     getInitialState: function() {
         return this.setup;

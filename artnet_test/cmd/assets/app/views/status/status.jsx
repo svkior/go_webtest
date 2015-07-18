@@ -16,17 +16,15 @@ var interfaces = [
 var InterfaceStatus = React.createClass({
     render(){
         return (
-            <tr>
-                <td>
-                    {this.props.name}
-                </td>
-                <td className="text-center">
-                    <Label bsStyle={this.props.bsStyle}> {this.props.status} </Label>
-                </td>
-                <td>
+            <div className="ag-status panel panel-default">
+                <div className="panel-header">
+                    {this.props.name}<Label bsStyle={this.props.bsStyle}>{this.props.status}</Label>
+                </div>
+                <div className="panel-body">
+
                     {this.props.desc}
-                </td>
-            </tr>
+                </div>
+            </div>
         );
     }
 });
@@ -38,10 +36,12 @@ var ArtGateStatus = React.createClass({
         var IfaceNodes = [];
         if(this.state.setup){
             // Статус ETH
-            ethString = "IP:" + this.state.setup.Eth.IpAddress
-                + " Msk:" + this.state.setup.Eth.IpMask
-                + " Gw:" + this.state.setup.Eth.IpGw
-                + " Mac:" + this.state.setup.Eth.Mac;
+            ethString = <ul>
+                    <li>IP:{this.state.setup.Eth.IpAddress}</li>
+                    <li> Msk:{this.state.setup.Eth.IpMask}</li>
+                    <li> Gw:{this.state.setup.Eth.IpGw}</li>
+                    <li> Mac:{this.state.setup.Eth.Mac}</li>
+                </ul>;
             IfaceNodes.push(
                 <InterfaceStatus
                     name="Ethernet0"
@@ -78,27 +78,15 @@ var ArtGateStatus = React.createClass({
         }
 
         return (
-            <div className="content">
-                <article role="main">
-                    <PageHeader>
-                        Статус Устройства
-                    </PageHeader>
-                    <Table striped bordered condensed hover>
-                        <thead>
-                        <tr>
-                            <th> Интерфейс </th>
-                            <th className="text-center"> Статус </th>
-                            <th className="text-center"> Примечание</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {IfaceNodes}
-                        </tbody>
-                    </Table>
-                    <footer>
-                        <p> Устройство работает нормально </p>
-                    </footer>
-                </article>
+            <div className="row">
+                <div className="panel-body ag-setup-container">
+                    <div className="ag-setup panel panel-default">
+                        <h3>Статус</h3>
+                    </div>
+                </div>
+                <div className="panel-body ag-setup-container">
+                    {IfaceNodes}
+                </div>
             </div>
         );
     }

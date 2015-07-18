@@ -12,26 +12,30 @@ var MenuItemLink = ReactRouterBootstrap.MenuItemLink;
 var ArtGateHeader = React.createClass({
     render: function(){
         return (
-            <Navbar brand="TTS ArtGate 4DR v1.0.4" inverse toggleNavKey={0}>
-                <Nav eventKey={0}> {}
-                    <NavItem>О Продукте</NavItem>
-                    <NavItemLink to="status">Статус</NavItemLink>
-                    <DropdownButton title='Настройка'>
-                        <MenuItemLink to="setup:ethernet">Ethernet</MenuItemLink>
-                        <MenuItemLink to="setup:artin">ArtNet Вход</MenuItemLink>
-                        <MenuItemLink to="setup:artout">ArtNet Выход</MenuItemLink>
-                        <MenuItem eventKey='1'>Выбор конфигурации</MenuItem>
-                        <MenuItem >Редактирование конфигурации</MenuItem>
-                        <MenuItem >Что то еще</MenuItem>
-                        <MenuItem divider />
-                        <MenuItem >Обновление ПО</MenuItem>
-                    </DropdownButton>
-                    <DropdownButton title="Система">
-                        <MenuItem>Перезагрузка</MenuItem>
-                        <MenuItem>Отключение</MenuItem>
-                    </DropdownButton>
-                </Nav>
-            </Navbar>
+            <nav className="navbar navbar-inverse navbar-static-top" role="navigation">
+                <div className="container-fluid">
+                    <div className="navbar-header">
+                        <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#ag-top-menu">
+                            <span className="sr-only">
+                                Навигация
+                            </span>
+                            <span className="icon-bar"></span>
+                            <span className="icon-bar"></span>
+                            <span className="icon-bar"></span>
+                        </button>
+                        <a className="navbar-brand" href="#">TTS ArtGate 4DR v1.0.4</a>
+                    </div>
+                    <div className="navbar-collapse collapse" id="ag-top-menu">
+                        <ul className="nav navbar-nav">
+                            <NavItem>О Продукте</NavItem>
+                            <NavItemLink to="status">Статус</NavItemLink>
+                            <MenuItemLink to="setup:ethernet">Ethernet</MenuItemLink>
+                            <MenuItemLink to="setup:artin">ArtNet Вход</MenuItemLink>
+                            <MenuItemLink to="setup:artout">ArtNet Выход</MenuItemLink>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
         )
     }
 });

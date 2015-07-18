@@ -26,14 +26,25 @@ var ArtGateSetupEthernet = React.createClass({
             ipMac = ipGw;
         }
         return (
-            <div className="content">
-                <h2> Изменение параметров Ethernet</h2>
-                <form className="setupForm" onSubmit={SetupActions.uploadEthernet}>
-                    <ArtGateSetupEditor name="IP Адрес" value={ipAddr} onChange={SetupActions.setIp}/>
-                    <ArtGateSetupEditor name="IP Маска" value={ipMask} onChange={SetupActions.setMask}/>
-                    <ArtGateSetupEditor name="IP Маршрутизатор" value={ipGw} onChange={SetupActions.setGw}/>
-                    <ArtGateSetupEditor name="MAC Адрес" value={ipMac} onChange={SetupActions.setMac}/>
-                    <ButtonInput type="submit" value="Обновить"/>
+            <div className="row">
+                <form onSubmit={SetupActions.uploadEthernet}>
+
+                    <div className="panel-body ag-setup-container">
+                        <div className="ag-setup panel panel-default">
+                            <h3>Параметры Etherner</h3>
+                        </div>
+                        
+                        <ArtGateSetupEditor name="IP Адрес" value={ipAddr} onChange={SetupActions.setIp}/>
+                        <ArtGateSetupEditor name="IP Маска" value={ipMask} onChange={SetupActions.setMask}/>
+                        <ArtGateSetupEditor name="IP Маршрутизатор" value={ipGw} onChange={SetupActions.setGw}/>
+                        <ArtGateSetupEditor name="MAC Адрес" value={ipMac} onChange={SetupActions.setMac}/>
+
+                        <div className="ag-setup-buttons panel panel-default">
+                            <div className="panel-body">
+                                <ButtonInput type="submit" value="Обновить"/>
+                            </div>
+                        </div>
+                    </div>
                 </form>
             </div>
             );
