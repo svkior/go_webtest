@@ -1,5 +1,4 @@
 
-/** @jsx React.DOM **/
 var ReactBootstrap = require('react-bootstrap');
 var React = require('react');
 

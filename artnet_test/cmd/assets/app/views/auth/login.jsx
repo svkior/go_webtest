@@ -1,11 +1,6 @@
+import React from "react";
 
-/** @jsx React.DOM **/
-
-var ReactBootstrap = require('react-bootstrap');
-var React = require('react');
-
-
-var ArtGateLogin = React.createClass({
+export default class ArtGateLogin extends React.Component{
    render(){
        return (
            <div className="content">
@@ -17,6 +12,4 @@ var ArtGateLogin = React.createClass({
            </div>
        );
    }
-});
-
-module.exports.ArtGateLogin = ArtGateLogin;
+};

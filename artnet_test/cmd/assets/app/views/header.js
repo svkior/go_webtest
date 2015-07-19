@@ -1,21 +1,12 @@
-/** @jsx React.DOM **/
 
-var ReactBootstrap = require('react-bootstrap');
-var ReactRouterBootstrap = require('react-router-bootstrap');
-var React = require('react');
+import React from 'react';
 
-var Navbar =  ReactBootstrap.Navbar;
-var Nav = ReactBootstrap.Nav;
-var NavItem = ReactBootstrap.NavItem;
-var DropdownButton = ReactBootstrap.DropdownButton;
-var MenuItem = ReactBootstrap.MenuItem;
-
-var NavItemLink = ReactRouterBootstrap.NavItemLink;
-var MenuItemLink = ReactRouterBootstrap.MenuItemLink;
+import {NavItem} from 'react-bootstrap';
+import {NavItemLink, MenuItemLink} from 'react-router-bootstrap';
 
 
-var ArtGateHeader = React.createClass({
-    render: function(){
+export default class ArtGateHeader extends React.Component{
+    render(){
         return (
             <nav className="navbar navbar-inverse navbar-static-top" role="navigation">
                 <div className="container-fluid">
@@ -43,6 +34,4 @@ var ArtGateHeader = React.createClass({
             </nav>
         )
     }
-});
-
-module.exports.ArtGateHeader = ArtGateHeader;
+};

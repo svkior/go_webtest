@@ -1,5 +1,4 @@
 
-/** @jsx React.DOM **/
 
 var ReactBootstrap = require('react-bootstrap');
 var React = require('react');
@@ -17,6 +16,10 @@ var ArtGateSetupArtIn = React.createClass({
     mixins: [
         Reflux.connect(SetupStore, 'setup')
     ],
+    onSubmit: function(e){
+        e.preventDefault();
+        SetupActions.uploadArtIns();
+    },
     render(){
         var edits = [];
         var addButton = "";
@@ -50,7 +53,7 @@ var ArtGateSetupArtIn = React.createClass({
 
         return (
             <div className="row">
-                <form className="setupForm" onSubmit={SetupActions.uploadArtIns}>
+                <form className="setupForm" onSubmit={this.onSubmit}>
                     <div className="panel-body ag-setup-container">
                        <div className="ag-setup panel panel-default">
                             <h3>Параметры ArtNet Входов</h3>

@@ -1,6 +1,4 @@
 
-/** @jsx React.DOM **/
-
 var ReactBootstrap = require('react-bootstrap');
 var React = require('react');
 var Reflux = require('reflux');
@@ -42,7 +40,7 @@ var ArtGateStatus = React.createClass({
         var IfaceNodes = [];
         if(this.state.setup){
             // Статус ETH
-            ethString = <ul>
+            var ethString = <ul>
                     <li>IP:{this.state.setup.Eth.IpAddress}</li>
                     <li> Msk:{this.state.setup.Eth.IpMask}</li>
                     <li> Gw:{this.state.setup.Eth.IpGw}</li>

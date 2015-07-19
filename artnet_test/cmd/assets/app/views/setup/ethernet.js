@@ -1,6 +1,4 @@
 
-/** @jsx React.DOM **/
-
 var ReactBootstrap = require('react-bootstrap');
 var React = require('react');
 var Reflux = require('reflux');
@@ -17,6 +15,10 @@ var ArtGateSetupEthernet = React.createClass({
     mixins: [
         Reflux.connect(SetupStore, 'setup')
     ],
+    onSubmit: function(e){
+        e.preventDefault();
+        SetupActions.uploadEthernet();
+    },
     render(){
         var ipAddr;
         var ipMask;
@@ -37,7 +39,7 @@ var ArtGateSetupEthernet = React.createClass({
         }
         return (
             <div className="row">
-                <form onSubmit={SetupActions.uploadEthernet}>
+                <form onSubmit={this.onSubmit}>
 
                     <div className="panel-body ag-setup-container">
                         <div className="ag-setup panel panel-default">

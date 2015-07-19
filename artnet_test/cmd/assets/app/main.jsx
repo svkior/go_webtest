@@ -1,31 +1,30 @@
 
-import React from 'react';
-import router from "./router";
-/*
-import Router, { Route, DefaultRoute, Link, RouteHandler } from 'react-router';
+/** @jsx React.DOM **/
 
-import {SetupActions} from './actions/setup_actions.jsx';
+var React = require('react');
+var ReactRouter = require('react-router');
+var SetupActions = require('./actions/setup_actions.jsx').SetupActions;
 
-//var SetupActions = require('./actions/setup_actions.jsx').SetupActions;
+var ArtGateStatus = require('./views/status/status.jsx').ArtGateStatus;
+var ArtGateSetupEthernet = require('./views/setup/ethernet.jsx').ArtGateSetupEthernet;
+var ArtGateSetupArtIn = require('./views/setup/artin.jsx').ArtGateSetupArtIn;
+var ArtGateSetupArtOut = require('./views/setup/artout.jsx').ArtGateSetupArtOut;
+var ArtGateTestView = require('./views/testing/test.jsx').ArtGateTestView;
+var ArtGateLogin = require('./views/auth/login.jsx').ArtGateLogin;
 
-import {ArtGateStatus} from './views/status/status.jsx';
-import {ArtGateSetupEthernet} from './views/setup/ethernet.jsx';
-import {ArtGateSetupArtIn} from './views/setup/artin.jsx';
-import {ArtGateSetupArtOut} from './views/setup/artout.jsx';
-import {ArtGateTestView} from './views/testing/test.jsx';
-import {ArtGateLogin} from './views/auth/login.jsx';
+var ArtGateHeader = require('./views/header.jsx').ArtGateHeader;
+var ArtGateFooter = require('./views/footer.jsx').ArtGateFooter;
 
-import {ArtGateHeader} from './views/header.jsx';
-import {ArtGateFooter} from './views/footer.jsx';
-*/
-
-var client = {};
 
 // FOR DEBUG ONLY
 window.React = React;
-window.ArtGate = router(client);
 
-/*
+var DefaultRoute = ReactRouter.DefaultRoute;
+var Link = ReactRouter.Link;
+var Route = ReactRouter.Route;
+var RouteHandler= ReactRouter.RouteHandler;
+
+
 var ArtGateMain = React.createClass({
     render: function(){
         return (
@@ -57,7 +56,6 @@ var routes = (
 );
 
 
-Router.run(routes, function(Handler){
+ReactRouter.run(routes, function(Handler){
     React.render(<Handler/>, document.body);
 });
-*/

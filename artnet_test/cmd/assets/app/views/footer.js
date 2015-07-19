@@ -1,9 +1,6 @@
+import React from 'react';
 
-/** @jsx React.DOM **/
-
-var React = require('react');
-
-var ArtGateFooter = React.createClass({
+export default class ArtGateFooter extends React.Component{
     render(){
         return (
             <footer className="site-footer">
@@ -14,6 +11,4 @@ var ArtGateFooter = React.createClass({
             </footer>
         )
     }
-});
-
-module.exports.ArtGateFooter = ArtGateFooter;
+};

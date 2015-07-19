@@ -1,5 +1,4 @@
 
-/** @jsx React.DOM **/
 
 var Reflux = require('reflux');
 var SetupActions = require('../actions/setup_actions.jsx').SetupActions;

@@ -1,5 +1,4 @@
 
-/** @jsx React.DOM **/
 
 var AuthStore = Reflux.createStore({
     listenables: [AuthActions],
