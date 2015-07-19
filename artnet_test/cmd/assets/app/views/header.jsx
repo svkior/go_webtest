@@ -1,5 +1,9 @@
 /** @jsx React.DOM **/
 
+var ReactBootstrap = require('react-bootstrap');
+var ReactRouterBootstrap = require('react-router-bootstrap');
+var React = require('react');
+
 var Navbar =  ReactBootstrap.Navbar;
 var Nav = ReactBootstrap.Nav;
 var NavItem = ReactBootstrap.NavItem;
@@ -8,6 +12,7 @@ var MenuItem = ReactBootstrap.MenuItem;
 
 var NavItemLink = ReactRouterBootstrap.NavItemLink;
 var MenuItemLink = ReactRouterBootstrap.MenuItemLink;
+
 
 var ArtGateHeader = React.createClass({
     render: function(){
@@ -39,3 +44,5 @@ var ArtGateHeader = React.createClass({
         )
     }
 });
+
+module.exports.ArtGateHeader = ArtGateHeader;

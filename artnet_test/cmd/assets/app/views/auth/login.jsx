@@ -1,6 +1,10 @@
 
 /** @jsx React.DOM **/
 
+var ReactBootstrap = require('react-bootstrap');
+var React = require('react');
+
+
 var ArtGateLogin = React.createClass({
    render(){
        return (
@@ -14,3 +18,5 @@ var ArtGateLogin = React.createClass({
        );
    }
 });
+
+module.exports.ArtGateLogin = ArtGateLogin;

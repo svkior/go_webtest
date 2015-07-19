@@ -1,6 +1,7 @@
 
 /** @jsx React.DOM **/
-
+var ReactBootstrap = require('react-bootstrap');
+var React = require('react');
 
 var ArtGateJumbo = React.createClass({
     render(){
@@ -74,3 +75,7 @@ var ArtGateSetupEditDeleteEnable = React.createClass({
     }
 });
 
+
+module.exports.ArtGateJumbo = ArtGateJumbo;
+module.exports.ArtGateSetupEditor = ArtGateSetupEditor;
+module.exports.ArtGateSetupEditDeleteEnable = ArtGateSetupEditDeleteEnable;

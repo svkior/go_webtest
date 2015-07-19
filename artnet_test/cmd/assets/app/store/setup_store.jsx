@@ -1,6 +1,9 @@
 
 /** @jsx React.DOM **/
 
+var Reflux = require('reflux');
+var SetupActions = require('../actions/setup_actions.jsx').SetupActions;
+
 // Array Remove - By John Resig (MIT Licensed)
 Array.prototype.remove = function(from, to) {
     var rest = this.slice((to || from) + 1 || this.length);
@@ -136,3 +139,5 @@ var SetupStore = Reflux.createStore({
     }
 
 });
+
+module.exports.SetupStore = SetupStore;

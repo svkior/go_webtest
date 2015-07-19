@@ -1,8 +1,10 @@
 
 /** @jsx React.DOM **/
 
+var React = require('react');
+
 var ArtGateFooter = React.createClass({
-    render: function(){
+    render(){
         return (
             <footer className="site-footer">
                 Разработано &copy; 2014-2015 ООО "Театральные Технологические Системы" <br/>
@@ -13,3 +15,5 @@ var ArtGateFooter = React.createClass({
         )
     }
 });
+
+module.exports.ArtGateFooter = ArtGateFooter;

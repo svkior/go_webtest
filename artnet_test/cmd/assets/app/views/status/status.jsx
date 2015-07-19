@@ -1,6 +1,12 @@
 
 /** @jsx React.DOM **/
 
+var ReactBootstrap = require('react-bootstrap');
+var React = require('react');
+var Reflux = require('reflux');
+
+var SetupStore = require('../../store/setup_store.jsx').SetupStore;
+
 var PageHeader = ReactBootstrap.PageHeader,
     Label = ReactBootstrap.Label,
     Table = ReactBootstrap.Table;
@@ -18,7 +24,7 @@ var InterfaceStatus = React.createClass({
         return (
             <div className="ag-status panel panel-default">
                 <div className="panel-header">
-                    {this.props.name}<Label bsStyle={this.props.bsStyle}>{this.props.status}</Label>
+                    {this.props.name}<br/><Label bsStyle={this.props.bsStyle}>{this.props.status}</Label>
                 </div>
                 <div className="panel-body">
 
@@ -44,6 +50,7 @@ var ArtGateStatus = React.createClass({
                 </ul>;
             IfaceNodes.push(
                 <InterfaceStatus
+                    key={IfaceNodes.length}
                     name="Ethernet0"
                     status="ВКЛЮЧЕН"
                     bsStyle="success"
@@ -55,6 +62,7 @@ var ArtGateStatus = React.createClass({
                 var artIn = this.state.setup.ArtIns[i];
                 IfaceNodes.push(
                     <InterfaceStatus
+                        key={IfaceNodes.length}
                         name={"ArtNet In" + i}
                         status={artIn.Enabled ? "ВКЛЮЧЕН" : "ОТКЛЮЧЕН"}
                         bsStyle={artIn.Enabled ? "success" : "warning"}
@@ -67,6 +75,7 @@ var ArtGateStatus = React.createClass({
                 var artOut = this.state.setup.ArtOuts[i];
                 IfaceNodes.push(
                     <InterfaceStatus
+                        key={IfaceNodes.length}
                         name={"ArtNet Out" + i}
                         status={artOut.Enabled ? "ВКЛЮЧЕН" : "ОТКЛЮЧЕН"}
                         bsStyle={artOut.Enabled ? "success" : "warning"}
@@ -76,7 +85,6 @@ var ArtGateStatus = React.createClass({
             }
 
         }
-
         return (
             <div className="row">
                 <div className="panel-body ag-setup-container">
@@ -91,3 +99,5 @@ var ArtGateStatus = React.createClass({
         );
     }
 });
+
+module.exports.ArtGateStatus = ArtGateStatus;

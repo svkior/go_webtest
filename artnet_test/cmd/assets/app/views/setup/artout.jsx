@@ -1,6 +1,15 @@
 
 /** @jsx React.DOM **/
 
+var ReactBootstrap = require('react-bootstrap');
+var React = require('react');
+var Reflux = require('reflux');
+
+var SetupStore = require('../../store/setup_store.jsx').SetupStore;
+var SetupActions = require('../../actions/setup_actions.jsx').SetupActions;
+
+var ArtGateSetupEditDeleteEnable = require('../../helpers/forms/editors.jsx').ArtGateSetupEditDeleteEnable;
+
 var ButtonInput = ReactBootstrap.ButtonInput;
 
 
@@ -15,6 +24,7 @@ var ArtGateSetupArtOut = React.createClass({
             edits = this.state.setup.ArtOuts.map(function(artin, i){
                 return (
                     <ArtGateSetupEditDeleteEnable
+                        key={i}
                         name={artin.Name}
                         value={artin.Universe}
                         onChange={SetupActions.editArtOut}
@@ -35,7 +45,7 @@ var ArtGateSetupArtOut = React.createClass({
                     </div>
                 </div>
         } else {
-            addButton = null;
+            addButton = "";
         }
         return (
             <div className="row">
@@ -58,3 +68,5 @@ var ArtGateSetupArtOut = React.createClass({
         );
     }
 });
+
+module.exports.ArtGateSetupArtOut = ArtGateSetupArtOut;
