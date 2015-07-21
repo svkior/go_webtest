@@ -2,7 +2,7 @@
 var ReactBootstrap = require('react-bootstrap');
 var React = require('react');
 
-var ArtGateJumbo = require('../../helpers/forms/editors.jsx').ArtGateJumbo;
+var ArtGateJumbo = require('../../helpers/forms/editors').ArtGateJumbo;
 
 
 var ArtGateTestView = React.createClass({

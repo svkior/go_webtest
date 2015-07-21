@@ -6,7 +6,7 @@ var Reflux = require('reflux');
 var SetupStore = require('../../store/setup_store.jsx').SetupStore;
 var SetupActions = require('../../actions/setup_actions.jsx').SetupActions;
 
-var ArtGateSetupEditor = require('../../helpers/forms/editors.jsx').ArtGateSetupEditor;
+var ArtGateSetupEditor = require('../../helpers/forms/editors').ArtGateSetupEditor;
 
 
 var ButtonInput = ReactBootstrap.ButtonInput;

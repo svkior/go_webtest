@@ -7,7 +7,7 @@ var Reflux = require('reflux');
 var SetupStore = require('../../store/setup_store.jsx').SetupStore;
 var SetupActions = require('../../actions/setup_actions.jsx').SetupActions;
 
-var ArtGateSetupEditDeleteEnable = require('../../helpers/forms/editors.jsx').ArtGateSetupEditDeleteEnable;
+var ArtGateSetupEditDeleteEnable = require('../../helpers/forms/editors').ArtGateSetupEditDeleteEnable;
 
 var ButtonInput = ReactBootstrap.ButtonInput;
 

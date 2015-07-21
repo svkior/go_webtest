@@ -35,6 +35,23 @@ var ArtGateSetupEditor = React.createClass({
     }
 });
 
+var ArtGatePasswordEditor = React.createClass({
+    handleChange: function(e){
+        //this.setState({value: event.target.value});
+        this.props.onChange(event.target.value, this.props.number);
+    },
+    render: function(){
+        //console.log(this.props.value);
+        return(
+            <div className="ag-setup panel panel-default">
+                <div className="panel-body">
+                    <Input type="password" label={this.props.name} onChange={this.handleChange} value={this.props.value} ref="ip" />
+                </div>
+            </div>
+        );
+    }
+});
+
 var ArtGateSetupEditDeleteEnable = React.createClass({
     handleChange: function(e){
         //this.setState({value: event.target.value});
@@ -74,7 +91,7 @@ var ArtGateSetupEditDeleteEnable = React.createClass({
     }
 });
 
-
 module.exports.ArtGateJumbo = ArtGateJumbo;
 module.exports.ArtGateSetupEditor = ArtGateSetupEditor;
+module.exports.ArtGatePasswordEditor = ArtGatePasswordEditor;
 module.exports.ArtGateSetupEditDeleteEnable = ArtGateSetupEditDeleteEnable;
