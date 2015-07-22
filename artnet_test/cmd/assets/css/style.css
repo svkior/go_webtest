@@ -6764,29 +6764,6 @@ button.close {
     display: none !important;
   }
 }
-/*
-@table-bg-accent: #3f2596;
-@table-bg-hover: #808080;
-
-
-
-.page {
-  .container-fixed();
-  padding: 30px;
-}
-
-@media screen and (min-width: @screen-tablet) {
-  .page {
-    max-width: 728px;
-  }
-}
-
-@media screen and (min-width: @screen-desktop) {
-  .page {
-    max-width: 940px;
-  }
-}
-*/
 .ag-setup-container {
   text-align: center;
   width: 820px;

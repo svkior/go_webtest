@@ -97,9 +97,9 @@ func NewRestInterface(){
 
 	api.Use(&rest.IfMiddleware{
 		Condition: func(request *rest.Request) bool {
-//			return request.URL.Path != "/login"
-//			return request.URL.Path != "/status"
-			return false; // FIXME: Пропускаем вообще все без авторизации
+			return request.URL.Path != "/login"
+			//return request.URL.Path != "/status"
+			//return false; // FIXME: Пропускаем вообще все без авторизации
 		},
 		IfTrue: jwt_middleware,
 	})

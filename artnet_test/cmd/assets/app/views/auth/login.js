@@ -11,17 +11,22 @@ export default React.createClass({
         Reflux.connect(AuthStore, 'credintals')
     ],
     fakeChange(){
-        console.log("CHange!!!!");
+        console.log("Change!!!!");
     },
     onSubmit(e){
         e.preventDefault();
+        AuthActions.doLogin();
     },
     render(){
 
-        let login = "123";
-        let password = "123";
+        let login;
+        let password;
         if(this.state.credintals){
-            console.log(this.state.credintals);
+            login = this.state.credintals.login;
+            password = this.state.credintals.password;
+        } else {
+            login = "NO LOGIN";
+            password = "";
         }
 
        return (
@@ -32,7 +37,7 @@ export default React.createClass({
                            <h3>Авторизация</h3>
                        </div>
                        <ArtGateSetupEditor name="Имя пользователя" value={login} onChange={AuthActions.updateLogin}/>
-                       <ArtGatePasswordEditor name="Пароль" value={password} onChange={this.fakeChange}/>
+                       <ArtGatePasswordEditor name="Пароль" value={password} onChange={AuthActions.updatePassword}/>
                        <div className="ag-setup-buttons panel panel-default">
                            <div className="panel-body">
                                <ButtonInput type="submit" value="Обновить"/>
