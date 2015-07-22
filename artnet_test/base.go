@@ -12,7 +12,6 @@ func StubForNotFound(w http.ResponseWriter, r *http.Request) {
 }
 
 func NewApp() webserver.Middleware {
-	r := NewRoom()
 
 	router := httprouter.New()
 	router.Handle("GET", "/", HandleHome)
@@ -24,9 +23,6 @@ func NewApp() webserver.Middleware {
 	router.NotFound = http.HandlerFunc(StubForNotFound)
 
 	secureRouter := httprouter.New()
-
-	secureRouter.Handle("GET", "/room", HandleDmxIn)
-	secureRouter.Handle("GET", "/roomfeed", r.HandleDmxInSocket )
 
 	secureRouter.Handle("GET",  "/sign-out", webserver.HandleSessionDestroy)
 	secureRouter.Handle("GET",  "/account",  webserver.HandleUserEdit)

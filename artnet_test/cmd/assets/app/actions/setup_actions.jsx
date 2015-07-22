@@ -17,7 +17,9 @@ var SetupActions = Reflux.createActions([
     "editArtOut",
     "uploadEthernet", // Закачать параметры Ethernet в прибор
     "uploadArtIns",   // Закачать Входы ArtNet
-    "uploadArtOuts"   // Закачать Выходы ArtNet
+    "uploadArtOuts",   // Закачать Выходы ArtNet
+    "putToken",       //
+    "eraseToken"
 ]);
 
 module.exports.SetupActions = SetupActions;

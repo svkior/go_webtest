@@ -83,7 +83,14 @@ func handle_auth(w rest.ResponseWriter, r *rest.Request) {
 	w.WriteJson(map[string]string{"authed": r.Env["REMOTE_USER"].(string)})
 }
 
+
+
+
+
 func NewRestInterface(){
+
+	d := NewDevice()
+
 	jwt_middleware := &jwt.JWTMiddleware{
 		Key:        []byte("secret key"),
 		Realm:      "jwt auth",
@@ -98,8 +105,6 @@ func NewRestInterface(){
 	api.Use(&rest.IfMiddleware{
 		Condition: func(request *rest.Request) bool {
 			return request.URL.Path != "/login"
-			//return request.URL.Path != "/status"
-			//return false; // FIXME: Пропускаем вообще все без авторизации
 		},
 		IfTrue: jwt_middleware,
 	})
@@ -128,6 +133,9 @@ func NewRestInterface(){
 
 	http.Handle("/api/", http.StripPrefix("/api", api.MakeHandler()))
 	http.Handle("/assets/", http.StripPrefix("/assets", http.FileServer(http.Dir("./assets"))))
+	http.Handle("/wsinterface", &templateHandler{filename:"wsint.html"})
+	http.Handle("/device", d)
+	go d.run()
 	http.Handle("/", &templateHandler{filename:"main.html"})
 
 	log.Fatal(http.ListenAndServe(":8080", nil))

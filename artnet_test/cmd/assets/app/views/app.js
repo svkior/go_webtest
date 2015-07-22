@@ -51,7 +51,8 @@ export default React.createClass({
         var loginout;
         if(this.state.auth){
             // Есть вообще аутентикация
-            if(this.state.auth.jwt.length > 5){
+
+            if(this.state.auth.jwt && this.state.auth.jwt.length > 5){
                 // Есть токен и авторизация
                 mainBoard = <RouteHandler/>;
                 loginout = <ArtGLogout onClick={this.logoutProc}/>;

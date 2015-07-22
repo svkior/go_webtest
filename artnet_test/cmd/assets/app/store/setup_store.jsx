@@ -18,6 +18,10 @@ var SetupStore = Reflux.createStore({
         this.setup.Eth.IpAddress = newIp;
         this.updateSetup(this.setup);
     },
+    onPutToken: function(token){
+        this.creds = token;
+        this.fetchSetup();
+    },
     onSetMask: function(newMask){
         //console.log("Want to change newMask");
         this.setup.Eth.IpMask = newMask;
@@ -88,37 +92,49 @@ var SetupStore = Reflux.createStore({
     },
     setupUrl: '/api/status',
     fetchSetup: function(){
-        $.ajax({
-            url: window.location.protocol + "//" + window.location.host + this.setupUrl,
-            dataType: 'json',
-            cache: false,
-            success: function (result) {
-                this.setup = result;
-                this.trigger(this.setup);
-            }.bind(this),
-            error: function (xhr, status, err) {
-                console.error("/api/status", status, err.toString());
-            }.bind(this)
-        });
+        if(this.creds === ""){
+            console.error("Not logged in");
+        } else
+            $.ajax({
+                url: window.location.protocol + "//" + window.location.host + this.setupUrl,
+                dataType: 'json',
+                cache: false,
+                success: function (result) {
+                    this.setup = result;
+                    this.trigger(this.setup);
+                }.bind(this),
+                error: function (xhr, status, err) {
+                    console.error("/api/status", status, err.toString());
+                }.bind(this),
+                beforeSend: function(xhr){
+                    xhr.setRequestHeader("Authorization", "Bearer " + this.creds)
+                }.bind(this)
+            });
     },
     uploadContent: function(url, data){
         var fullUrl = window.location.protocol + "//" + window.location.host + url;
-        $.ajax({
-            type: "POST",
-            url: fullUrl,
-            contentType: "application/json; charset=utf-8",
-            dataType: 'json',
-            async: true,
-            data: JSON.stringify(data),
-            success: function(result){
-                this.setup = result;
-                this.trigger(this.setup);
-            }.bind(this),
-            error: function(xhr, status, err){
-                console.log(err.toString());
-                //console.error(xhr.responseText, status, err.toString());
-            }.bind(this)
-        });
+        if(this.creds === ""){
+            console.error("Not logged in");
+        } else
+            $.ajax({
+                type: "POST",
+                url: fullUrl,
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                async: true,
+                data: JSON.stringify(data),
+                success: function(result){
+                    this.setup = result;
+                    this.trigger(this.setup);
+                }.bind(this),
+                error: function(xhr, status, err){
+                    console.log(err.toString());
+                    //console.error(xhr.responseText, status, err.toString());
+                }.bind(this),
+                beforeSend: function(xhr){
+                    xhr.setRequestHeader("Authorization", "Bearer " + this.creds)
+                }.bind(this)
+            });
 
     },
     onUploadEthernet: function(){
@@ -134,7 +150,12 @@ var SetupStore = Reflux.createStore({
         return this.setup;
     },
     init: function(){
-        this.fetchSetup();
+        this.creds = "";
+        this.setup = {
+            Eth: {}
+        };
+        this.trigger(this.setup);
+        //this.fetchSetup();
     }
 
 });
