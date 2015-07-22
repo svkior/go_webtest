@@ -10,6 +10,8 @@ import (
 	"bitbucket.org/tts/light_dmx_go/ethconfig"
 	"github.com/StephanDollberg/go-json-rest-middleware-jwt"
 	"time"
+	"bitbucket.org/tts/go_webtest/artnet_test/trace"
+	"os"
 )
 
 func wsFunc(ws *websocket.Conn){
@@ -90,6 +92,7 @@ func handle_auth(w rest.ResponseWriter, r *rest.Request) {
 func NewRestInterface(){
 
 	d := NewDevice()
+	d.tracer = trace.New(os.Stdout)
 
 	jwt_middleware := &jwt.JWTMiddleware{
 		Key:        []byte("secret key"),

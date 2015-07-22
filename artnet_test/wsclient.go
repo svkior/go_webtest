@@ -1,7 +1,10 @@
 package artnet_test
 
 
-import "github.com/gorilla/websocket"
+import (
+	"github.com/gorilla/websocket"
+	"time"
+)
 
 // wsclient представляет одного подключенного пользователя
 
@@ -9,7 +12,7 @@ type remoteClient struct {
 	// Соединение с клиентом
 	socket *websocket.Conn
 	// Канал для посыла для этого конкретного клиента
-	send chan []byte
+	send chan *message
 	// Прибор для которого происходит настройка
 	device *device
 }
@@ -17,7 +20,9 @@ type remoteClient struct {
 // Поток чтения из websocket
 func (c *remoteClient) read(){
 	for {
-		if _, msg, err := c.socket.ReadMessage(); err == nil {
+		var msg *message
+		if err := c.socket.ReadJSON(&msg); err == nil {
+			msg.When = time.Now()
 			c.device.forward <- msg
 		} else {
 			break
@@ -29,7 +34,7 @@ func (c *remoteClient) read(){
 // Поток записи в websocket
 func (c *remoteClient) write(){
 	for msg := range c.send {
-		if err := c.socket.WriteMessage(websocket.TextMessage, msg); err != nil {
+		if err := c.socket.WriteJSON(msg); err != nil {
 			break
 		}
 	}
