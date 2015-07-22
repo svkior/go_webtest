@@ -38,9 +38,9 @@ var AuthStore = Reflux.createStore({
             }
         });
     },
-    loggedIn(){
-        //console.log("Logged In");
-        return false;
+    onDoLogout(){
+        this.credintals.jwt = "";
+        this.updateCredintals(this.credintals);
     },
     updateCredintals: function(credintals){
         //console.log("Update Setup: ", setup);

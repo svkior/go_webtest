@@ -7,6 +7,7 @@ import {NavItemLink, MenuItemLink} from 'react-router-bootstrap';
 
 export default class ArtGateHeader extends React.Component{
     render(){
+        //console.log(this.props.loginout);
         return (
             <nav className="navbar navbar-inverse navbar-static-top" role="navigation">
                 <div className="container-fluid">
@@ -28,6 +29,7 @@ export default class ArtGateHeader extends React.Component{
                             <MenuItemLink to="setup:ethernet">Ethernet</MenuItemLink>
                             <MenuItemLink to="setup:artin">ArtNet Вход</MenuItemLink>
                             <MenuItemLink to="setup:artout">ArtNet Выход</MenuItemLink>
+                            {this.props.loginout}
                         </ul>
                     </div>
                 </div>
