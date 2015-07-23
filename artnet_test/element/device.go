@@ -104,11 +104,7 @@ func NewDevice() *device{
 }
 
 func (d *device) AddElement(e Element){
-	log.Println("AddElement begin1")
 	e.SetDevice(d)
-	log.Println("AddElement begin2")
 	d.joinElement <- e
-	log.Println("AddElement begin3")
 	go e.Run()
-	log.Println("AddElement end")
 }

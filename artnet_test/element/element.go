@@ -1,5 +1,5 @@
 package element
-import "time"
+
 
 
 
@@ -12,8 +12,3 @@ type Element interface {
 }
 
 
-type Message struct {
-	Type string `json:"type"`
-	When time.Time `json:"when"`
-	Payload interface{} `json:"payload"`
-}

@@ -2,7 +2,8 @@ import React from 'react';
 
 import Router, {Route, DefaultRoute, Link, RouteHandler} from 'react-router';
 
-import {App,ArtGateDefault}  from "./views/app";
+import App from "./views/app.js"
+import ArtGateDefault from "./views/status/default.js"
 
 var routes = (
     <Route name="app" path="/wsinterface" handler={App}>

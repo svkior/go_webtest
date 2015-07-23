@@ -95,6 +95,8 @@ func NewRestInterface(){
 
 	fwe := element.NewFileWatcher("./assets/build/wsmain.js")
 
+	ticker := element.NewTicker(1 * time.Second)
+
 	jwt_middleware := &jwt.JWTMiddleware{
 		Key:        []byte("secret key"),
 		Realm:      "jwt auth",
@@ -141,6 +143,7 @@ func NewRestInterface(){
 
 	http.Handle("/device", d)
 	go d.AddElement(fwe)
+	go d.AddElement(ticker)
 
 	http.Handle("/", &templateHandler{filename:"main.html"})
 

@@ -49,11 +49,9 @@ func (e *fileWatcherElement) getLasTime() (time.Time, error) {
 
 
 func (e *fileWatcherElement) sendUpdate(t time.Time){
-	var msg Message
-	msg.When = t
-	msg.Type = "update"
+	msg := GetEmptyMessage("reload", true)
 	msg.Payload = "Update File Time"
-	e.device.forward <- &msg
+	e.device.forward <- msg
 }
 
 func (e *fileWatcherElement) Run() {
