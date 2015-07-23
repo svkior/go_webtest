@@ -1,4 +1,4 @@
-package artnet_test
+package element
 import (
 	"github.com/gorilla/websocket"
 	"net/http"
@@ -10,40 +10,56 @@ import (
 // Структура, описывающая устройство
 type device struct {
 	// канал для широковещательной рассылки хени по конкретному прибору
-	forward chan *message
+	forward chan *Message
 	// join - добавить клиента к серверу
 	join chan *remoteClient
 	// leave - убрать клиента из сервера
 	leave chan *remoteClient
 	// Все подключенные клиенты
 	clients map[*remoteClient]bool
+	// joinElement - добавить элемент
+	joinElement chan Element
+	// Убрать элемента из сервера
+	leaveElement chan Element
+	// Все подключенные элементы
+	elements map[Element]bool
 	// tracer будет получать информацию об активности прибора
-	tracer trace.Tracer
+	Tracer trace.Tracer
 }
 
 
-func (d *device) run(){
+func (d *device) Run(){
+	log.Println("Device RUNNED")
 	for {
 		select {
+		case elem := <-d.joinElement:
+			log.Println("Hey Joe")
+			d.elements[elem] = true
+		case elem := <-d.leaveElement:
+			delete(d.elements, elem)
+			elem.Quit()
+		// подключение нового клиента
 		case client := <-d.join:
 			d.clients[client] = true
-			d.tracer.Trace("Новый клиент подключился")
+			d.Tracer.Trace("Новый клиент подключился")
+		// отключение нового клиента
 		case client := <-d.leave:
 			delete(d.clients, client)
 			close(client.send)
-			d.tracer.Trace("Клиент ушел")
+			d.Tracer.Trace("Клиент ушел")
+		// Пришло сообщение для всех клиентов
 		case msg := <-d.forward:
-			d.tracer.Trace("Message received from", string(msg.Name), ": ", string(msg.Message))
+			d.Tracer.Trace("Message type", string(msg.Type))
 			for client := range d.clients {
 				select {
 				case client.send <- msg:
 					// Сообщение ушло
-				d.tracer.Trace(" -- ушло к клиенту")
+				d.Tracer.Trace(" -- ушло к клиенту")
 				default:
 					// Не смогли послать
 					delete(d.clients, client)
 					close(client.send)
-					d.tracer.Trace(" -- Не ушло. ошибка подключения. удаляем сессию с клиентом")
+					d.Tracer.Trace(" -- Не ушло. ошибка подключения. удаляем сессию с клиентом")
 				}
 			}
 		}
@@ -65,7 +81,7 @@ func (d *device) ServeHTTP(w http.ResponseWriter, req *http.Request){
 	}
 	client := &remoteClient{
 		socket: socket,
-		send: make(chan *message, messageBufferSize),
+		send: make(chan *Message, messageBufferSize),
 		device: d,
 	}
 	d.join <- client
@@ -76,10 +92,23 @@ func (d *device) ServeHTTP(w http.ResponseWriter, req *http.Request){
 
 func NewDevice() *device{
 	return &device{
-		forward: make(chan *message),
+		forward: make(chan *Message),
 		join: make(chan *remoteClient),
 		leave: make(chan *remoteClient),
+		joinElement: make(chan Element),
+		leaveElement: make(chan Element),
 		clients: make(map[*remoteClient]bool),
-		tracer: trace.Off(),
+		elements: make(map[Element]bool),
+		Tracer: trace.Off(),
 	}
+}
+
+func (d *device) AddElement(e Element){
+	log.Println("AddElement begin1")
+	e.SetDevice(d)
+	log.Println("AddElement begin2")
+	d.joinElement <- e
+	log.Println("AddElement begin3")
+	go e.Run()
+	log.Println("AddElement end")
 }

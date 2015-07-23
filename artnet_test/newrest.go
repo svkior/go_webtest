@@ -12,6 +12,7 @@ import (
 	"time"
 	"bitbucket.org/tts/go_webtest/artnet_test/trace"
 	"os"
+	"bitbucket.org/tts/go_webtest/artnet_test/element"
 )
 
 func wsFunc(ws *websocket.Conn){
@@ -86,13 +87,13 @@ func handle_auth(w rest.ResponseWriter, r *rest.Request) {
 }
 
 
-
-
-
 func NewRestInterface(){
 
-	d := NewDevice()
-	d.tracer = trace.New(os.Stdout)
+	d := element.NewDevice()
+	d.Tracer = trace.New(os.Stdout)
+	go d.Run()
+
+	fwe := element.NewFileWatcher("./assets/build/wsmain.js")
 
 	jwt_middleware := &jwt.JWTMiddleware{
 		Key:        []byte("secret key"),
@@ -137,8 +138,10 @@ func NewRestInterface(){
 	http.Handle("/api/", http.StripPrefix("/api", api.MakeHandler()))
 	http.Handle("/assets/", http.StripPrefix("/assets", http.FileServer(http.Dir("./assets"))))
 	http.Handle("/wsinterface", &templateHandler{filename:"wsint.html"})
+
 	http.Handle("/device", d)
-	go d.run()
+	go d.AddElement(fwe)
+
 	http.Handle("/", &templateHandler{filename:"main.html"})
 
 	log.Fatal(http.ListenAndServe(":8080", nil))

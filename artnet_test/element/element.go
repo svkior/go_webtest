@@ -1,9 +1,19 @@
-package artnet_test
+package element
+import "time"
 
 
 
-// Элемент ArtGate
-// Добавляет функционал
 type Element interface {
-	GetStatus() string
+	GetElement() Element
+	Run()
+	Quit()
+	SetDevice(*device)
+	GetRecv() chan *Message
+}
+
+
+type Message struct {
+	Type string `json:"type"`
+	When time.Time `json:"when"`
+	Payload interface{} `json:"payload"`
 }

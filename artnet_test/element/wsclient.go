@@ -1,4 +1,4 @@
-package artnet_test
+package element
 
 
 import (
@@ -12,7 +12,7 @@ type remoteClient struct {
 	// Соединение с клиентом
 	socket *websocket.Conn
 	// Канал для посыла для этого конкретного клиента
-	send chan *message
+	send chan *Message
 	// Прибор для которого происходит настройка
 	device *device
 }
@@ -20,7 +20,7 @@ type remoteClient struct {
 // Поток чтения из websocket
 func (c *remoteClient) read(){
 	for {
-		var msg *message
+		var msg *Message
 		if err := c.socket.ReadJSON(&msg); err == nil {
 			msg.When = time.Now()
 			c.device.forward <- msg

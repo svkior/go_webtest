@@ -14,7 +14,8 @@ var App = React.createClass({
 import Reflux from 'reflux';
 
 var SendActions = Reflux.createActions([
-    "sendMessage"
+    "sendMessage",
+    "disconnected"
 ]);
 
 
@@ -23,28 +24,56 @@ var SendStore = Reflux.createStore({
     listenables: [SendActions],
     onSendMessage: function(msg){
         var m = {
-            Name: "Yass",
-            Message: msg
+            type: "status",
+            payload: {
+                Message: "тестовое сообщение"
+            }
         };
         if(this.socket){
             this.socket.send(JSON.stringify(m));
         }
     },
-    init(){
-        if(!window["WebSocket"]){
-            alert("Error: Your browser does not support web sockets.")
-        } else {
-            this.socket = new WebSocket("ws://" + window.location.host +"/device");
-            this.socket.onclose = function(){
-                alert("Connection has been closed.");
-            };
-            this.socket.onmessage = function(e){
-                this.messages.push(e.data);
-                this.trigger(this.messages);
-            }.bind(this);
+    processMessage(msg){
+        var un = JSON.parse(msg);
+
+        if(un && un.type){
+            // У нас есть тип сообщения
+            // FIXME: Поменять тип
+            if(un.type === "update"){
+                location.reload();
+            }
         }
-        this.messages = [];
+
+        this.messages.push(msg);
         this.trigger(this.messages);
+    },
+    connectToWs(){
+        console.log('Connecting to WS');
+        this.socket = new WebSocket("ws://" + window.location.host +"/device");
+        this.socket.onopen = function(){
+            console.log('Connected');
+            this.messages = [];
+            this.trigger(this.messages);
+        }.bind(this);
+
+        this.socket.onclose = function(){
+            console.log("Connection has been closed.");
+            //SendActions.disconnected();
+            setTimeout(this.connectToWs, 2000);
+        }.bind(this);
+        this.socket.onmessage = function(e){
+            this.processMessage(e.data);
+        }.bind(this);
+    },
+    init(){
+        console.log("Hello, World");
+        if(!window["WebSocket"]){
+            alert("Error: Your browser does not support web sockets.");
+            this.messages = [];
+            this.trigger(this.messages);
+        } else {
+            this.connectToWs();
+        }
     },
     getInitialState(){
         return this.messages;
@@ -59,6 +88,10 @@ var ArtGateDefault = React.createClass({
         e.preventDefault();
         SendActions.sendMessage("Test")
     },
+    pageReload(e){
+        e.preventDefault();
+        location.reload();
+    },
     render(){
         var messages;
         if(this.state.send){
@@ -70,10 +103,15 @@ var ArtGateDefault = React.createClass({
         }
         return (
             <div>
+                <h3>Статусные сообщения</h3>
                 <ul>
                     {messages}
                 </ul>
-                <a href onClick={this.click}>Жать</a>
+                <hr/>
+                <ul>
+                 <li><a href onClick={this.click}>Отправить сообщение</a></li>
+                 <li><a href onClick={this.pageReload}>Перегрузить</a></li>
+                </ul>
             </div>
         )
     }
