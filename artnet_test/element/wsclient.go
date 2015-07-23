@@ -14,7 +14,7 @@ type remoteClient struct {
 	// Канал для посыла для этого конкретного клиента
 	send chan *Message
 	// Прибор для которого происходит настройка
-	device *device
+	device *Device
 }
 
 // Поток чтения из websocket
@@ -23,6 +23,7 @@ func (c *remoteClient) read(){
 		var msg *Message
 		if err := c.socket.ReadJSON(&msg); err == nil {
 			msg.When = time.Now()
+			msg.Client = c
 			c.device.forward <- msg
 		} else {
 			break

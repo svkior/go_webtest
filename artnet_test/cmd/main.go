@@ -7,7 +7,6 @@ import (
 	"runtime"
 	"net"
 	"time"
-	"net/http"
 )
 
 //FIXME: Число выходных каналов не меняется
@@ -144,8 +143,5 @@ func main() {
 	go setupListener(setupChan)
 
 	//artnet_test.GinApp()
-	go artnet_test.NewRestInterface()
-
-	log.Println("Serving on port 3000")
-	log.Fatal(http.ListenAndServe(":3000", artnet_test.NewApp()))
+	artnet_test.NewRestInterface()
 }

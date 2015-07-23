@@ -4,11 +4,12 @@ import (
 	"net/http"
 	"log"
 	"bitbucket.org/tts/go_webtest/artnet_test/trace"
+	"fmt"
 )
 
 
 // Структура, описывающая устройство
-type device struct {
+type Device struct {
 	// канал для широковещательной рассылки хени по конкретному прибору
 	forward chan *Message
 	// join - добавить клиента к серверу
@@ -27,16 +28,26 @@ type device struct {
 	Tracer trace.Tracer
 }
 
+func (d *Device) closeClient(client *remoteClient){
+	for element := range d.elements{
+		element.UnsubscribeClient(client)
+	}
+	delete(d.clients, client)
+	close(client.send)
+	d.Tracer.Trace("Клиент ушел")
+	// TODO: Отписаться от всех подписанных каналов для клиента
+}
 
-func (d *device) Run(){
+
+func (d *Device) Run(){
 	log.Println("Device RUNNED")
 	for {
 		select {
 		case elem := <-d.joinElement:
-			log.Println("Hey Joe")
 			d.elements[elem] = true
 		case elem := <-d.leaveElement:
 			delete(d.elements, elem)
+			//TODO: Не происходит отписка от всех нужных каналов
 			elem.Quit()
 		// подключение нового клиента
 		case client := <-d.join:
@@ -44,22 +55,69 @@ func (d *device) Run(){
 			d.Tracer.Trace("Новый клиент подключился")
 		// отключение нового клиента
 		case client := <-d.leave:
-			delete(d.clients, client)
-			close(client.send)
-			d.Tracer.Trace("Клиент ушел")
-		// Пришло сообщение для всех клиентов
+			d.closeClient(client)
+
+		// Пришло сообщение от клиента
 		case msg := <-d.forward:
-			d.Tracer.Trace("Message type", string(msg.Type))
+			//d.Tracer.Trace("Message type", string(msg.Type))
+			switch msg.Type{
+			// Подписка на каналы
+			case "subscribe":
+				d.Tracer.Trace(fmt.Sprintf("Client %p wants to subscribe to channels", msg.Client))
+				d.Tracer.Trace(fmt.Sprintf("Что говорит список клиентов? : %v", d.clients[msg.Client]))
+				d.Tracer.Trace(fmt.Sprintf("Хочет подписаться на канал: %s", msg.Name))
+				//TODO: Сделать идентификатор элемента, сделать маппинг
+				for elem := range d.elements{
+					if elem.GetName() == msg.Name{
+						d.Tracer.Trace(fmt.Sprintf("Есть такой канал"))
+						// Добавляем клиента в очередь отправки сообщений
+						elem.SubscribeClient(msg.Client)
+					}
+				}
+			// Отписка от каналов
+			case  "unsubscribe":
+				//TODO: Отписаться от канала
+			// Положить запись на канал
+			case "send":
+				//TODO: отослать в канал запись
+			// Послать список доступных каналов
+			case "list":
+				//TODO: Послать список доступных каналов
+			// Запрос авторизации
+			case "auth":
+				//TODO: Обработать запрос авторизации
+			// Освобождение от авторизации
+			case "unauth":
+				//TODO: Обработать запрос об разавторизации
+			}
+
+			// Пока не разобрались все пакеты считаем броадкастными
+			broadcast := msg.Broadcast
+			// По умолчанию ничего не посылаем
+			send := false
+			// Проходимся по всем клиентам
 			for client := range d.clients {
-				select {
-				case client.send <- msg:
+				if(broadcast){
+					// Если броадкастовый пакет, то полюбому шлем всем
+					send = true
+				} else {
+					// Если не броадкастовый, то шлем не всем
+					if(client == msg.Client){
+						d.Tracer.Trace("ТАкой клиент реально есть")
+					}
+					send = true
+				}
+
+				if(send){
+					select {
+					case client.send <- msg:
 					// Сообщение ушло
-				d.Tracer.Trace(" -- ушло к клиенту")
-				default:
+						//d.Tracer.Trace(" -- ушло к клиенту")
+					default:
 					// Не смогли послать
-					delete(d.clients, client)
-					close(client.send)
-					d.Tracer.Trace(" -- Не ушло. ошибка подключения. удаляем сессию с клиентом")
+						d.closeClient(client)
+						d.Tracer.Trace(" -- Не ушло. ошибка подключения. удаляем сессию с клиентом")
+					}
 				}
 			}
 		}
@@ -73,7 +131,7 @@ const (
 
 var upgrader = &websocket.Upgrader{ReadBufferSize:socketBufferSize, WriteBufferSize:socketBufferSize}
 
-func (d *device) ServeHTTP(w http.ResponseWriter, req *http.Request){
+func (d *Device) ServeHTTP(w http.ResponseWriter, req *http.Request){
 	socket, err := upgrader.Upgrade(w, req, nil)
 	if err != nil {
 		log.Fatal("ServeHTTP:", err)
@@ -90,8 +148,9 @@ func (d *device) ServeHTTP(w http.ResponseWriter, req *http.Request){
 	client.read()
 }
 
-func NewDevice() *device{
-	return &device{
+
+func NewDevice() *Device{
+	return &Device{
 		forward: make(chan *Message),
 		join: make(chan *remoteClient),
 		leave: make(chan *remoteClient),
@@ -103,7 +162,7 @@ func NewDevice() *device{
 	}
 }
 
-func (d *device) AddElement(e Element){
+func (d *Device) AddElement(e Element){
 	e.SetDevice(d)
 	d.joinElement <- e
 	go e.Run()

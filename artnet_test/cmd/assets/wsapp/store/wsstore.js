@@ -8,6 +8,16 @@ import WSActions from "../actions/wsactions.js"
 
 var WSStore = Reflux.createStore({
     listenables: [WSActions],
+    onWsSubscribe: function(channel){
+        var m ={
+            type: "subscribe",
+            name: channel
+        };
+        if(this.socket){
+          this.socket.send(JSON.stringify(m));
+        }
+
+    },
     onSendMessage: function(msg){
         var m = {
             type: "status",
@@ -31,6 +41,9 @@ var WSStore = Reflux.createStore({
         }
 
         this.messages.push(msg);
+        if(this.messages.length > 15){
+            this.messages.splice (0, 1);
+        }
         this.trigger(this.messages);
     },
     connectToWs(){

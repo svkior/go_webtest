@@ -6,6 +6,7 @@ type Message struct {
 	Type string `json:"type"`
 	Name string `json:"name"`
 	When time.Time `json:"when"`
+	Client *remoteClient
 	Payload interface{} `json:"payload"`
 }
 

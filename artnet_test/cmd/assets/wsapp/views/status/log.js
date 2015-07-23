@@ -20,9 +20,9 @@ var ArtGateStatusLog = React.createClass({
             messages = "";
         }
         return (
-            <ul>
+            <ol>
                 {messages}
-            </ul>
+            </ol>
         );
     }
 });
