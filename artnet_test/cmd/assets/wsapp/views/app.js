@@ -22,13 +22,12 @@ var SendActions = Reflux.createActions([
 var SendStore = Reflux.createStore({
     listenables: [SendActions],
     onSendMessage: function(msg){
-        //console.log("Hello ", msg);
         var m = {
             Name: "Yass",
             Message: msg
         };
         if(this.socket){
-            this.socket.send(JSON.stringify(msg));
+            this.socket.send(JSON.stringify(m));
         }
     },
     init(){
@@ -69,7 +68,6 @@ var ArtGateDefault = React.createClass({
         } else {
             messages = "";
         }
-        console.log(messages);
         return (
             <div>
                 <ul>
