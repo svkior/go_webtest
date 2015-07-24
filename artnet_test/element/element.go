@@ -27,3 +27,15 @@ type Element interface {
 }
 
 
+// Абстрактный элемент от которого должны наследоваться
+// все остальные элементы
+
+type AbstractElement struct {
+
+}
+
+// Создание абстрактного элемента
+func NewAbstractElement() *AbstractElement {
+	return nil
+}
+
