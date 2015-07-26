@@ -1,7 +1,7 @@
 {
   "init_tasks": [
     {
-      "command": "gocov test -ginkgo.noColor=true | gocov report"
+      "command": "make test"
     }
   ],
   "watchers": [
@@ -9,7 +9,7 @@
       "extension": "go",
       "tasks": [
         {
-          "command": "gocov test -ginkgo.noColor=true | gocov report"
+          "command": "make test"
         }
       ]
     }

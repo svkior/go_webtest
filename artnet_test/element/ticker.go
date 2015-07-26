@@ -49,10 +49,6 @@ func (e *tickerElement) GetName() string {
 }
 
 
-func (e *tickerElement) GetElement() Element{
-	return e
-}
-
 func (e *tickerElement) Quit(){
 	e.quit <- true
 }
@@ -69,6 +65,30 @@ func (e *tickerElement) GetRecv() chan *Message {
 
 type LocMemStat struct {
 	Alloc uint64
+}
+
+// Главный цикл элемента ticker
+func (e *tickerElement) Run() {
+
+	ticker := time.NewTicker(e.delay)
+	for {
+		select {
+		case client := <- e.unsubscribe:
+			e.device.Tracer.Trace(fmt.Sprintf("Нужно отписать Клиента %p от канала %s", client, e.GetName()))
+			if( e.clients[client]){
+				delete(e.clients, client)
+				e.device.Tracer.Trace("Удалили")
+			}
+		case client := <- e.subscribe:
+			e.device.Tracer.Trace(fmt.Sprintf("Клиент %p хочет подключиться к каналу %s", client, e.GetName()))
+			e.clients[client] = true
+		case <- ticker.C:
+			e.sendUpdate()
+		case <- e.quit:
+			ticker.Stop()
+			return
+		}
+	}
 }
 
 
@@ -96,26 +116,7 @@ func (e *tickerElement) sendUpdate(){
 	//e.device.forward <- msg
 }
 
-// Главный цикл элемента ticker
-func (e *tickerElement) Run() {
 
-	ticker := time.NewTicker(e.delay)
-	for {
-		select {
-		case client := <- e.unsubscribe:
-			e.device.Tracer.Trace(fmt.Sprintf("Нужно отписать Клиента %p от канала %s", client, e.GetName()))
-			if( e.clients[client]){
-				delete(e.clients, client)
-				e.device.Tracer.Trace("Удалили")
-			}
-		case client := <- e.subscribe:
-			e.device.Tracer.Trace(fmt.Sprintf("Клиент %p хочет подключиться к каналу %s", client, e.GetName()))
-			e.clients[client] = true
-		case <- ticker.C:
-				e.sendUpdate()
-		case <- e.quit:
-			ticker.Stop()
-			return
-		}
-	}
+func (e *tickerElement) GetElement() Element{
+	return e
 }

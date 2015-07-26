@@ -1,4 +1,4 @@
-package element_test
+package element
 
 import (
 	. "github.com/onsi/ginkgo"
