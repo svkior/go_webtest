@@ -59,12 +59,12 @@ var _ = Describe("Element", func() {
 			})
 
 			It("Есть поле subscribe типа chan *remoteClient", func(){
-				var ce chan *remoteClient
+				var ce chan Element
 				Expect(absElement.subscribe).Should(BeAssignableToTypeOf(ce))
 			})
 
 			It("Есть поле unsubscribe типа chan *remoteClient", func(){
-				var ce chan *remoteClient
+				var ce chan Element
 				Expect(absElement.unsubscribe).Should(BeAssignableToTypeOf(ce))
 			})
 
@@ -87,13 +87,23 @@ var _ = Describe("Element", func() {
 			})
 
 			It("Есть массив подписанных клиентов clients", func(){
-				var clients map[*remoteClient]bool
+				var clients map[Element]bool
 				Expect(absElement.clients).Should(BeAssignableToTypeOf(clients))
 			})
 
 			It("Есть массив каналов quits для завершения goroutines ", func(){
-				var quits map[*bool]chan bool
+				var quits map[chan bool]bool
 				Expect(absElement.quits).Should(BeAssignableToTypeOf(quits))
+			})
+
+			It("Есть канал регистрации quits по названию joinQuits", func(){
+				var quits chan chan bool
+				Expect(absElement.joinQuits).Should(BeAssignableToTypeOf(quits))
+			})
+
+			It("Есть канал разрегистрации quits по названию leaveQuits", func(){
+				var quits chan chan bool
+				Expect(absElement.leaveQuits).Should(BeAssignableToTypeOf(quits))
 			})
 
 		})
@@ -105,6 +115,7 @@ var _ = Describe("Element", func() {
 			BeforeEach(func(){
 				newAbsEl = NewAbstractElement()
 			})
+
 
 			It("Метод Quit должен возвращать ошибку в том случае, если элемент не работает", func(){
 				newAbsEl.quit = make(chan bool, 1)
@@ -128,13 +139,13 @@ var _ = Describe("Element", func() {
 			})
 
 			It("Метод SubscribeCLient возвращает ошибку если канал закрыт", func(){
-				err := newAbsEl.SubscribeClient(&remoteClient{})
+				err := newAbsEl.SubscribeClient(&AbstractElement{})
 				Expect(err).Should(Equal(ErrElementSubscribeIsClosed))
 			})
 
 			It("Метод SubscribeCLient должен вызываться", func(){
-				newAbsEl.subscribe = make(chan *remoteClient, 1)
-				err := newAbsEl.SubscribeClient(&remoteClient{})
+				newAbsEl.subscribe = make(chan Element, 1)
+				err := newAbsEl.SubscribeClient(&AbstractElement{})
 				Expect(err).Should(BeNil())
 				Expect(len(newAbsEl.subscribe)).Should(Equal(1))
 			})
@@ -146,14 +157,14 @@ var _ = Describe("Element", func() {
 			})
 
 			It("Метод UnsubscribeClien возвращает ошибку, если канал закрыт", func(){
-				err := newAbsEl.UnsubscribeClient(&remoteClient{})
+				err := newAbsEl.UnsubscribeClient(&AbstractElement{})
 				Expect(err).ShouldNot(BeNil())
 				Expect(err).Should(Equal(ErrElementUnSubscribeIsClosed))
 			})
 
 			It("Метод UnSubscribeCLient должен вызываться", func(){
-				newAbsEl.unsubscribe = make(chan *remoteClient, 1)
-				err := newAbsEl.UnsubscribeClient(&remoteClient{})
+				newAbsEl.unsubscribe = make(chan Element, 1)
+				err := newAbsEl.UnsubscribeClient(&AbstractElement{})
 				Expect(err).Should(BeNil())
 				Expect(len(newAbsEl.unsubscribe)).Should(Equal(1))
 			})
@@ -302,7 +313,7 @@ var _ = Describe("Element", func() {
 			})
 
 			It("Проверяем что можно добавить клиента",func(){
-				rc := &remoteClient{}
+				rc := &AbstractElement{}
 				Expect(len(newAbsEl.clients)).Should(Equal(0))
 				newAbsEl.Run()
 				waitForMillisecond()
@@ -315,7 +326,7 @@ var _ = Describe("Element", func() {
 			})
 
 			It("Проверяем, что можно добавить и удалить нормального клиента", func(){
-				rc := &remoteClient{}
+				rc := &AbstractElement{}
 				Expect(len(newAbsEl.clients)).Should(Equal(0))
 				newAbsEl.Run()
 				waitForMillisecond()
@@ -329,7 +340,7 @@ var _ = Describe("Element", func() {
 			})
 
 			It("Проверяем, что нельзя добавить пустого клиента", func(){
-				var rc *remoteClient
+				var rc Element
 				newAbsEl.Run()
 				waitForMillisecond()
 				err := newAbsEl.SubscribeClient(rc)
@@ -338,7 +349,7 @@ var _ = Describe("Element", func() {
 			})
 
 			It("Проверяем, что нельзя удалить пустого клиента", func(){
-				var rc *remoteClient
+				var rc Element
 				newAbsEl.Run()
 				waitForMillisecond()
 				err := newAbsEl.UnsubscribeClient(rc)
@@ -362,12 +373,61 @@ var _ = Describe("Element", func() {
 			It("Можно зарегестрировать канал quit для goroutine", func(){
 				chName := make(chan bool)
 				newAbsEl.RegisterQuitChannel(chName)
+				Expect(len(newAbsEl.quits)).Should(Equal(1))
 			})
 
-			XIt("Нужно добавть тесты", func(){
-
+			It("По завершению работы элемента все зарегестрированные quits завершают работу", func(){
+				var finished bool
+				chQuit := make(chan bool)
+				go func(){
+					<- chQuit
+					finished = true
+				}()
+				newAbsEl.RegisterQuitChannel(chQuit)
+				newAbsEl.Run()
+				waitForMillisecond()
+				newAbsEl.Quit()
+				waitForMillisecond()
+				Expect(finished).Should(BeTrue())
 			})
 
+			It("Должны мочь зарегестрировать goroutine в том случае, если element работает", func(){
+				var finished bool
+				chQuit := make(chan bool)
+				newAbsEl.Run()
+				waitForMillisecond()
+				go func(){
+					<- chQuit
+					finished = true
+				}()
+				newAbsEl.RegisterQuitChannel(chQuit)
+				waitForMillisecond()
+				newAbsEl.Quit()
+				waitForMillisecond()
+				Expect(finished).Should(BeTrue())
+			})
+
+			XIt("По завершении работы goroutine должны мочь вызывать разрегестрацию quits",func(){
+				// Проблема с передачей канала в канал.
+				Expect(len(newAbsEl.quits)).Should(Equal(0))
+				chQuit := make(chan bool, 1)
+				newAbsEl.Run()
+				waitForMillisecond()
+				newAbsEl.RegisterQuitChannel(chQuit)
+				waitForMillisecond()
+				newAbsEl.UnregisterQuitChannel(chQuit)
+				waitForMillisecond()
+				Expect(len(newAbsEl.quits)).Should(Equal(0))
+			})
+
+			It("По завершении работы goroutine должны мочь вызывать разрегестрацию quits без Run",func(){
+				// Проблема с передачей канала в канал.
+				Expect(len(newAbsEl.quits)).Should(Equal(0))
+				chQuit := make(chan bool, 1)
+				newAbsEl.RegisterQuitChannel(chQuit)
+				newAbsEl.UnregisterQuitChannel(chQuit)
+				Expect(len(newAbsEl.quits)).Should(Equal(0))
+			})
 
 		})
 

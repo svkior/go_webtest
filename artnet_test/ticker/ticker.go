@@ -1,4 +1,4 @@
-package element
+package ticker
 import (
 	"time"
 	"fmt"

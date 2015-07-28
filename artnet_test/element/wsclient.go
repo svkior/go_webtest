@@ -1,6 +1,6 @@
 package element
 
-
+/*
 import (
 	"github.com/gorilla/websocket"
 	"time"
@@ -41,3 +41,4 @@ func (c *remoteClient) write(){
 	}
 	c.socket.Close()
 }
+*/

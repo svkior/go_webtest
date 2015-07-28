@@ -1,42 +1,14 @@
 /*
-  В принципе о пакете:
 
-  Этот пакет ....
+  Element
+
+  Интерфейс Element обеспечивает прозрачный интерфейс к элементам, входящим в устройство Device
+
 
  */
 package element
-import "errors"
 
-/* Интерфейс для элемента устройства, с которым будет налажено взаимодействие*/
-type Element interface {
-	// Получить ссылку на элемент
-	GetElement() Element
-	// Запустить основной цикл элемента на исполнение
-	Run()
-	// Остановить выполнение основного цикла элемента
-	Quit()
-	// Установить device как родительский элемент данного устройства
-	SetDevice(*Device)
-	// Получить канал для передачи сообщений элементу
-	GetRecv() chan *Message
-	// Получить имя объекта
-	GetName() string
-	// Добавляем клиента к элементу
-	SubscribeClient(client *remoteClient)
-	// Отписываем клиента от элемента
-	UnsubscribeClient(client *remoteClient)
-}
 
-type ElementError error
-
-var (
-	ErrElementIsNotRunning		  	= ElementError(errors.New("Элемент не запущен"))
-	ErrElementQuitClosed  		  	= ElementError(errors.New("Канал quit закрыт"))
-	ErrElementSubscribeIsClosed   	= ElementError(errors.New("Канал subscribe закрыт"))
-	ErrElementUnSubscribeIsClosed 	= ElementError(errors.New("Канал unsubscribe закрыт"))
-	ErrElementIsAlreadyRunning 		= ElementError(errors.New("Элемент уже работает"))
-	ErrElementClientIsNull			= ElementError(errors.New("Указатель на клиента нулевой"))
-)
 
 // Абстрактный элемент от которого должны наследоваться
 // все остальные элементы
@@ -47,9 +19,9 @@ type AbstractElement struct {
 	// Признак запуска процесса
 	running bool
 	// Канал подписки
-	subscribe chan *remoteClient
+	subscribe chan Element
 	// Канал отписки
-	unsubscribe chan *remoteClient
+	unsubscribe chan Element
 	// Уникальное имя элемента
 	name string
 	// Ссылка на девайс, которому принадлежит элемент
@@ -59,15 +31,19 @@ type AbstractElement struct {
 	// Карта обработчиков входных сообщений
 	handlers map[string]func(*Message) (bool, error)
 	// Карта подписанных клиентов
-	clients map[*remoteClient]bool
+	clients map[Element]bool
 	// Массив каналов выходов
-	quits map[*bool]chan bool
-
+	quits map[chan bool]bool
+	// Канал на подписку quits в то время, когда run запущен
+	joinQuits chan chan bool
+	// Канал на отписку quit в то время, когда run запущен
+	leaveQuits chan chan bool
 }
+
 
 // Подписываемся на канал для клиента
 
-func (e *AbstractElement) SubscribeClient(client *remoteClient) error {
+func (e *AbstractElement) SubscribeClient(client Element) error {
 	//e.subscribe <- client
 	if client == nil {
 		return ErrElementClientIsNull
@@ -81,7 +57,7 @@ func (e *AbstractElement) SubscribeClient(client *remoteClient) error {
 }
 
 // Отписываеся от канала клиентом
-func (e *AbstractElement) UnsubscribeClient(client *remoteClient) error{
+func (e *AbstractElement) UnsubscribeClient(client Element) error{
 	if client == nil {
 		return ErrElementClientIsNull
 	}
@@ -128,7 +104,18 @@ func (e *AbstractElement) Handle(name string, handler func(*Message) (bool, erro
 }
 
 func (e *AbstractElement) RegisterQuitChannel(ch chan bool){
+	if(e.running){
+		e.joinQuits <- ch
+	} else {
+		e.quits[ch] = true
+	}
+}
 
+func (e *AbstractElement) UnregisterQuitChannel(ch chan bool){
+	if(e.running){
+	} else {
+		delete(e.quits, ch)
+	}
 }
 
 func (c *AbstractElement) Run() error {
@@ -138,14 +125,19 @@ func (c *AbstractElement) Run() error {
 	}
 	c.running = true
 	c.quit = make(chan bool)
-	c.subscribe = make(chan *remoteClient)
-	c.unsubscribe = make(chan *remoteClient)
+	c.subscribe = make(chan Element)
+	c.unsubscribe = make(chan Element)
+	c.joinQuits = make(chan chan bool)
 
 	//canExit := make(chan bool)
 	go func(){
 //		<- canExit
 		for {
 			select {
+			case quit := <- c.leaveQuits:
+				delete(c.quits, quit)
+			case quit := <- c.joinQuits:
+				c.quits[quit] = true
 			case client := <- c.subscribe:
 				c.clients[client]= true
 			case client := <- c.unsubscribe:
@@ -156,6 +148,10 @@ func (c *AbstractElement) Run() error {
 					c.handlers[msg.Type](msg)
 				}
 			case <-c.quit:
+				for qCh := range c.quits{
+					qCh <- true
+					delete(c.quits, qCh)
+				}
 				c.running = false
 				return
 			}
@@ -169,7 +165,8 @@ func (c *AbstractElement) Run() error {
 func NewAbstractElement() *AbstractElement {
 	return &AbstractElement{
 		handlers: make(map [string]func(*Message) (bool, error)),
-		clients: make(map [*remoteClient]bool),
+		clients: make(map [Element]bool),
+		quits: make(map [chan bool]bool),
 	}
 }
 

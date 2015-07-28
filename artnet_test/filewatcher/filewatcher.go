@@ -1,4 +1,4 @@
-package element
+package filewatcher
 import (
 	"time"
 	"os"
