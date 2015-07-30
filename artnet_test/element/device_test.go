@@ -71,6 +71,49 @@ var _ = Describe("Device", func() {
 			Expect(err).Should(Equal(ErrElementDeviceIsAlreadyRan))
 		})
 
+		It("Проверить что можно добавить элемент к Device", func(){
+			Expect(len(dut.clients)).Should(Equal(0))
+			dut.join <- &AbstractElement{}
+			waitForMillisecond()
+			Expect(len(dut.clients)).Should(Equal(1))
+		})
+
+		It("Можно удалять клиентов из Device", func(){
+			Expect(len(dut.clients)).Should(Equal(0))
+			ae := &AbstractElement{}
+			dut.join <- ae
+			waitForMillisecond()
+			dut.leave <- ae
+			waitForMillisecond()
+			Expect(len(dut.clients)).Should(Equal(0))
+		})
+
+		It("При добавлении клиента Device прописывается в клиенте как ссылка", func(){
+			ae := &AbstractElement{}
+			dut.join <- ae
+			waitForMillisecond()
+			Expect(ae.device).Should(BeEquivalentTo(dut))
+		})
+
+		It("При добавлении клиента в Device клиент запускается", func(){
+			ae := NewAbstractElement()
+			dut.join <- ae
+			waitForMillisecond()
+			Expect(ae.running).Should(BeTrue())
+		})
+
+		It("При удалении клиента он должен останавливаться", func(){
+			ae := NewAbstractElement()
+			Expect(ae.running).Should(BeFalse())
+			dut.join <- ae
+			waitForMillisecond()
+			Expect(ae.running).Should(BeTrue())
+			dut.leave <- ae
+			waitForMillisecond()
+			Expect(ae.running).Should(BeFalse())
+		})
+
+
 	})
 
 })

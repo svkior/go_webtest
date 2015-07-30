@@ -7,6 +7,7 @@
 
  */
 package element
+import "log"
 
 
 
@@ -78,6 +79,7 @@ func (e *AbstractElement) GetName() string {
 
 // Метод Quit позволяет завершать работу программы
 func (e *AbstractElement) Quit() error{
+	log.Printf("Quit() running: %v", e.running)
 	if !e.running {
 		return ErrElementIsNotRunning
 	}
@@ -123,17 +125,27 @@ func (c *AbstractElement) Run() error {
 		// Если уже работает
 		return ErrElementIsAlreadyRunning
 	}
-	c.running = true
 	c.quit = make(chan bool)
 	c.subscribe = make(chan Element)
 	c.unsubscribe = make(chan Element)
 	c.joinQuits = make(chan chan bool)
 
-	//canExit := make(chan bool)
+	canExit := make(chan bool)
 	go func(){
-//		<- canExit
+		canExit <- true
+		c.running = true
+		log.Println("Started elemetn")
 		for {
 			select {
+			case <-c.quit:
+				log.Println("PONG")
+				for qCh := range c.quits{
+					qCh <- true
+					delete(c.quits, qCh)
+				}
+				c.running = false
+				log.Printf("Пришел в running: %v", c.running)
+				return
 			case quit := <- c.leaveQuits:
 				delete(c.quits, quit)
 			case quit := <- c.joinQuits:
@@ -147,17 +159,10 @@ func (c *AbstractElement) Run() error {
 				if c.handlers[msg.Type] != nil {
 					c.handlers[msg.Type](msg)
 				}
-			case <-c.quit:
-				for qCh := range c.quits{
-					qCh <- true
-					delete(c.quits, qCh)
-				}
-				c.running = false
-				return
 			}
 		}
 	}()
-//	<- canExit
+	<- canExit
 	return nil
 }
 

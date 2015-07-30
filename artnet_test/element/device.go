@@ -5,6 +5,7 @@ import (
 	//"log"
 	"bitbucket.org/tts/go_webtest/artnet_test/trace"
 	"fmt"
+	"log"
 )
 
 
@@ -39,9 +40,11 @@ func (d *Device) closeClient(client Element){
 		element.UnsubscribeClient(client)
 	}
 	delete(d.clients, client)
-	client.Quit()
+	err := client.Quit()
+	if err != nil {
+		log.Println(err)
+	}
 	d.Tracer.Trace("Клиент ушел")
-	// TODO: Отписаться от всех подписанных каналов для клиента
 }
 
 func (d *Device) Stop(){
@@ -65,6 +68,8 @@ func (d *Device) Run() error{
 				return
 			case client := <-d.join:
 				d.clients[client] = true
+				client.SetDevice(d)
+				client.Run()
 				d.Tracer.Trace("Новый клиент подключился")
 			// отключение нового клиента
 			case client := <-d.leave:
