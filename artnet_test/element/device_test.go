@@ -44,14 +44,14 @@ var _ = Describe("Device", func() {
 		BeforeEach(func(){
 			dut = NewDevice()
 			// Только для не повисания теста
-			dut.quit = make(chan bool, 5)
+			//dut.quit = make(chan bool, 5)
 			dut.Run()
 			waitForMillisecond()
 		})
 
 		AfterEach(func(){
-			dut.Stop()
 			waitForMillisecond()
+			dut.Stop()
 		})
 
 		It("При запуске проверить что Device is running", func(){
@@ -64,21 +64,21 @@ var _ = Describe("Device", func() {
 			Expect(dut.running).Should(BeFalse())
 		})
 
-		It("Проверить, что невозможно повторно запустить Device", func(){
+		XIt("Проверить, что невозможно повторно запустить Device", func(){
 			Expect(dut.running).Should(BeTrue())
 			err := dut.Run()
 			Expect(err).ShouldNot(BeNil())
 			Expect(err).Should(Equal(ErrElementDeviceIsAlreadyRan))
 		})
 
-		It("Проверить что можно добавить элемент к Device", func(){
+		XIt("Проверить что можно добавить элемент к Device", func(){
 			Expect(len(dut.clients)).Should(Equal(0))
 			dut.join <- &AbstractElement{}
 			waitForMillisecond()
 			Expect(len(dut.clients)).Should(Equal(1))
 		})
 
-		It("Можно удалять клиентов из Device", func(){
+		XIt("Можно удалять клиентов из Device", func(){
 			Expect(len(dut.clients)).Should(Equal(0))
 			ae := &AbstractElement{}
 			dut.join <- ae
@@ -88,21 +88,21 @@ var _ = Describe("Device", func() {
 			Expect(len(dut.clients)).Should(Equal(0))
 		})
 
-		It("При добавлении клиента Device прописывается в клиенте как ссылка", func(){
+		XIt("При добавлении клиента Device прописывается в клиенте как ссылка", func(){
 			ae := &AbstractElement{}
 			dut.join <- ae
 			waitForMillisecond()
 			Expect(ae.device).Should(BeEquivalentTo(dut))
 		})
 
-		It("При добавлении клиента в Device клиент запускается", func(){
+		XIt("При добавлении клиента в Device клиент запускается", func(){
 			ae := NewAbstractElement()
 			dut.join <- ae
 			waitForMillisecond()
 			Expect(ae.running).Should(BeTrue())
 		})
 
-		It("При удалении клиента он должен останавливаться", func(){
+		XIt("При удалении клиента он должен останавливаться", func(){
 			ae := NewAbstractElement()
 			Expect(ae.running).Should(BeFalse())
 			dut.join <- ae

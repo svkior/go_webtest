@@ -176,6 +176,7 @@ func (d *Device) ServeHTTP(w http.ResponseWriter, req *http.Request){
 func NewDevice() *Device{
 	return &Device{
 		forward: make(chan *Message),
+		quit: make(chan bool),
 		join: make(chan Element),
 		leave: make(chan Element),
 		clients: make(map[Element]bool),
