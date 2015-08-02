@@ -113,6 +113,46 @@ var _ = Describe("Device", func() {
 			Expect(ae.running).Should(BeFalse())
 		})
 
+		It("Добавили клиента. При посыле в device->forward клиент получает это сообщение", func(){
+			// Счетчик попадания сообщений
+			count := 0
+			// Хандлер для сообщений
+			incHandler := func(msg *Message) (bool, error){
+				count++
+				return true,nil
+			}
+			ae := NewAbstractElement()
+			// При посылки сообщения "test" мы ловим его хандлером incHandler
+			ae.Handle("test", incHandler)
+			dut.join <- ae
+			waitForMillisecond()
+			msg := GetEmptyMessage("test", true)
+			dut.forward <- msg
+			waitForMillisecond()
+			Expect(count).Should(Equal(1))
+		})
+
+		It("Можно получить список клиентов", func(){
+			// Я при подстоединении или вообще должен получить список элементов
+			// С их адресами. Дабы подписаться. Или делать это сообщениями????
+			ae1 := NewAbstractElement()
+			ae2 := NewAbstractElement()
+			dut.join <- ae1
+			dut.join <- ae2
+			waitForMillisecond()
+			//ae1.device.
+			Fail("Не реализовано")
+		})
+
+		XIt("Можно подписывать одного клиента на другого", func(){})
+
+		XIt("Можно отписывать одного клиента на другого", func(){})
+
+		XIt("При удалении одного клиента второй отписывается", func(){})
+
+		XIt("Добавили двух клиентов, подписались одним клиентом на инфу из другого. Инфа пошла", func(){
+
+		})
 
 	})
 

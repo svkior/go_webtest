@@ -79,7 +79,7 @@ func (d *Device) Run() error{
 
 			// Пришло сообщение от клиента
 			case msg := <-d.forward:
-			//d.Tracer.Trace("Message type", string(msg.Type))
+				d.Tracer.Trace("Message type", string(msg.Type))
 				switch msg.Type{
 				// Подписка на каналы
 				case "subscribe":
@@ -110,7 +110,6 @@ func (d *Device) Run() error{
 				case "unauth":
 				//TODO: Обработать запрос об разавторизации
 				}
-
 			// Пока не разобрались все пакеты считаем броадкастными
 				broadcast := msg.Broadcast
 			// По умолчанию ничего не посылаем
@@ -134,6 +133,7 @@ func (d *Device) Run() error{
 						// Сообщение ушло
 						//d.Tracer.Trace(" -- ушло к клиенту")
 						default:
+							log.Println("ERROR SEND TO CLIENT")
 						// Не смогли послать
 							d.closeClient(client)
 							d.Tracer.Trace(" -- Не ушло. ошибка подключения. удаляем сессию с клиентом")

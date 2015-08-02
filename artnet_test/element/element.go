@@ -135,6 +135,7 @@ func (c *AbstractElement) Run() error {
 	c.unsubscribe = make(chan Element)
 	c.joinQuits = make(chan chan bool)
 	c.leaveQuits = make(chan chan bool)
+	c.recv = make(chan *Message)
 
 	canExit := make(chan bool)
 	go func(){
@@ -150,7 +151,6 @@ func (c *AbstractElement) Run() error {
 				c.running = false
 				return
 			case quit := <- c.leaveQuits:
-				log.Println("Catch")
 				delete(c.quits, quit)
 			case quit := <- c.joinQuits:
 				c.quits[quit] = true
