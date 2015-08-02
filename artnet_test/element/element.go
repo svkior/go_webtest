@@ -59,6 +59,11 @@ func (e *AbstractElement) SubscribeClient(client Element) error {
 
 // Отписываеся от канала клиентом
 func (e *AbstractElement) UnsubscribeClient(client Element) error{
+	if e == client {
+		log.Println("BUG!!! Can not unsubscribe itself")
+		return nil
+	}
+
 	if client == nil {
 		return ErrElementClientIsNull
 	}
@@ -79,7 +84,6 @@ func (e *AbstractElement) GetName() string {
 
 // Метод Quit позволяет завершать работу программы
 func (e *AbstractElement) Quit() error{
-	log.Printf("Quit() running: %v", e.running)
 	if !e.running {
 		return ErrElementIsNotRunning
 	}
@@ -115,6 +119,7 @@ func (e *AbstractElement) RegisterQuitChannel(ch chan bool){
 
 func (e *AbstractElement) UnregisterQuitChannel(ch chan bool){
 	if(e.running){
+		e.leaveQuits <- ch
 	} else {
 		delete(e.quits, ch)
 	}
@@ -129,24 +134,23 @@ func (c *AbstractElement) Run() error {
 	c.subscribe = make(chan Element)
 	c.unsubscribe = make(chan Element)
 	c.joinQuits = make(chan chan bool)
+	c.leaveQuits = make(chan chan bool)
 
 	canExit := make(chan bool)
 	go func(){
 		canExit <- true
 		c.running = true
-		log.Println("Started elemetn")
 		for {
 			select {
 			case <-c.quit:
-				log.Println("PONG")
 				for qCh := range c.quits{
 					qCh <- true
 					delete(c.quits, qCh)
 				}
 				c.running = false
-				log.Printf("Пришел в running: %v", c.running)
 				return
 			case quit := <- c.leaveQuits:
+				log.Println("Catch")
 				delete(c.quits, quit)
 			case quit := <- c.joinQuits:
 				c.quits[quit] = true

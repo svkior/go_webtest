@@ -37,7 +37,9 @@ func (d *Device) AddElement(e Element){
 
 func (d *Device) closeClient(client Element){
 	for element := range d.clients{
-		element.UnsubscribeClient(client)
+		if client != element {
+			element.UnsubscribeClient(client)
+		}
 	}
 	delete(d.clients, client)
 	err := client.Quit()

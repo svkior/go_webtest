@@ -407,7 +407,7 @@ var _ = Describe("Element", func() {
 				Expect(finished).Should(BeTrue())
 			})
 
-			XIt("По завершении работы goroutine должны мочь вызывать разрегестрацию quits",func(){
+			It("По завершении работы goroutine должны мочь вызывать разрегестрацию quits",func(){
 				// Проблема с передачей канала в канал.
 				Expect(len(newAbsEl.quits)).Should(Equal(0))
 				chQuit := make(chan bool, 1)
