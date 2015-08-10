@@ -25,11 +25,17 @@ type Element interface {
 }
 
 type Message struct {
+	// Если это сообщение должно уйти в форвард
 	Broadcast bool `json:"broadcast"`
+	// Тип сообщения
 	Type string `json:"type"`
+	// Имя канала
 	Name string `json:"name"`
+	// Время (проставляется на сервере)
 	When time.Time `json:"when"`
+	// Ссылка на клиента (проставляется на сервере)
 	Client Element
+	// Нагрузка, заполняется клиентом
 	Payload interface{} `json:"payload"`
 }
 

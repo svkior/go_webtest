@@ -4,16 +4,16 @@
 import React from 'react'
 import Reflux from 'reflux'
 
-import StatusStore from "../../store/status_store.js"
+import ChatRoomStore from "../../store/chatroom_store.js"
 
 var ArtGateStatusLog = React.createClass({
     mixins: [
-        Reflux.connect(StatusStore, 'status')
+        Reflux.connect(ChatRoomStore, 'chat')
     ],
     render(){
         var messages;
-        if(this.state.status){
-            messages = this.state.status.map(function(message, key){
+        if(this.state.chat){
+            messages = this.state.chat.map(function(message, key){
                 return <li key={key}>{message}</li>;
             });
         } else {

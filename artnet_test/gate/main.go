@@ -15,6 +15,7 @@ import (
 	"bitbucket.org/tts/go_webtest/artnet_test/trace"
 	"bitbucket.org/tts/go_webtest/artnet_test/filewatcher"
 	"bitbucket.org/tts/go_webtest/artnet_test/ticker"
+	"bitbucket.org/tts/go_webtest/artnet_test/chat"
 )
 
 
@@ -85,7 +86,11 @@ func main(){
 	fw := filewatcher.NewFileWatcher("./assets/main.js")
 	device.AddElement(fw)
 
+	// Запускаем Ticker
 	device.AddElement(ticker.NewTicker(1 * time.Second))
+
+	// Запускаем ChatRoom
+	device.AddElement(chat.NewChat("chatroom"))
 
 	// Уходим в главный цикл программы
 

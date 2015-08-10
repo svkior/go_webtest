@@ -22,18 +22,24 @@ func (c *RemoteClient) Read(){
 	for {
 		var msg *Message
 		if err := c.socket.ReadJSON(&msg); err == nil {
-			log.Printf("Got Message %v", msg)
 			msg.When = time.Now()
 			msg.Client = c
-			c.Forward(msg)
+			log.Printf("Got Message !%v!", msg)
+			if msg.Broadcast {
+				c.Forward(msg)
+				// По умолчанию шлем сообщения всем подписчиками
+				// TODO: Более грамотный способ найти нужно
+			} else {
+				c.SendToSubscribers(msg)
+			}
 		} else {
 			break
 		}
 	}
 	c.socket.Close()
-	log.Println("PRE QUIT")
+	//log.Println("PRE QUIT")
 	c.quit <- true
-	log.Println("POST QUIT")
+	//log.Println("POST QUIT")
 }
 
 func (c *RemoteClient) WriteToJSON(msg *Message) (bool, error) {
@@ -59,6 +65,8 @@ func NewRemoteClient(conn *websocket.Conn) *RemoteClient{
 			select{
 			case <-rc.myQ:
 				log.Println("WE GOT QUIT MESSAGE!!!!!, Closing Socket")
+				rc.device.closeClient(rc)
+				log.Printf("QUit was successful")
 				rc.socket.Close()
 				break
 			}

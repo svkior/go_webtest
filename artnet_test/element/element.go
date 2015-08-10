@@ -4,7 +4,6 @@
 
   Интерфейс Element обеспечивает прозрачный интерфейс к элементам, входящим в устройство Device
 
-
  */
 package element
 import (
@@ -48,9 +47,10 @@ type AbstractElement struct {
 
 func (e *AbstractElement) SendToSubscribers(msg *Message){
 	for client := range e.clients{
-		//log.Printf("TRY SEND TO %v : %#v", client, msg)
+//		log.Printf("TRY SEND TO %v", client)
+		recv := client.GetRecv()
 		select {
-		case client.GetRecv() <- msg:
+		case recv <- msg:
 		default:
 			log.Printf("ERROR SEND TO CLIENT %#v", client)
 		// Не смогли послать

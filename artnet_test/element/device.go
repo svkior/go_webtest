@@ -33,8 +33,8 @@ type Device struct {
 	weWait bool
 }
 
-
 func (d *Device) closeClient(client Element){
+	log.Printf("Пробуем отписать клиента от всех подписчиков !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
 	for element := range d.clients{
 		if client != element {
 			element.UnsubscribeClient(client)
@@ -113,7 +113,10 @@ func (d *Device) Run() error{
 						if elem.GetName() == msg.Name{
 							d.Tracer.Trace(fmt.Sprintf("Есть такой канал"))
 							// Добавляем клиента в очередь отправки сообщений
+							// OneWay Binding
 							elem.SubscribeClient(msg.Client)
+							// Two Way Binding
+							msg.Client.SubscribeClient(elem)
 						}
 					}
 				// Отписка от каналов
