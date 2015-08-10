@@ -25,15 +25,14 @@ type Device struct {
 	Tracer trace.Tracer
 	// Флаг запущенности ;-)
 	running bool
+	// Канал для флага ожидания
+	wantWait chan bool
+	// Канал для завершения Wait
+	quitWait chan bool
+	// Функция необходимости ожидания
+	weWait bool
 }
 
-/*
-func (d *Device) AddElement(e Element){
-	e.SetDevice(d)
-	d.join <- e
-	go e.Run()
-}
-*/
 
 func (d *Device) closeClient(client Element){
 	for element := range d.clients{
@@ -55,6 +54,24 @@ func (d *Device) Stop(){
 	}
 }
 
+func (d *Device) Wait(){
+	if d.running{
+		d.wantWait <- true
+		<- d.quitWait
+	}
+}
+
+func (d *Device) AddElement(e Element){
+	if d.running{
+		d.join <- e
+	}
+}
+
+func (d *Device) SendMessage(m *Message){
+	if d.running{
+		d.forward <- m
+	}
+}
 
 func (d *Device) Run() error{
 	if d.running{
@@ -64,8 +81,13 @@ func (d *Device) Run() error{
 	go func(){
 		for {
 			select {
+			case <- d.wantWait: // Если нас попросили ожидать, то мы должны пнуть ожидающего
+				d.weWait = true
 			case <- d.quit:
 				// Прекращаем ранниться
+				if d.weWait {
+					d.quitWait <- true
+				}
 				d.running = false
 				return
 			case client := <-d.join:
@@ -109,36 +131,40 @@ func (d *Device) Run() error{
 				// Освобождение от авторизации
 				case "unauth":
 				//TODO: Обработать запрос об разавторизации
-				}
-			// Пока не разобрались все пакеты считаем броадкастными
-				broadcast := msg.Broadcast
-			// По умолчанию ничего не посылаем
-				send := false
-			// Проходимся по всем клиентам
-				for client := range d.clients {
-					if(broadcast){
-						// Если броадкастовый пакет, то полюбому шлем всем
-						send = true
-					} else {
-						// Если не броадкастовый, то шлем не всем
-						if(client == msg.Client){
-							d.Tracer.Trace("ТАкой клиент реально есть")
+				default:
+
+					// Пока не разобрались все пакеты считаем броадкастными
+					broadcast := msg.Broadcast
+					// По умолчанию ничего не посылаем
+					send := false
+					// Проходимся по всем клиентам
+					for client := range d.clients {
+						if(broadcast){
+							// Если броадкастовый пакет, то полюбому шлем всем
+							send = true
+						} else {
+							// Если не броадкастовый, то шлем не всем
+							if(client == msg.Client){
+								d.Tracer.Trace("ТАкой клиент реально есть")
+							}
+							send = true
 						}
-						send = true
+
+						if(send){
+							select {
+							case client.GetRecv() <- msg:
+							// Сообщение ушло
+							//d.Tracer.Trace(" -- ушло к клиенту")
+							default:
+								log.Println("ERROR SEND TO CLIENT")
+							// Не смогли послать
+								d.closeClient(client)
+								d.Tracer.Trace(" -- Не ушло. ошибка подключения. удаляем сессию с клиентом")
+							}
+						}
 					}
 
-					if(send){
-						select {
-						case client.GetRecv() <- msg:
-						// Сообщение ушло
-						//d.Tracer.Trace(" -- ушло к клиенту")
-						default:
-							log.Println("ERROR SEND TO CLIENT")
-						// Не смогли послать
-							d.closeClient(client)
-							d.Tracer.Trace(" -- Не ушло. ошибка подключения. удаляем сессию с клиентом")
-						}
-					}
+
 				}
 			}
 		}
@@ -155,23 +181,14 @@ const (
 var upgrader = &websocket.Upgrader{ReadBufferSize:socketBufferSize, WriteBufferSize:socketBufferSize}
 
 func (d *Device) ServeHTTP(w http.ResponseWriter, req *http.Request){
-	/*
 	socket, err := upgrader.Upgrade(w, req, nil)
 	if err != nil {
 		log.Fatal("ServeHTTP:", err)
 		return
 	}
-
-	client := remoteClient{
-		socket: socket,
-		send: make(chan *Message, messageBufferSize),
-		device: d,
-	}
-	d.join <- client
-	defer func(){ d.leave <- client}()
-	go client.write()
-	client.read()
-	*/
+	client := NewRemoteClient(socket)
+	d.AddElement(client)
+	client.Read()
 }
 
 
@@ -183,6 +200,8 @@ func NewDevice() *Device{
 		leave: make(chan Element),
 		clients: make(map[Element]bool),
 		Tracer: trace.Off(),
+		wantWait: make(chan bool),
+		quitWait: make(chan bool),
 	}
 }
 

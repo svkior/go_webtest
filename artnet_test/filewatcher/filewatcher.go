@@ -3,66 +3,32 @@ import (
 	"time"
 	"os"
 	"log"
-	"fmt"
+	"bitbucket.org/tts/go_webtest/artnet_test/element"
 )
 
 
 // Структура, описывающая FileWatcher
 type fileWatcherElement struct {
-	device *Device
-	subscribe chan *remoteClient
-	unsubscribe chan *remoteClient
-	recv chan *Message
+	element.AbstractElement
 	fileName string
-	quit chan bool
-	clients map[*remoteClient]bool
+	myQ chan bool
 }
 
 
 // Получение элемента, который следит за изменением указанного файла и в случае  изменения даты модификации посылается сообщение об изменении даты.
-func NewFileWatcher(name string) Element{
+func NewFileWatcher(name string) *fileWatcherElement{
 	fw := fileWatcherElement{
 		fileName: name,
-		quit: make(chan bool),
-		recv: make(chan *Message),
-		subscribe: make(chan *remoteClient),
-		unsubscribe: make(chan *remoteClient),
-		clients: make(map[*remoteClient]bool),
+		myQ: make(chan bool),
+		AbstractElement: *element.NewAbstractElement(),
 	}
+	fw.RegisterQuitChannel(fw.myQ)
+	go fw.localRun()
 	return &fw
 }
 
-
-func (e *fileWatcherElement) SubscribeClient(client *remoteClient){
-	e.subscribe <- client
-}
-
-func (e *fileWatcherElement) UnsubscribeClient(client *remoteClient){
-	e.unsubscribe <- client
-}
-
-
-
 func (e *fileWatcherElement) GetName() string {
 	return "respawn"
-}
-
-
-func (e *fileWatcherElement) GetElement() Element{
-	return e
-}
-
-func (e *fileWatcherElement) Quit(){
-	e.quit <- true
-}
-
-
-func (e *fileWatcherElement) SetDevice(d *Device) {
-	e.device = d
-}
-
-func (e *fileWatcherElement) GetRecv() chan *Message {
-	return e.recv
 }
 
 func (e *fileWatcherElement) getLasTime() (time.Time, error) {
@@ -76,12 +42,12 @@ func (e *fileWatcherElement) getLasTime() (time.Time, error) {
 
 
 func (e *fileWatcherElement) sendUpdate(t time.Time){
-	msg := GetEmptyMessage("reload", true)
+	msg := element.GetEmptyMessage("reload", true)
 	msg.Payload = "Update File Time"
-	e.device.forward <- msg
+	e.Forward(msg)
 }
 
-func (e *fileWatcherElement) Run() {
+func (e *fileWatcherElement) localRun() {
 	var lastTime time.Time
 
 	lastTime, err  := e.getLasTime()
@@ -93,27 +59,18 @@ func (e *fileWatcherElement) Run() {
 	ticker := time.NewTicker(1 * time.Second)
 	for {
 		select {
-		case client := <- e.unsubscribe:
-			e.device.Tracer.Trace(fmt.Sprintf("Нужно отписать Клиента %p от канала %s", client, e.GetName()))
-			if( e.clients[client]){
-				delete(e.clients, client)
-				e.device.Tracer.Trace("Удалили")
-			}
-		case client := <- e.subscribe:
-			e.device.Tracer.Trace(fmt.Sprintf("Клиент %p хочет подключиться к каналу %s", client, e.GetName()))
-
 		case <- ticker.C:
 			modifiedtime, err := e.getLasTime()
 			if err != nil {
 				log.Fatal(err)
-				e.quit <- true
+				e.Quit()
 			}
 			if modifiedtime != lastTime{
 				log.Println("Last modified time : ", modifiedtime)
 				lastTime = modifiedtime
 				e.sendUpdate(lastTime)
 			}
-		case <- e.quit:
+		case <- e.myQ:
 			ticker.Stop()
 			return
 		}

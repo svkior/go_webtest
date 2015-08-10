@@ -96,16 +96,6 @@ var _ = Describe("Element", func() {
 				Expect(absElement.quits).Should(BeAssignableToTypeOf(quits))
 			})
 
-			It("Есть канал регистрации quits по названию joinQuits", func(){
-				var quits chan chan bool
-				Expect(absElement.joinQuits).Should(BeAssignableToTypeOf(quits))
-			})
-
-			It("Есть канал разрегистрации quits по названию leaveQuits", func(){
-				var quits chan chan bool
-				Expect(absElement.leaveQuits).Should(BeAssignableToTypeOf(quits))
-			})
-
 		})
 
 

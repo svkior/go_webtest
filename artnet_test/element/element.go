@@ -7,7 +7,10 @@
 
  */
 package element
-import "log"
+import (
+	"log"
+	"sync"
+)
 
 
 
@@ -31,14 +34,14 @@ type AbstractElement struct {
 	recv chan *Message
 	// Карта обработчиков входных сообщений
 	handlers map[string]func(*Message) (bool, error)
+	// Обработчик по умолчанию
+	defaultHandler func(*Message) (bool, error)
 	// Карта подписанных клиентов
 	clients map[Element]bool
 	// Массив каналов выходов
 	quits map[chan bool]bool
-	// Канал на подписку quits в то время, когда run запущен
-	joinQuits chan chan bool
-	// Канал на отписку quit в то время, когда run запущен
-	leaveQuits chan chan bool
+	// Лок для списка каналов quits
+	quitsLock sync.Mutex
 }
 
 
@@ -109,19 +112,25 @@ func (e *AbstractElement) Handle(name string, handler func(*Message) (bool, erro
 	return err
 }
 
+func (e *AbstractElement) DefaultHandler(handler func(*Message) (bool, error)) {
+	e.defaultHandler = handler
+}
+
 func (e *AbstractElement) RegisterQuitChannel(ch chan bool){
-	if(e.running){
-		e.joinQuits <- ch
-	} else {
-		e.quits[ch] = true
-	}
+	e.quitsLock.Lock()
+	defer e.quitsLock.Unlock()
+	e.quits[ch] = true
 }
 
 func (e *AbstractElement) UnregisterQuitChannel(ch chan bool){
-	if(e.running){
-		e.leaveQuits <- ch
-	} else {
-		delete(e.quits, ch)
+	e.quitsLock.Lock()
+	defer e.quitsLock.Unlock()
+	delete(e.quits, ch)
+}
+
+func (e *AbstractElement) Forward(msg *Message){
+	if e.running && e.device != nil {
+		e.device.forward <- msg
 	}
 }
 
@@ -133,8 +142,6 @@ func (c *AbstractElement) Run() error {
 	c.quit = make(chan bool)
 	c.subscribe = make(chan Element)
 	c.unsubscribe = make(chan Element)
-	c.joinQuits = make(chan chan bool)
-	c.leaveQuits = make(chan chan bool)
 	c.recv = make(chan *Message)
 
 	canExit := make(chan bool)
@@ -146,14 +153,12 @@ func (c *AbstractElement) Run() error {
 			case <-c.quit:
 				for qCh := range c.quits{
 					qCh <- true
+					c.quitsLock.Lock()
 					delete(c.quits, qCh)
+					c.quitsLock.Unlock()
 				}
 				c.running = false
 				return
-			case quit := <- c.leaveQuits:
-				delete(c.quits, quit)
-			case quit := <- c.joinQuits:
-				c.quits[quit] = true
 			case client := <- c.subscribe:
 				c.clients[client]= true
 			case client := <- c.unsubscribe:
@@ -162,6 +167,8 @@ func (c *AbstractElement) Run() error {
 				// Обрабатываем попадание в нужный хандлер
 				if c.handlers[msg.Type] != nil {
 					c.handlers[msg.Type](msg)
+				} else if c.defaultHandler != nil {
+					c.defaultHandler(msg)
 				}
 			}
 		}
