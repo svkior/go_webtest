@@ -40,11 +40,11 @@ func (e *fileWatcherElement) getLasTime() (time.Time, error) {
 	}
 }
 
-
+// FIXME: должны получать только подписанные клиенты
 func (e *fileWatcherElement) sendUpdate(t time.Time){
-	msg := element.GetEmptyMessage("reload", true)
+	msg := element.GetEmptyMessage("reload", false)
 	msg.Payload = "Update File Time"
-	e.Forward(msg)
+	e.SendToSubscribers(msg)
 }
 
 func (e *fileWatcherElement) localRun() {

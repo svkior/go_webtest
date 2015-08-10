@@ -17,12 +17,15 @@ var ArtGateStatusLog = React.createClass({
                 return <li key={key}>{message}</li>;
             });
         } else {
-            messages = "";
+            messages = <li>Нет подключения к серверу!!!</li>;
         }
         return (
-            <ol>
-                {messages}
-            </ol>
+            <div>
+                <h3> Сообщения от сервера </h3>
+                <ul>
+                    {messages}
+                </ul>
+            </div>
         );
     }
 });

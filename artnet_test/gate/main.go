@@ -14,6 +14,7 @@ import (
 	"os"
 	"bitbucket.org/tts/go_webtest/artnet_test/trace"
 	"bitbucket.org/tts/go_webtest/artnet_test/filewatcher"
+	"bitbucket.org/tts/go_webtest/artnet_test/ticker"
 )
 
 
@@ -83,6 +84,8 @@ func main(){
 	// Запускаем FileWatcher
 	fw := filewatcher.NewFileWatcher("./assets/main.js")
 	device.AddElement(fw)
+
+	device.AddElement(ticker.NewTicker(1 * time.Second))
 
 	// Уходим в главный цикл программы
 

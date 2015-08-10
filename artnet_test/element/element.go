@@ -44,9 +44,23 @@ type AbstractElement struct {
 	quitsLock sync.Mutex
 }
 
+// Посылаем сообщение всем подписанным клиентам
+
+func (e *AbstractElement) SendToSubscribers(msg *Message){
+	for client := range e.clients{
+		//log.Printf("TRY SEND TO %v : %#v", client, msg)
+		select {
+		case client.GetRecv() <- msg:
+		default:
+			log.Printf("ERROR SEND TO CLIENT %#v", client)
+		// Не смогли послать
+			e.device.closeClient(client)
+		}
+	}
+}
+
 
 // Подписываемся на канал для клиента
-
 func (e *AbstractElement) SubscribeClient(client Element) error {
 	//e.subscribe <- client
 	if client == nil {
