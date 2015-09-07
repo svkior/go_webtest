@@ -6,7 +6,7 @@ import (
 
 func NewChat(chatName string) element.Element{
 	c := chatRoom{
-		AbstractElement: *element.NewAbstractElement(),
+		AbstractElement: *element.NewAbstractElement("room"),
 		roomName: chatName,
 	}
 	c.Handle("message", c.ProcessMessage)

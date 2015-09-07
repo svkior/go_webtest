@@ -94,29 +94,33 @@ func (d *Device) Run() error{
 				d.clients[client] = true
 				client.SetDevice(d)
 				client.Run()
-				d.Tracer.Trace("Новый клиент подключился")
+				//d.Tracer.Trace("Новый клиент подключился")
 			// отключение нового клиента
 			case client := <-d.leave:
 				d.closeClient(client)
 
 			// Пришло сообщение от клиента
 			case msg := <-d.forward:
-				d.Tracer.Trace("Message type", string(msg.Type))
+				d.Tracer.Trace("BROADCAST Message type: ", string(msg.Type))
 				switch msg.Type{
 				// Подписка на каналы
 				case "subscribe":
-					d.Tracer.Trace(fmt.Sprintf("Client %p wants to subscribe to channels", msg.Client))
-					d.Tracer.Trace(fmt.Sprintf("Что говорит список клиентов? : %v", d.clients[msg.Client]))
-					d.Tracer.Trace(fmt.Sprintf("Хочет подписаться на канал: %s", msg.Name))
+					d.Tracer.Trace(fmt.Sprintf("Client %p wants to subscribe to channel %v", msg.Client, msg.Name))
+					//d.Tracer.Trace(fmt.Sprintf("Что говорит список клиентов? : %v", d.clients[msg.Client]))
+					//d.Tracer.Trace(fmt.Sprintf("Хочет подписаться на канал: %s", msg.Name))
 					//TODO: Сделать идентификатор элемента, сделать маппинг
 					for elem := range d.clients{
 						if elem.GetName() == msg.Name{
 							d.Tracer.Trace(fmt.Sprintf("Есть такой канал"))
 							// Добавляем клиента в очередь отправки сообщений
 							// OneWay Binding
-							elem.SubscribeClient(msg.Client)
+							if err := elem.SubscribeClient(msg.Client); err != nil {
+								log.Println(err)
+							}
 							// Two Way Binding
-							msg.Client.SubscribeClient(elem)
+							if err := msg.Client.SubscribeClient(elem); err != nil {
+								log.Println(err)
+							}
 						}
 					}
 				// Отписка от каналов

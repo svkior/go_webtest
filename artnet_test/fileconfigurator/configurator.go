@@ -87,7 +87,7 @@ func (fc *FileConfig) LoadConfiguration(msg *element.Message) (bool, error){
 
 func NewFileConfig(fileName string) *FileConfig{
   fСonf := &FileConfig{
-    AbstractElement: *element.NewAbstractElement(),
+    AbstractElement: *element.NewAbstractElement("fileConfigurator"),
     ConfigFileName: fileName,
     Configs: make(map [string]interface{}),
   }

@@ -24,7 +24,7 @@ func (c *RemoteClient) Read(){
 		if err := c.socket.ReadJSON(&msg); err == nil {
 			msg.When = time.Now()
 			msg.Client = c
-			log.Printf("Got Message !%v!", msg)
+			log.Printf("Got Message %#v", msg)
 			if msg.Broadcast {
 				c.Forward(msg)
 				// По умолчанию шлем сообщения всем подписчиками
@@ -43,7 +43,7 @@ func (c *RemoteClient) Read(){
 }
 
 func (c *RemoteClient) WriteToJSON(msg *Message) (bool, error) {
-	//log.Printf("Attend to write MSG: %v", msg)
+	//log.Printf("Client %p Attend to write MSG: %v", c, msg)
 	if err := c.socket.WriteJSON(msg); err != nil {
 		c.socket.Close()
 		c.quit <- true
@@ -54,10 +54,10 @@ func (c *RemoteClient) WriteToJSON(msg *Message) (bool, error) {
 func NewRemoteClient(conn *websocket.Conn) *RemoteClient{
 	rc := &RemoteClient{
 		socket:conn,
-		AbstractElement: *NewAbstractElement(),
+		AbstractElement: *NewAbstractElement(conn.RemoteAddr().String()),
 		myQ: make(chan bool),
 	}
-	log.Printf("Create new remote client: %v",rc)
+	log.Printf("Create new remote client: %p",rc)
 	rc.RegisterQuitChannel(rc.myQ)
 	rc.DefaultHandler(rc.WriteToJSON)
 	go func(){

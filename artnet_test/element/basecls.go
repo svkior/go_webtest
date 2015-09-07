@@ -60,4 +60,5 @@ var (
 	ErrElementIsAlreadyRunning 		= ElementError(errors.New("Элемент уже работает"))
 	ErrElementClientIsNull			= ElementError(errors.New("Указатель на клиента нулевой"))
 	ErrElementDeviceIsAlreadyRan    = ElementError(errors.New("Device уже запущен"))
+	ErrElementIsAlreadySubscribed   = ElementError(errors.New("Element уже подписан"))
 )

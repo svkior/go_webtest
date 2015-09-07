@@ -1,5 +1,6 @@
 /**
  * Created by svkior on 10/08/15.
+ * Тестовый чат
  */
 import React from 'react'
 
@@ -15,10 +16,9 @@ var ChatMessages = React.createClass({
         var node = this.getDOMNode();
         // Позволяем проматывать сообщения дальше, если мы уже внизу
         this.shouldScrollBottom = node.scrollTop + node.offsetHeight === node.scrollHeight;
-        console.log("1");
     },
     componentDidUpdate(){
-        console.log(this.shouldScrollBottom);
+//        console.log(this.shouldScrollBottom);
         if(this.shouldScrollBottom){
             var node = this.getDOMNode();
             node.scrollTop = node.scrollHeight;

@@ -41,6 +41,9 @@ type AbstractElement struct {
 	quits map[chan bool]bool
 	// Лок для списка каналов quits
 	quitsLock sync.Mutex
+	// onSubscribe - метод вызываемый при
+	OnSubscribe func(client Element)
+
 }
 
 // Посылаем сообщение всем подписанным клиентам
@@ -65,6 +68,9 @@ func (e *AbstractElement) SubscribeClient(client Element) error {
 	//e.subscribe <- client
 	if client == nil {
 		return ErrElementClientIsNull
+	}
+	if e.clients[client]{
+		return ErrElementIsAlreadySubscribed
 	}
 	select {
 	case e.subscribe <- client:
@@ -153,10 +159,6 @@ func (c *AbstractElement) Run() error {
 		// Если уже работает
 		return ErrElementIsAlreadyRunning
 	}
-	c.quit = make(chan bool)
-	c.subscribe = make(chan Element)
-	c.unsubscribe = make(chan Element)
-	c.recv = make(chan *Message)
 
 	canExit := make(chan bool)
 	go func(){
@@ -174,7 +176,18 @@ func (c *AbstractElement) Run() error {
 				c.running = false
 				return
 			case client := <- c.subscribe:
+				log.Printf("Subscr %p to %p", client, c)
 				c.clients[client]= true
+				go func(){
+					outMsg := GetEmptyMessage("subscribed", false)
+					outMsg.Name = c.name
+					client.GetRecv() <- outMsg
+					if c.OnSubscribe != nil {
+						//log.Println("We Have onSubscribe, RUN:")
+						go c.OnSubscribe(client)
+					}
+				}()
+
 			case client := <- c.unsubscribe:
 				delete(c.clients, client)
 			case msg := <- c.recv:
@@ -192,11 +205,17 @@ func (c *AbstractElement) Run() error {
 }
 
 // Создание абстрактного элемента
-func NewAbstractElement() *AbstractElement {
+func NewAbstractElement(name string) *AbstractElement {
 	return &AbstractElement{
+		name: name,
 		handlers: make(map [string]func(*Message) (bool, error)),
 		clients: make(map [Element]bool),
 		quits: make(map [chan bool]bool),
+		quit: make(chan bool),
+		subscribe: make(chan Element, 10),
+		unsubscribe: make(chan Element, 10),
+		recv: make(chan *Message),
+
 	}
 }
 

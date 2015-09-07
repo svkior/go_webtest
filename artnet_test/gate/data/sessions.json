@@ -1,0 +1,54 @@
+{
+  "Sessions": {
+    "sess_45e04FRgg1RPYuhf500V": {
+      "ID": "sess_45e04FRgg1RPYuhf500V",
+      "UserID": "usr_1lYigKL8OAe9zJWL2C1n",
+      "Expiry": "2015-08-21T20:46:35.279240554+02:00"
+    },
+    "sess_Bdoph4oJIwiEAwPl9hmA": {
+      "ID": "sess_Bdoph4oJIwiEAwPl9hmA",
+      "UserID": "usr_1lYigKL8OAe9zJWL2C1n",
+      "Expiry": "2015-08-21T23:32:19.882313543+02:00"
+    },
+    "sess_GeCEx6803O91vCIekbrj": {
+      "ID": "sess_GeCEx6803O91vCIekbrj",
+      "UserID": "usr_1lYigKL8OAe9zJWL2C1n",
+      "Expiry": "2015-08-21T23:33:25.880402068+02:00"
+    },
+    "sess_O8MHdP7FHe2q8CR7BGdq": {
+      "ID": "sess_O8MHdP7FHe2q8CR7BGdq",
+      "UserID": "usr_1lYigKL8OAe9zJWL2C1n",
+      "Expiry": "2015-08-21T20:43:44.484269686+02:00"
+    },
+    "sess_dRYfcSgV70APvv1A8Nu7": {
+      "ID": "sess_dRYfcSgV70APvv1A8Nu7",
+      "UserID": "usr_1lYigKL8OAe9zJWL2C1n",
+      "Expiry": "2015-08-21T20:46:08.426145285+02:00"
+    },
+    "sess_lUGbxAthQtRtE1p1jfK7": {
+      "ID": "sess_lUGbxAthQtRtE1p1jfK7",
+      "UserID": "usr_1lYigKL8OAe9zJWL2C1n",
+      "Expiry": "2015-08-21T20:50:12.301207511+02:00"
+    },
+    "sess_rIciNXzRNzV1Y4ldvjqZ": {
+      "ID": "sess_rIciNXzRNzV1Y4ldvjqZ",
+      "UserID": "usr_1lYigKL8OAe9zJWL2C1n",
+      "Expiry": "2015-08-26T23:25:42.770020438+02:00"
+    },
+    "sess_vOExktu8gQo09Rb3LA2H": {
+      "ID": "sess_vOExktu8gQo09Rb3LA2H",
+      "UserID": "usr_1lYigKL8OAe9zJWL2C1n",
+      "Expiry": "2015-08-26T19:40:24.943413076+02:00"
+    },
+    "sess_xIeXci5JZMSP5akJzQ5Z": {
+      "ID": "sess_xIeXci5JZMSP5akJzQ5Z",
+      "UserID": "usr_1lYigKL8OAe9zJWL2C1n",
+      "Expiry": "2015-08-21T22:02:16.53766093+02:00"
+    },
+    "sess_z0UfHo2isYVuL9GSWnq3": {
+      "ID": "sess_z0UfHo2isYVuL9GSWnq3",
+      "UserID": "usr_1lYigKL8OAe9zJWL2C1n",
+      "Expiry": "2015-08-21T20:26:50.018675684+02:00"
+    }
+  }
+}

@@ -20,7 +20,7 @@ func NewFileWatcher(name string) *fileWatcherElement{
 	fw := fileWatcherElement{
 		fileName: name,
 		myQ: make(chan bool),
-		AbstractElement: *element.NewAbstractElement(),
+		AbstractElement: *element.NewAbstractElement("filewatcher"),
 	}
 	fw.RegisterQuitChannel(fw.myQ)
 	go fw.localRun()

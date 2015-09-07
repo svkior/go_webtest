@@ -2,7 +2,7 @@ package main
 import (
 	"log"
 	"bitbucket.org/tts/go_webtest/artnet_test/element"
-	"bitbucket.org/tts/go_webtest/artnet_test/fileconfigurator"
+	//"bitbucket.org/tts/go_webtest/artnet_test/fileconfigurator"
 	"time"
 	"github.com/StephanDollberg/go-json-rest-middleware-jwt"
 	"github.com/ant0ine/go-json-rest/rest"
@@ -14,8 +14,8 @@ import (
 	"os"
 	"bitbucket.org/tts/go_webtest/artnet_test/trace"
 	"bitbucket.org/tts/go_webtest/artnet_test/filewatcher"
-	"bitbucket.org/tts/go_webtest/artnet_test/ticker"
-	"bitbucket.org/tts/go_webtest/artnet_test/chat"
+	"bitbucket.org/tts/go_webtest/artnet_test/auth"
+	"bitbucket.org/tts/go_webtest/artnet_test/mapp"
 )
 
 
@@ -76,21 +76,24 @@ func main(){
 	// Запускаем на выполнение
 	device.Run()
 	// Добавляем конфигуратор
+	/*
 	device.AddElement(
 		fileconfigurator.NewFileConfig("test.json"),
 	)
+	*/
 	// Запускаем конфигуратор на выполнение
-	device.SendMessage(element.GetEmptyMessage("load", true))
+	//device.SendMessage(element.GetEmptyMessage("load", true))
 
 	// Запускаем FileWatcher
-	fw := filewatcher.NewFileWatcher("./assets/main.js")
-	device.AddElement(fw)
+	device.AddElement(filewatcher.NewFileWatcher("./assets/main.js"))
 
 	// Запускаем Ticker
-	device.AddElement(ticker.NewTicker(1 * time.Second))
+	//device.AddElement(ticker.NewTicker(1 * time.Second))
 
-	// Запускаем ChatRoom
-	device.AddElement(chat.NewChat("chatroom"))
+	device.AddElement(mapp.NewMap("artgate"))
+
+	// Запускаем AuthService
+	device.AddElement(auth.NewAuth("hello, world"))
 
 	// Уходим в главный цикл программы
 

@@ -1,5 +1,6 @@
 /**
  * Created by svkior on 10/08/15.
+ *
  */
 import Reflux from 'reflux'
 
@@ -25,13 +26,16 @@ var ChatRoomStore = Reflux.createStore({
         }
     },
     onWsconnected(){
+        this.connected = false;
+        this.log = [];
+        this.trigger(this.log);
         console.log("ChatRoom: Connect to the Chat");
         WSActions.wsSubscribe('respawn'); // FIXME: Нужно вызывать из правильного места
         WSActions.wsRegisterFeed('chatroom', ChatRoomActions);
     },
     init(){
-        this.connected = false
-        this.log = ["Нет соединения"];
+        this.connected = false;
+        this.log = [];
         this.trigger(this.log);
     },
     getInitialState(){
