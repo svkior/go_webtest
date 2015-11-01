@@ -31,6 +31,8 @@ type Device struct {
 	quitWait chan bool
 	// Функция необходимости ожидания
 	weWait bool
+	// Имя устройства
+	// TODO: name string
 }
 
 func (d *Device) closeClient(client Element){
