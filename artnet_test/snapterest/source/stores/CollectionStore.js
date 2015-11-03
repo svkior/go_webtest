@@ -3,7 +3,6 @@
  * Stores collection
  */
 
-    // We want to check livereload
 
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var EventEmitter = require('events').EventEmitter;
