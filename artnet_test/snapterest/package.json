@@ -1,0 +1,24 @@
+{
+  "name": "snapterest",
+  "version": "1.0.0",
+  "description": "Book Example with flux",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "browserify": "^12.0.1",
+    "jest-cli": "^0.6.1"
+  },
+  "dependencies": {
+    "flux": "^2.1.1",
+    "gulp-livereload": "^3.8.1",
+    "object-assign": "^4.0.1",
+    "react": "^0.14.1",
+    "react-dom": "^0.14.1",
+    "snapkite-stream-client": "^1.0.3",
+    "tiny-lr": "^0.2.1"
+  }
+}
