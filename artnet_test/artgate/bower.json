@@ -1,6 +1,6 @@
 {
-  "name": "snapterest",
-  "description": "Book Example with flux",
+  "name": "TTS ArtGate 4DR",
+  "description": "FirmWare for ArtGate Device",
   "main": "index.js",
   "authors": [
     "Sergey V. Kior <svkior@gmail.com>"
@@ -17,7 +17,7 @@
     "test",
     "tests"
   ],
-  "dependencies":{
+  "dependencies": {
     "bootstrap": "~3.3.5"
   }
 }
