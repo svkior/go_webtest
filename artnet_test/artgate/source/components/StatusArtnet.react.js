@@ -3,36 +3,41 @@
  */
 import React from 'react'
 
+import CollectionStore from '../stores/CollectionStore'
+
+import ArtPortList from './status/ArtPortList'
+
 var StatusArtnet = React.createClass({
+    getInitialState: function(){
+        return {
+            config: CollectionStore.getCollection('config')
+        }
+    },
+    componentDidMount(){
+        CollectionStore.addChangeListener('config', this.onConfigChange);
+    },
+    componentWillUnmount(){
+        CollectionStore.removeChangeListener('config', this.onConfigChange);
+    },
+    onConfigChange(){
+        this.setState({
+            config: CollectionStore.getCollection('config')
+        });
+    },
     render(){
+        var vers;
+        var ports;
+        if(this.state.config && this.state.config.artnet){
+            var cfg = this.state.config.artnet;
+
+            vers = cfg.version ? cfg.version : "НЕ ОПРЕДЕЛЕНА";
+            ports = cfg.Ports ? cfg.Ports : [];
+        }
         return (
             <div className="col-md-9">
-                <h4>ArtNet (TODO: Имя интерфейса) (TODO: версия):</h4>
-                <ul>
-                    <li>
-                        TODO: ArtNet TX 0
-                        <ul>
-                            <li>TODO: Номер вселенной</li>
-                            <li>TODO: Активность интерфейса</li>
-                            <li>
-                                TODO: Список абонентов для порта
-                                <ul>
-                                    <li>TODO: IP: 000.000.000.000</li>
-                                    <li>TODO: ShortName</li>
-                                    <li>TODO: Статус работы</li>
-                                </ul>
-                            </li>
+                <h4>ArtNet (TODO: Имя интерфейса) Версия протокола: {vers}</h4>
+                <ArtPortList ports={ports}/>
 
-
-                        </ul>
-                    </li>
-                    <li>
-                        TODO: ArtNet TX 1
-                    </li>
-                    <li>
-                        TODO: .....
-                    </li>
-                </ul>
             </div>
         );
     }

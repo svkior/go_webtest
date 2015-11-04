@@ -2,7 +2,7 @@ package main
 import (
 	"log"
 	"bitbucket.org/tts/go_webtest/artnet_test/element"
-	//"bitbucket.org/tts/go_webtest/artnet_test/fileconfigurator"
+	"bitbucket.org/tts/go_webtest/artnet_test/fileconfigurator"
 	"time"
 	"github.com/StephanDollberg/go-json-rest-middleware-jwt"
 	"github.com/ant0ine/go-json-rest/rest"
@@ -16,6 +16,7 @@ import (
 	"bitbucket.org/tts/go_webtest/artnet_test/filewatcher"
 	"bitbucket.org/tts/go_webtest/artnet_test/auth"
 	"bitbucket.org/tts/go_webtest/artnet_test/mapp"
+	"bitbucket.org/tts/go_webtest/artnet_test/ticker"
 )
 
 
@@ -76,19 +77,19 @@ func main(){
 	// Запускаем на выполнение
 	device.Run()
 	// Добавляем конфигуратор
-	/*
+
 	device.AddElement(
-		fileconfigurator.NewFileConfig("test.json"),
+		fileconfigurator.NewFileConfig("config","test.json"),
 	)
-	*/
+
 	// Запускаем конфигуратор на выполнение
-	//device.SendMessage(element.GetEmptyMessage("load", true))
+	device.SendMessage(element.GetEmptyMessage("load", true, "main"))
 
 	// Запускаем FileWatcher
 	device.AddElement(filewatcher.NewFileWatcher("./build/artgate.js"))
 
-	// Запускаем Ticker
-	//device.AddElement(ticker.NewTicker(1 * time.Second))
+	//Запускаем Ticker
+	device.AddElement(ticker.NewTicker("ticker", 1 * time.Second))
 
 	device.AddElement(mapp.NewMap("artgate"))
 

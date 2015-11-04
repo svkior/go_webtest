@@ -46,6 +46,22 @@ type AbstractElement struct {
 
 }
 
+func (e *AbstractElement) SendToClientByName(name string, msg *Message){
+	for client := range e.clients {
+		if client.GetName() == name {
+			recv := client.GetRecv()
+			select {
+				case recv <- msg:
+			default:
+				log.Printf("ERROR SEND TO CLIENT %#v", client)
+			// Не смогли послать
+				e.device.closeClient(client)
+			}
+
+		}
+	}
+}
+
 // Посылаем сообщение всем подписанным клиентам
 
 func (e *AbstractElement) SendToSubscribers(msg *Message){
@@ -179,8 +195,7 @@ func (c *AbstractElement) Run() error {
 				log.Printf("Subscr %p to %p", client, c)
 				c.clients[client]= true
 				go func(){
-					outMsg := GetEmptyMessage("subscribed", false)
-					outMsg.Name = c.name
+					outMsg := GetEmptyMessage("subscribed", false, c.name)
 					client.GetRecv() <- outMsg
 					if c.OnSubscribe != nil {
 						//log.Println("We Have onSubscribe, RUN:")

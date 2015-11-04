@@ -1,0 +1,73 @@
+{
+  "ethernet": {
+    "simulate": true,
+    "ipType": "manual",
+    "interface": "eth0",
+    "MAC": "00:00:00:00:00:00",
+    "Addr": "192.168.0.105",
+    "Mask": "255.255.255.0",
+    "Gw": "192.168.0.1",
+    "DNS": "192.168.0.1",
+    "NTP": "192.168.0.1",
+    "EnableDNS": false,
+    "EnableNTP": false
+  },
+  "artnet":{
+    "version": "3.0",
+    "ShortName": "TTS ArtGate 4DR",
+    "Ports":[
+      {
+        "type": "input",
+        "universe":0
+      },
+      {
+        "type": "input",
+        "universe":1
+      },{
+        "type": "input",
+        "universe":2
+      },{
+        "type": "input",
+        "universe":3
+      },{
+        "type": "output",
+        "universe":4
+      },{
+        "type":"output",
+        "universe":5
+      },{
+        "type":"output",
+        "universe":6
+      },{
+        "type":"output",
+        "universe":7
+      }
+    ]
+  },
+  "dmx":{
+    "port0": {
+      "type": "output"
+    },
+    "port1": {
+      "type": "input"
+    },
+    "port2": {
+      "type": "output"
+    },
+    "port3": {
+      "type": "input"
+    },
+    "port4": {
+      "type": "output"
+    },
+    "port5": {
+      "type": "input"
+    },
+    "port6": {
+      "type": "output"
+    },
+    "port7": {
+      "type": "input"
+    }
+  }
+}

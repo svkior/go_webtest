@@ -25,10 +25,6 @@ type FileConfig struct {
   Configs map[string]interface{}
 }
 
-func (fc *FileConfig) GetName() string{
-  return "config"
-}
-
 func (e *FileConfig) getLasTime() (time.Time, error) {
   info, err := os.Stat(e.ConfigFileName)
   if err != nil {
@@ -41,7 +37,7 @@ func (e *FileConfig) getLasTime() (time.Time, error) {
 
 
 func (fc *FileConfig) LoadConfiguration(msg *element.Message) (bool, error){
-//  log.Println("Got Load Configuration")
+  log.Println("Got Load Configuration")
   fc.ticker = time.NewTicker(1 * time.Second)
   quit := make(chan bool)
   fc.RegisterQuitChannel(quit)
@@ -56,27 +52,35 @@ func (fc *FileConfig) LoadConfiguration(msg *element.Message) (bool, error){
           // TODO: Нужно здесь создать конфигурацию
         } else {
           if curDate != fc.LastDate{
-            //log.Printf("Cur Data: %#v", curDate)
+            log.Printf("Cur Data: %#v", curDate)
             fc.LastDate = curDate
             loadConfig, err := ioutil.ReadFile(fc.ConfigFileName)
             if err != nil {
               log.Println(err.Error())
               break
             }
+            // Удаляем все старые конфигурации
+            for k := range fc.Configs {
+              delete(fc.Configs, k)
+            }
             err = json.Unmarshal(loadConfig, &fc.Configs)
             if err == nil {
-              //log.Println("I Can Send Config to modules!!!!!")
+              log.Println("I Can Send Config to modules!!!!!")
               for name, conf := range fc.Configs{
                 log.Printf("Config for %s", name)
                 log.Printf("  Cont: %v", conf)
+                // FIXME: здесь нужно передать конфигурацию для модулей
               }
+              msg := element.GetEmptyMessage("ping", false, fc.GetName())
+              msg.Payload = fc.Configs
+              fc.SendToSubscribers(msg)
             } else {
               log.Println(err.Error())
             }
           }
         }
       case <- quit:
-        //log.Println("Stop")
+        log.Println("File Configurator: Stop")
         fc.ticker.Stop()
         return
       }
@@ -85,12 +89,27 @@ func (fc *FileConfig) LoadConfiguration(msg *element.Message) (bool, error){
   return true, nil
 }
 
-func NewFileConfig(fileName string) *FileConfig{
-  fСonf := &FileConfig{
-    AbstractElement: *element.NewAbstractElement("fileConfigurator"),
+func (fc *FileConfig) SendConfigTo(name string) {
+  msg := element.GetEmptyMessage("ping", false, fc.GetName())
+  msg.Payload = fc.Configs
+  fc.SendToClientByName(name, msg)
+}
+
+// Если кто-нибудь подписывается на fileconfigurator, то обратно нужно отдать
+// конфиг
+func (fc *FileConfig) OnSubscribed(msg *element.Message) (bool, error) {
+  log.Printf("FileConfigurator: Got OnSubscribed %#v", msg)
+  fc.SendConfigTo(msg.Name)
+  return true, nil
+}
+
+func NewFileConfig(modName string, fileName string) *FileConfig{
+  fConf := &FileConfig{
+    AbstractElement: *element.NewAbstractElement(modName),
     ConfigFileName: fileName,
     Configs: make(map [string]interface{}),
   }
-  fСonf.Handle("load", fСonf.LoadConfiguration)
-  return fСonf
+  fConf.Handle("load", fConf.LoadConfiguration)
+  fConf.Handle("subscribed", fConf.OnSubscribed)
+  return fConf
 }

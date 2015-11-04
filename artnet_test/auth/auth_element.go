@@ -29,7 +29,7 @@ type authPayload struct {
 }
 
 func (a *authService) ProcessRestore(msg *element.Message) (bool, error){
-	outMsg := element.GetEmptyMessage("response", false)
+	outMsg := element.GetEmptyMessage("response", false, a.GetName())
 	var sessID string
 	sessID = msg.Payload.(map[string]interface{})["session"].(string)
 	sess := RequestSession(sessID)
@@ -57,8 +57,7 @@ func (a *authService) ProcessLogout(msg *element.Message) (bool, error){
 		golbalSessionStore.Delete(sess)
 		a.sessionID = ""
 	}
-	outMsg := element.GetEmptyMessage("response", false)
-	outMsg.Name = "auth"
+	outMsg := element.GetEmptyMessage("response", false, a.GetName())
 	outMsg.Type = "authoff"
 	msg.Client.GetRecv() <- outMsg
 	return true, nil
@@ -74,7 +73,7 @@ func (a *authService) ProcessAuth(msg *element.Message) (bool, error){
 	f := msg.Payload.(map[string]interface{})
 	log.Printf("Process Authentication: Got %s, %s", f["login"], f["passwd"])
 
-	outMsg := element.GetEmptyMessage("response", false)
+	outMsg := element.GetEmptyMessage("response", false, a.GetName())
 	outMsg.Name = "auth"
 
 	var f2 map[string]string

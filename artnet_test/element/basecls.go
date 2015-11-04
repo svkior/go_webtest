@@ -39,11 +39,11 @@ type Message struct {
 	Payload interface{} `json:"payload"`
 }
 
-func GetEmptyMessage(mType string, broadcast bool) *Message{
+func GetEmptyMessage(mType string, broadcast bool, name string) *Message{
 	m := Message{
 		Broadcast: broadcast,
 		Type: mType,
-		Name: "unicast",
+		Name: name,
 		When: time.Now(),
 		Payload: nil,
 	}

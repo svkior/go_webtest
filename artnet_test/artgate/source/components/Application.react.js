@@ -23,7 +23,7 @@ var App = React.createClass({
             <div className="container-fluid">
                 {navBar}
                 {this.props.children}
-                {ArtgateFooter}
+                <ArtgateFooter/>
             </div>
         );
     }
