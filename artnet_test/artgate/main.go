@@ -85,7 +85,7 @@ func main(){
 	//device.SendMessage(element.GetEmptyMessage("load", true))
 
 	// Запускаем FileWatcher
-	device.AddElement(filewatcher.NewFileWatcher("./build/snapterest.js"))
+	device.AddElement(filewatcher.NewFileWatcher("./build/artgate.js"))
 
 	// Запускаем Ticker
 	//device.AddElement(ticker.NewTicker(1 * time.Second))

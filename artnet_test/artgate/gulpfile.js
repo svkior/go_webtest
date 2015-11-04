@@ -12,12 +12,12 @@ gulp.task('react', function(){
                 })
             .transform(babelify)
             .bundle()
-            .pipe(source('snapterest.js'))
+            .pipe(source('artgate.js'))
             .pipe(gulp.dest('./build/'));
 
 });
 
 gulp.task('default', function(){
         gulp.start('react');
-        gulp.watch('./source/**', ['react']);
+        gulp.watch('./source/**/*', ['react']);
 });
