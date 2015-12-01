@@ -1,9 +1,7 @@
 /*
-
   Element
 
   Интерфейс Element обеспечивает прозрачный интерфейс к элементам, входящим в устройство Device
-
  */
 package element
 import (
@@ -53,9 +51,10 @@ func (e *AbstractElement) SendToClientByName(name string, msg *Message){
 			select {
 				case recv <- msg:
 			default:
-				log.Printf("ERROR SEND TO CLIENT %#v", client)
+				log.Printf("FIXED ERROR SEND TO CLIENT %#v", client)
 			// Не смогли послать
-				e.device.closeClient(client)
+			// FIXME: АГСЛ
+				//e.device.closeClient(client)
 			}
 
 		}
@@ -72,8 +71,8 @@ func (e *AbstractElement) SendToSubscribers(msg *Message){
 		case recv <- msg:
 		default:
 			log.Printf("ERROR SEND TO CLIENT %#v", client)
-		// Не смогли послать
-			e.device.closeClient(client)
+		// Не смогли послать FIXME: UNCOMMENT
+			//e.device.closeClient(client)
 		}
 	}
 }

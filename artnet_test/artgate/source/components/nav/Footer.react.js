@@ -43,13 +43,22 @@ var ArtgateFooter = React.createClass({
         if (ticker && ticker.Alloc){
             alloc = ticker.Alloc;
         }
+        var upTime;
         if (ticker && ticker.Increment){
             increment = ticker.Increment;
+            let date = new Date(increment * 1000);
+            let hh = date.getUTCHours();
+            let mm = date.getUTCMinutes();
+            let ss = date.getSeconds();
+            if ( hh < 10) { hh = "0"+hh}
+            if ( mm < 10) { mm = "0"+mm}
+            if ( ss < 10) { ss = "0"+ss}
+            upTime = "Uptime: " + hh + ":" + mm + ":" + ss;
         }
         return (
             <Navbar inverse className="navbar-fixed-bottom">
                 <p className="text-muted">
-                    &copy; 2013-2015 by Kior Theatre Systems, LLC, ArtGate is {status} | {alloc} | {increment} |
+                    &copy; 2013-2015 by Kior Theatre Systems, LLC, ArtGate is {status} | {alloc} | {upTime} |
                 </p>
             </Navbar>
         );

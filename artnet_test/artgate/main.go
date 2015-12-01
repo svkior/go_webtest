@@ -97,7 +97,6 @@ func main(){
 	device.AddElement(auth.NewAuth("hello, world"))
 
 	// Уходим в главный цикл программы
-
 	go NewRestInterface(device)
 
 	device.Wait()

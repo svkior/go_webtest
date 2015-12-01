@@ -3,7 +3,6 @@
  */
 import React from 'react'
 
-
 import CollectionStore from '../stores/CollectionStore'
 
 var StatusNetwork = React.createClass({
