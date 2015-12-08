@@ -7,7 +7,7 @@ import React from 'react'
 var ConfigureEthernet = React.createClass({
     render(){
         return (
-            <div className="col-md-9">
+            <div className="col-md-10">
                 <h4>Управление ETHERNET</h4>
                 <p>TODO: Задать MAC</p>
                 <p>TODO: Задать тип определения адре</p>

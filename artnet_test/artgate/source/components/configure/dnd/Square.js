@@ -4,7 +4,7 @@
 
 import React, {Component, PropTypes} from 'react';
 
-export default class Square extends Component {
+class Square extends Component {
     render(){
         const {black} = this.props;
         const fill = black ? "black" : "white";
@@ -26,3 +26,4 @@ Square.propTypes = {
     black: PropTypes.bool
 };
 
+export default Square

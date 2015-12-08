@@ -58,7 +58,7 @@ var ArtgateFooter = React.createClass({
         return (
             <Navbar inverse className="navbar-fixed-bottom">
                 <p className="text-muted">
-                    &copy; 2013-2015 by Kior Theatre Systems, LLC, ArtGate is {status} | {alloc} | {upTime} |
+                    &copy; 2013-2015 by KIOR Theatre Systems, LLC, ArtGate is {status} | {alloc} | {upTime} |
                 </p>
             </Navbar>
         );

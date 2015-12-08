@@ -11,7 +11,7 @@ import Board from './Board'
 import {observe} from './Game';
 
 
-export default class Chess extends Component {
+class Chess extends Component {
 
     constructor(props){
         super(props);
@@ -35,3 +35,5 @@ export default class Chess extends Component {
         );
     }
 }
+
+export default Chess

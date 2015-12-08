@@ -41,6 +41,7 @@ import ConfigureEthernet from './configure/ConfigureEthernet.react'
 import ConfigureArtnet from './configure/ConfigureArtnet.react'
 import ConfigureDMX from './configure/ConfigureDMX.react'
 import ConfigureProcessing from './configure/ConfigureProcessing.react'
+import ConfigureProcessing2 from './configure/ConfigureProcessing2.react'
 import SaveNReboot from './SaveNReboot.react'
 import Reboot from './Reboot.react'
 import FirmwareUpgrade from './FirmwareUpgrade.react'
@@ -74,7 +75,8 @@ const routes = {
                 {path: 'ethernet', component: ConfigureEthernet},
                 {path: 'artnet', component: ConfigureArtnet},
                 {path: 'dmx', component: ConfigureDMX},
-                {path: 'processing', component: ConfigureProcessing}
+                {path: 'processing', component: ConfigureProcessing},
+                {path: 'processing2', component: ConfigureProcessing2}
             ]
         },{path: 'save-n-reboot', component: SaveNReboot},
         {path: 'reboot', component: Reboot},

@@ -7,7 +7,7 @@ import React from 'react'
 var ConfigureArtnet = React.createClass({
     render(){
         return (
-            <div className="col-md-9">
+            <div className="col-md-10">
                 <h4>Управление ArtNet</h4>
                 <p>TODO: Список артнетов входных и выходных</p>
                 <p>TODO: Задать номер вселенной</p>

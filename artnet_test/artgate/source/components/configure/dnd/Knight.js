@@ -36,7 +36,7 @@ class Knight extends Component{
 
 Knight.propTypes = {
     connectDragSource: PropTypes.func.isRequired,
-    idDragging: PropTypes.bool.isRequired
+    isDragging: PropTypes.bool.isRequired
 };
 
 export default DragSource(ItemTypes.KNIGHT, knightSource, collect)(Knight);

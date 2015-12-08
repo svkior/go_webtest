@@ -7,7 +7,7 @@ import React from 'react'
 var ConfigureDMX = React.createClass({
     render(){
         return (
-            <div className="col-md-9">
+            <div className="col-md-10">
                 <h4>Управление DMX</h4>
                 <p>TODO: Список портов входных и выходных</p>
                 <p>TODO: Задать тип протокола</p>

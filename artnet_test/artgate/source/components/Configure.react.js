@@ -10,7 +10,7 @@ var Configure = React.createClass({
     render(){
         return (
             <div className="row">
-                <div className="col-md-3">
+                <div className="col-md-2">
                     {ConfigureSidebar}
                 </div>
                 {this.props.children}

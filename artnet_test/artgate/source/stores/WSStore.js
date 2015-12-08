@@ -35,7 +35,7 @@ var WSStore = assign({}, EventEmitter.prototype, {
         this.on(CHANGE_EVENT, cb);
     },
     removeChangeListener(cb){
-        this.removeChangeListener(CHANGE_EVENT, cb);
+        this.removeListener(CHANGE_EVENT, cb);
     },
     getWSStatus(){
         return websocketStatus;

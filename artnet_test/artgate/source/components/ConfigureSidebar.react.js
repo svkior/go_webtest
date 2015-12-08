@@ -22,6 +22,9 @@ const ConfigureSideBar = (
         <li>
             <Link to="/configure/processing">Процессинг</Link>
         </li>
+        <li>
+            <Link to="/configure/processing2">Процессинг2</Link>
+        </li>
     </ul>
 );
 

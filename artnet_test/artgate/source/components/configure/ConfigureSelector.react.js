@@ -7,7 +7,7 @@ import React from 'react'
 var ConfigureSelector = React.createClass({
     render(){
         return (
-            <div className="col-md-9">
+            <div className="col-md-10">
                 <h4>Управление конфигурациями</h4>
                 <p>TODO: Вывести как называется текущая конфигурация</p>
                 <p>TODO: Список известных конфигураций с возможностью выбрать</p>

@@ -4,7 +4,7 @@
 
 import React,{Component, PropTypes} from 'react';
 import Knight from './Knight';
-import BoardSquare from 'BoardSquare'
+import BoardSquare from './BoardSquare'
 
 import {canMoveKnight, moveKnight} from './Game';
 
@@ -23,8 +23,7 @@ class Board extends Component {
         return (
             <div
                 key={i}
-                style={{width:'12.5%', height: '12.5%'}}
-            >
+                style={{width:'12.5%', height: '12.5%'}}>
                 <BoardSquare x={x} y={y}>
                     {this.renderPiece(x, y)}
                 </BoardSquare>
