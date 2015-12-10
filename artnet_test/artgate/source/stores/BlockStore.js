@@ -9,8 +9,6 @@ import assign from 'object-assign';
 import generateUUID from '../utils/Guids'
 
 var blocks = {
-//    'a' : {top: 20, left: 80, name: 'DMX IN'},
-//    'b' : {top: 180, left: 20, name: 'DMX OUT'}
 };
 
 function removeBlock(blockId){
@@ -20,7 +18,7 @@ function removeBlock(blockId){
     }
 }
 
-function addBlock(blockType, toX, toY){
+function addBlock(box, toX, toY){
     let guid = generateUUID();
     const left = toX;
     const top = toY;
@@ -31,7 +29,7 @@ function addBlock(blockType, toX, toY){
     blocks[guid] = {
         top: top,
         left: left,
-        name: blockType
+        box: box
     };
 }
 

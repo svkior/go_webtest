@@ -19,7 +19,6 @@ import (
 	"bitbucket.org/tts/go_webtest/artnet_test/ticker"
 )
 
-
 type templateHandler struct {
 	once sync.Once
 	filename string

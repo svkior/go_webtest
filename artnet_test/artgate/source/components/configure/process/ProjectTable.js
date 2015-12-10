@@ -136,8 +136,8 @@ class ProjectTable extends Component{
             <div style={style} onMouseMove={this.myHandleMouseMove} onClick={this.myHandleClick}>
                 <ProjectCanvas/>
                 {Object.keys(blocks).map(key => {
-                    const {left, top, name} = blocks[key];
-                    return <Block key={key} id={key} left={left} top={top} name={name}/>;
+                    const {left, top, box} = blocks[key];
+                    return <Block key={key} id={key} left={left} top={top} box={box}/>;
                 })}
             </div>
         );

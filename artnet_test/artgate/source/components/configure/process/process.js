@@ -4,7 +4,7 @@
 
 import React, {Component} from 'react';
 
-import Box from './Box';
+import BoxList from './BoxList';
 import ProjectTable from './ProjectTable';
 
 import {DragDropContext} from 'react-dnd';
@@ -19,16 +19,7 @@ class Process extends Component {
     render(){
         return (
             <div>
-            <div>
-                <div style={{overflow:'hidden', clear: 'both'}}>
-                    <Box name="IP"/>
-                    <Box name="DMX In"/>
-                    <Box name="DMX Out"/>
-                    <Box name="Art In"/>
-                    <Box name="Art Out"/>
-                    <Box name="Block"/>
-                </div>
-            </div>
+                <BoxList/>
             <div>
                 <div style={{position: 'relative'}} className="anchor">
                     <ProjectTable/>

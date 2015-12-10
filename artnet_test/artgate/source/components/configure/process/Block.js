@@ -55,7 +55,8 @@ class Block extends Component{
     }
 
     render(){
-        const { connectDragSource, isDragging} = this.props;
+        const { connectDragSource, isDragging, box} = this.props;
+
         if(isDragging)
             return null;
 
@@ -72,7 +73,7 @@ class Block extends Component{
                         paddingTop: '7.5px',
                         paddingLeft: '10px'
                     }}>
-                       {this.props.name}
+                       {box.name}
                     </div>
                     <div className="btn-group pull-right">
                         <a href="#" className="btn btn-default btn-sm" onClick={this.handleClose}>
@@ -83,9 +84,31 @@ class Block extends Component{
                 <table className="table table-condensed">
                     <tbody>
                     <tr>
-                        <td style={{padding: "5 0"}}><InPort id={this.props.id}/> Inp</td>
+                        <td style={{padding: "5 0"}}>
+                            <ul style={{listStyleType: "none", padding: 0}}>
+
+                                {box.inputs.map((inp, key) => {
+                                    return (
+                                        <li key={key}>
+                                            <InPort id={this.props.id}/> {inp.name}
+                                        </li>
+                                    );
+                                })}
+
+                            </ul>
+                        </td>
                         <td style={{width:"30px"}}></td>
-                        <td style={{padding: "5 0"}}>Out <OutPort id={this.props.id}/></td>
+                        <td style={{padding: "5 0"}}>
+                            <ul style={{listStyleType: "none", padding:0}}>
+                                {box.outputs.map((inp, key) => {
+                                    return (
+                                        <li key={key}>
+                                            {inp.name} <OutPort id={this.props.id}/>
+                                        </li>
+                                    )
+                                })}
+                            </ul>
+                        </td>
                     </tr>
                     </tbody>
                 </table>

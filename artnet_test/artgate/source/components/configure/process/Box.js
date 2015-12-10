@@ -21,7 +21,7 @@ const style = {
 const boxSource = {
     beginDrag(props){
         return {
-            name: props.name
+            box: props.box
         };
     },
     endDrag(props, monitor){
@@ -31,7 +31,7 @@ const boxSource = {
         if(dropResult){
             //console.log('Drop: ', dropResult);
             //console.log('Item: ', item);
-            AddBlock(item.name, dropResult.offset.x, dropResult.offset.y);
+            AddBlock(item.box, dropResult.offset.x, dropResult.offset.y);
         }
     }
 };
@@ -48,7 +48,7 @@ class Box extends Component{
         const { connectDragSource, isDragging} = this.props;
 
         return connectDragSource(<div style={style}>
-            {this.props.name}
+            {this.props.box.name}
         </div>);
     }
 }
