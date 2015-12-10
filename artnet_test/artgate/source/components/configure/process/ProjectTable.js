@@ -13,7 +13,7 @@ import Block from './Block';
 
 import BlockStore from '../../../stores/BlockStore'
 
-import {MoveCursor} from '../../../actions/WireActionCreators'
+import {MoveCursor, AddVia} from '../../../actions/WireActionCreators'
 
 import ProjectCanvas from './ProjectCanvas';
 
@@ -100,6 +100,7 @@ class ProjectTable extends Component{
         this.onBlocksChange = this.onBlocksChange.bind(this);
         BlockStore.addChangeListener(this.onBlocksChange);
         this.myHandleMouseMove = this.myHandleMouseMove.bind(this);
+        this.myHandleClick = this.myHandleClick.bind(this);
     }
 
     componentWillUnmount(){
@@ -112,13 +113,19 @@ class ProjectTable extends Component{
         });
     }
 
+    myHandleClick(e){
+        let node = ReactDOM.findDOMNode(this);
+        let pos = getPos(node);
+        //console.log('click: ',pos.x, pos.y);
+        AddVia(e.clientX - pos.x, e.clientY - pos.y);
+    }
+
     myHandleMouseMove(e){
         if(e.button != 0)
             return;
-        //var pos = $(this.getDOMNode()).offset()
         let node = ReactDOM.findDOMNode(this);
         let pos = getPos(node);
-        console.log(pos.x, pos.y);
+        //console.log(pos.x, pos.y);
         MoveCursor(e.clientX - pos.x, e.clientY - pos.y);
     }
 
@@ -126,7 +133,7 @@ class ProjectTable extends Component{
         const {connectDropTarget, isOver, canDrop} = this.props;
         const {blocks} = this.state;
         return connectDropTarget(
-            <div style={style} onMouseMove={this.myHandleMouseMove}>
+            <div style={style} onMouseMove={this.myHandleMouseMove} onClick={this.myHandleClick}>
                 <ProjectCanvas/>
                 {Object.keys(blocks).map(key => {
                     const {left, top, name} = blocks[key];

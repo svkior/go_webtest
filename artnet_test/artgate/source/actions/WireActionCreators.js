@@ -31,5 +31,41 @@ module.exports = {
             posY: posY
         };
         AppDispatcher.dispatch(action);
+    },
+    InPortCursor: function(blockId, posX, posY){
+        let action = {
+            type: 'wire_inport_cursor',
+            blockId: blockId,
+            x: posX,
+            y: posY
+        }
+        AppDispatcher.dispatch(action);
+    },
+    CancelWire: function(){
+        var action = {
+            type: 'wire_cancel'
+        };
+        AppDispatcher.dispatch(action);
+    },
+    ClickWire: function(wireId){
+        let action = {
+            type: 'wire_click',
+            wireId: wireId
+        };
+        AppDispatcher.dispatch(action);
+    },
+    DeleteSelectedWire: function(){
+        let action = {
+            type: 'wire_delete_selected'
+        };
+        AppDispatcher.dispatch(action);
+    },
+    AddVia: function(posX, posY){
+        let action = {
+            type: 'wire_add_via',
+            x: posX,
+            y: posY
+        };
+        AppDispatcher.dispatch(action);
     }
 };

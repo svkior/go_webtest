@@ -9,6 +9,7 @@ import {AddLineFromBegin} from '../../../actions/WireActionCreators'
 const style = {
     display: 'inline-block',
     borderRadius: "50% 0 0 50%",
+    border: "1px solid green",
     backgroundColor: "green",
     width: 10,
     height: 10,
@@ -35,12 +36,12 @@ class OutPort extends Component{
     }
 
     onPortClick(e){
-        e.preventDefault();
+        e.stopPropagation();
         let posBegin = getPos(e.target);
         //console.log('Event: ',e);
         //console.log('Client: ',e.clientX, e.clientY);
-        console.log('Pos: ', getPos(e.target));
-        AddLineFromBegin(this.props.id,posBegin.x,posBegin.y);
+        //console.log('Pos: ', getPos(e.target));
+        AddLineFromBegin(this.props.id,posBegin.x+10,posBegin.y+5);
     }
 
     render(){

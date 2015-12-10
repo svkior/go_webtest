@@ -5,18 +5,10 @@
 import React, {Component} from 'react'
 import ReactDOM from 'react-dom'
 import WireStore from '../../../stores/WireStore'
+import {SVGComponent} from '../../svg/svg';
 
-class SVGComponent extends Component {
-    render(){
-        return <svg {...this.props}>{this.props.children}</svg>;
-    }
-}
+import Wire from './Wire'
 
-class Line extends Component {
-    render(){
-        return <line {...this.props}>{this.props.children}</line>;
-    }
-}
 
 class ProjectCanvas extends Component {
     constructor(props){
@@ -40,7 +32,6 @@ class ProjectCanvas extends Component {
     }
 
 
-
     render(){
         const {wires} = this.state;
         // FIXME: Исправить ширину зоны прорисовки
@@ -51,18 +42,9 @@ class ProjectCanvas extends Component {
             top: 0,
             left: 0
             }}
-
             >
                 {Object.keys(wires).map(key => {
-                    return <Line
-                                key={key}
-                                x1={wires[key].fromX}
-                                y1={wires[key].fromY}
-                                x2={wires[key].toX}
-                                y2={wires[key].toY}
-                                stroke="orange"
-                                strokeWidth={3}
-                    />;
+                    return (<Wire key={key} wire={wires[key]} id={key}/>);
                 })}
             </SVGComponent>
         );

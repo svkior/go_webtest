@@ -65,12 +65,14 @@ class Block extends Component{
                 left: this.props.left,
                 top: this.props.top
             }}>
-                <div className="panel-heading clearfix">
+                <div className="panel-heading clearfix" style={{
+                    cursor: 'move'
+                }}>
                     <div className="panel-title pull-left" style={{
                         paddingTop: '7.5px',
-                        cursor: 'move'
+                        paddingLeft: '10px'
                     }}>
-                        {this.props.name}
+                       {this.props.name}
                     </div>
                     <div className="btn-group pull-right">
                         <a href="#" className="btn btn-default btn-sm" onClick={this.handleClose}>
@@ -81,9 +83,9 @@ class Block extends Component{
                 <table className="table table-condensed">
                     <tbody>
                     <tr>
-                        <td><InPort id={this.props.id}/> Inp</td>
-                        <td>Val1</td>
-                        <td>Out <OutPort id={this.props.id}/></td>
+                        <td style={{padding: "5 0"}}><InPort id={this.props.id}/> Inp</td>
+                        <td style={{width:"30px"}}></td>
+                        <td style={{padding: "5 0"}}>Out <OutPort id={this.props.id}/></td>
                     </tr>
                     </tbody>
                 </table>

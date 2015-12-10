@@ -15,7 +15,23 @@ import {createHistory, useBasename} from 'history'
 
 const history = useBasename(createHistory)({basename:'/'});
 
+import {CancelWire, DeleteSelectedWire} from '../actions/WireActionCreators'
 
+function     handleKeyPress(e){
+    //console.log('E:', e.which);
+    switch(e.which){
+        case 27:
+            CancelWire();
+            e.preventDefault();
+            break;
+        case 46:
+            DeleteSelectedWire();
+            e.preventDefault();
+            break;
+    }
+}
+
+document.onkeydown = handleKeyPress;
 
 var App = React.createClass({
     render(){
