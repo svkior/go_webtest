@@ -5,12 +5,9 @@
  *
  */
 
-
 import React from 'react'
 import ReactDOM from 'react-dom'
-
 import Application from './components/Application.react'
-
 import WSAPIUtils from './utils/WSAPIUtils'
 
 WSAPIUtils.ConnectToWS();
